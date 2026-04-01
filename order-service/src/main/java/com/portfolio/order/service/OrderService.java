@@ -1,0 +1,183 @@
+package com.portfolio.order.service;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientResponseException;
+
+import com.portfolio.order.api.CreateOrderRequest;
+import com.portfolio.order.clients.InventoryClient;
+import com.portfolio.order.clients.InventoryReserveRequest;
+import com.portfolio.order.clients.InventoryReserveRequestItem;
+import com.portfolio.order.clients.PaymentClient;
+import com.portfolio.order.clients.PaymentCreateRequest;
+import com.portfolio.order.domain.OrderStatus;
+import com.portfolio.order.events.OrderCancelledEvent;
+import com.portfolio.order.events.OrderConfirmedEvent;
+import com.portfolio.order.events.OrderPlacedEvent;
+import com.portfolio.order.persistence.OrderEntity;
+import com.portfolio.order.persistence.OrderRepository;
+
+@Service
+public class OrderService {
+	private final OrderRepository orderRepository;
+	private final InventoryClient inventoryClient;
+	private final PaymentClient paymentClient;
+	private final KafkaTemplate<String, Object> kafkaTemplate;
+	private final String ordersTopic;
+
+	public OrderService(
+			OrderRepository orderRepository,
+			InventoryClient inventoryClient,
+			PaymentClient paymentClient,
+			KafkaTemplate<String, Object> kafkaTemplate,
+			@Value("${app.kafka.topic.orders}") String ordersTopic
+	) {
+		this.orderRepository = orderRepository;
+		this.inventoryClient = inventoryClient;
+		this.paymentClient = paymentClient;
+		this.kafkaTemplate = kafkaTemplate;
+		this.ordersTopic = ordersTopic;
+	}
+
+	@Transactional
+	public OrderEntity create(CreateOrderRequest request) {
+		var orderId = UUID.randomUUID();
+		var total = request.items().stream()
+				.map(i -> i.unitPrice().multiply(BigDecimal.valueOf(i.quantity())))
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+		var order = new OrderEntity(orderId, total);
+		request.items().forEach(i -> order.addItem(i.sku(), i.quantity(), i.unitPrice()));
+		orderRepository.save(order);
+
+		var event = new OrderPlacedEvent(
+				UUID.randomUUID(),
+				Instant.now(),
+				order.getId(),
+				order.getTotalAmount(),
+				order.getItems().stream()
+						.map(i -> new OrderPlacedEvent.Item(i.getSku(), i.getQuantity(), i.getUnitPrice()))
+						.toList()
+		);
+		kafkaTemplate.send(ordersTopic, orderId.toString(), event);
+
+		return order;
+	}
+
+	@Transactional
+	public OrderEntity confirm(UUID orderId) {
+		var order = orderRepository.findById(orderId)
+				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+
+		if (order.getStatus() != OrderStatus.PLACED) {
+			return order;
+		}
+
+		var reserveReq = new InventoryReserveRequest(
+				orderId,
+				order.getItems().stream()
+						.map(i -> new InventoryReserveRequestItem(i.getSku(), i.getQuantity()))
+						.toList()
+		);
+
+		try {
+			var reserveResp = inventoryClient.reserve(reserveReq);
+			if (reserveResp == null || !"RESERVED".equalsIgnoreCase(reserveResp.status())) {
+				return failStock(order, reserveResp == null ? "Inventory error" : reserveResp.message());
+			}
+		} catch (RestClientResponseException ex) {
+			return failStock(order, "Inventory call failed: " + ex.getStatusCode());
+		} catch (Exception ex) {
+			return failStock(order, "Inventory call failed");
+		}
+
+		try {
+			var payResp = paymentClient.createPayment(new PaymentCreateRequest(orderId, order.getTotalAmount()));
+			if (payResp != null && "SUCCEEDED".equalsIgnoreCase(payResp.status())) {
+				order.setStatus(OrderStatus.CONFIRMED);
+				kafkaTemplate.send(
+						ordersTopic,
+						orderId.toString(),
+						new OrderConfirmedEvent(UUID.randomUUID(), Instant.now(), orderId, order.getTotalAmount())
+				);
+				return order;
+			}
+
+			inventoryClient.release(orderId);
+			order.setStatus(OrderStatus.PAYMENT_FAILED);
+			kafkaTemplate.send(
+					ordersTopic,
+					orderId.toString(),
+					new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, "Payment failed")
+			);
+			return order;
+		} catch (RestClientResponseException ex) {
+			inventoryClient.release(orderId);
+			order.setStatus(OrderStatus.PAYMENT_FAILED);
+			kafkaTemplate.send(
+					ordersTopic,
+					orderId.toString(),
+					new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, "Payment call failed: " + ex.getStatusCode())
+			);
+			return order;
+		}
+	}
+
+	@Transactional
+	public OrderEntity cancel(UUID orderId) {
+		var order = orderRepository.findById(orderId)
+				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+
+		return switch (order.getStatus()) {
+			case PLACED -> {
+				order.setStatus(OrderStatus.CANCELLED);
+				publishCancelled(orderId, "Cancelled by user");
+				yield order;
+			}
+			case CONFIRMED -> {
+				try {
+					inventoryClient.release(orderId);
+				} catch (Exception ignored) {
+					// best-effort compensation; can be reconciled asynchronously
+				}
+				order.setStatus(OrderStatus.CANCELLED);
+				publishCancelled(orderId, "Cancelled by user (stock released)");
+				yield order;
+			}
+			case CANCELLED -> throw new IllegalStateException("Order is already cancelled");
+			default -> throw new IllegalStateException(
+					"Order in status " + order.getStatus() + " cannot be cancelled");
+		};
+	}
+
+	@Transactional(readOnly = true)
+	public OrderEntity get(UUID id) {
+		return orderRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+	}
+
+	private void publishCancelled(UUID orderId, String reason) {
+		kafkaTemplate.send(
+				ordersTopic,
+				orderId.toString(),
+				new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, reason)
+		);
+	}
+
+	private OrderEntity failStock(OrderEntity order, String reason) {
+		order.setStatus(OrderStatus.STOCK_FAILED);
+		kafkaTemplate.send(
+				ordersTopic,
+				order.getId().toString(),
+				new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), order.getId(), reason)
+		);
+		return order;
+	}
+}
+

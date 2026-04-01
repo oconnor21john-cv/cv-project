@@ -1,0 +1,43 @@
+# Java / Gradle build output
+**/build/
+**/.gradle/
+**/*.class
+**/*.jar
+**/*.war
+
+# Gradle wrapper jar (keep the .properties, ignore the binary)
+gradle/wrapper/gradle-wrapper.jar
+**/gradle/wrapper/gradle-wrapper.jar
+
+# Node / frontend
+web-ui/node_modules/
+web-ui/dist/
+web-ui/dist-ssr/
+web-ui/*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files with secrets
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scratch / test files
+cookies.txt
+*.headers.txt
+spring-home.txt
+order-service-error.txt
