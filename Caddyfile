@@ -1,0 +1,5 @@
+# Replace with your actual DuckDNS (or other) domain.
+# Caddy fetches a Let's Encrypt certificate automatically.
+{$PUBLIC_DOMAIN} {
+    reverse_proxy order-service:8081
+}

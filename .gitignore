@@ -20,6 +20,7 @@ web-ui/*.local
 npm-debug.log*
 
 # Environment files with secrets
+.env
 .env.local
 .env.*.local
 
