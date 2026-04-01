@@ -5,7 +5,7 @@ type TokenResponse = { accessToken: string; tokenType: string }
 type OrderResponse = { id: string; status: string; totalAmount: number }
 
 function apiBaseUrl() {
-  return import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8081'
+  return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'
 }
 
 async function postJson<T>(url: string, body: unknown, token?: string): Promise<T> {
