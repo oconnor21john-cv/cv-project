@@ -5,10 +5,7 @@
 **/*.jar
 **/*.war
 
-# Gradle wrapper jar (keep the .properties, ignore the binary)
-gradle/wrapper/gradle-wrapper.jar
-**/gradle/wrapper/gradle-wrapper.jar
-
+# Gradle wrapper jar is intentionally committed — needed for Docker builds
 # Node / frontend
 web-ui/node_modules/
 web-ui/dist/
