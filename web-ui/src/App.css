@@ -1,42 +1,202 @@
 #root {
-  max-width: 1280px;
+  max-width: 780px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 20px 60px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ── Header ── */
+.app-header {
+  padding: 20px 0 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-header h1 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-header .api-url {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
 }
 
+/* ── Cards ── */
 .card {
-  padding: 2em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
 }
 
-.read-the-docs {
-  color: #888;
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-title h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+/* ── Form grid ── */
+.field-row {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.field-row-2 { grid-template-columns: 1fr 1fr; }
+.field-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+@media (max-width: 520px) {
+  .field-row-2, .field-row-3 { grid-template-columns: 1fr; }
+}
+
+/* ── Button row ── */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ── Token badge ── */
+.token-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.token-badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-2);
+  flex-shrink: 0;
+}
+
+.token-badge.active .dot {
+  background: var(--green);
+  box-shadow: 0 0 0 2px var(--green-bg);
+}
+
+.token-badge.active {
+  color: var(--green);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* ── Order result ── */
+.order-result {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+}
+
+.order-result-row {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  padding: 3px 0;
+}
+
+.order-result-row .label {
+  color: var(--text-muted);
+  min-width: 60px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-top: 1px;
+}
+
+.order-result-row .val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.status-badge.PENDING   { background: #1e1a0d; color: var(--amber);  border: 1px solid #3a3010; }
+.status-badge.CONFIRMED { background: var(--green-bg); color: var(--green); border: 1px solid #1a3d2a; }
+.status-badge.CANCELLED { background: var(--red-bg); color: var(--red); border: 1px solid #3a1a1a; }
+.status-badge.FAILED    { background: var(--red-bg); color: var(--red); border: 1px solid #3a1a1a; }
+
+/* ── Status / error bar ── */
+.status-bar {
+  margin-top: 20px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.error-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--red-bg);
+  border: 1px solid #4a1a1a;
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--red);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
 }

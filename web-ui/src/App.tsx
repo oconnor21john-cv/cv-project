@@ -8,11 +8,7 @@ function apiBaseUrl() {
   return import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8081'
 }
 
-async function postJson<T>(
-  url: string,
-  body: unknown,
-  token?: string,
-): Promise<T> {
+async function postJson<T>(url: string, body: unknown, token?: string): Promise<T> {
   const res = await fetch(url, {
     method: 'POST',
     headers: {
@@ -21,12 +17,10 @@ async function postJson<T>(
     },
     body: JSON.stringify(body),
   })
-
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+    throw new Error(`${res.status} ${res.statusText}${text ? `\n${text}` : ''}`)
   }
-
   return (await res.json()) as T
 }
 
@@ -35,13 +29,15 @@ async function getJson<T>(url: string, token: string): Promise<T> {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
   })
-
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+    throw new Error(`${res.status} ${res.statusText}${text ? `\n${text}` : ''}`)
   }
-
   return (await res.json()) as T
+}
+
+function StatusBadge({ status }: { status: string }) {
+  return <span className={`status-badge ${status}`}>{status}</span>
 }
 
 function App() {
@@ -56,226 +52,198 @@ function App() {
   const [order, setOrder] = useState<OrderResponse | null>(null)
   const [status, setStatus] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState(false)
 
   const baseUrl = useMemo(() => apiBaseUrl(), [])
 
-  async function onLogin() {
-    setError('')
+  function wrap<T>(fn: () => Promise<T>) {
+    return async () => {
+      setError('')
+      setLoading(true)
+      try {
+        await fn()
+      } catch (e) {
+        setStatus('')
+        setError(e instanceof Error ? e.message : String(e))
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  const onLogin = wrap(async () => {
     setStatus('Logging in…')
-    try {
-      const resp = await postJson<TokenResponse>(`${baseUrl}/auth/token`, {
-        username,
-        password,
-      })
-      setToken(resp.accessToken)
-      setStatus('Logged in.')
-    } catch (e) {
-      setStatus('')
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
+    const resp = await postJson<TokenResponse>(`${baseUrl}/auth/token`, { username, password })
+    setToken(resp.accessToken)
+    setStatus('Logged in.')
+  })
 
-  async function onCreateOrder() {
-    setError('')
+  const onCreateOrder = wrap(async () => {
     setStatus('Creating order…')
-    try {
-      const created = await postJson<OrderResponse>(
-        `${baseUrl}/orders`,
-        { items: [{ sku, quantity, unitPrice }] },
-        token,
-      )
-      setOrder(created)
-      setStatus(`Order created: ${created.id}`)
-    } catch (e) {
-      setStatus('')
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
+    const created = await postJson<OrderResponse>(
+      `${baseUrl}/orders`,
+      { items: [{ sku, quantity, unitPrice }] },
+      token,
+    )
+    setOrder(created)
+    setStatus(`Order created.`)
+  })
 
-  async function onGetOrder() {
+  const onGetOrder = wrap(async () => {
     if (!order) return
-    setError('')
-    setStatus('Refreshing order…')
-    try {
-      const fetched = await getJson<OrderResponse>(
-        `${baseUrl}/orders/${order.id}`,
-        token,
-      )
-      setOrder(fetched)
-      setStatus('Order refreshed.')
-    } catch (e) {
-      setStatus('')
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
+    setStatus('Refreshing…')
+    const fetched = await getJson<OrderResponse>(`${baseUrl}/orders/${order.id}`, token)
+    setOrder(fetched)
+    setStatus('Order refreshed.')
+  })
 
-  async function onConfirmOrder() {
+  const onConfirmOrder = wrap(async () => {
     if (!order) return
-    setError('')
-    setStatus('Confirming (reserve stock → pay)…')
-    try {
-      const confirmed = await postJson<OrderResponse>(
-        `${baseUrl}/orders/${order.id}/confirm`,
-        {},
-        token,
-      )
-      setOrder(confirmed)
-      setStatus(`Order status: ${confirmed.status}`)
-    } catch (e) {
-      setStatus('')
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
+    setStatus('Confirming order…')
+    const confirmed = await postJson<OrderResponse>(`${baseUrl}/orders/${order.id}/confirm`, {}, token)
+    setOrder(confirmed)
+    setStatus(`Order ${confirmed.status}.`)
+  })
 
-  async function onCancelOrder() {
+  const onCancelOrder = wrap(async () => {
     if (!order) return
-    setError('')
-    setStatus('Cancelling order (releasing inventory)…')
-    try {
-      const cancelled = await postJson<OrderResponse>(
-        `${baseUrl}/orders/${order.id}/cancel`,
-        {},
-        token,
-      )
-      setOrder(cancelled)
-      setStatus(`Order status: ${cancelled.status}`)
-    } catch (e) {
-      setStatus('')
-      setError(e instanceof Error ? e.message : String(e))
-    }
-  }
+    setStatus('Cancelling order…')
+    const cancelled = await postJson<OrderResponse>(`${baseUrl}/orders/${order.id}/cancel`, {}, token)
+    setOrder(cancelled)
+    setStatus(`Order ${cancelled.status}.`)
+  })
 
   return (
     <>
-      <div style={{ maxWidth: 920, margin: '0 auto', padding: 24 }}>
-        <h1 style={{ marginBottom: 8 }}>Order Microservices UI</h1>
-        <p style={{ opacity: 0.8, marginTop: 0 }}>
-          API: <code>{baseUrl}</code>
-        </p>
+      <div className="app-header">
+        <h1>Order Microservices</h1>
+        <span className="api-url">{baseUrl}</span>
+      </div>
 
-        <div className="card" style={{ textAlign: 'left' }}>
-          <h2 style={{ marginTop: 0 }}>1) Login (JWT)</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <label>
-              Username
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                style={{ width: '100%' }}
-              />
-            </label>
-            <label>
-              Password
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                style={{ width: '100%' }}
-              />
-            </label>
+      {/* Step 1 — Login */}
+      <div className="card">
+        <div className="card-title">
+          <span className="step-num">1</span>
+          <h2>Login</h2>
+          <div className={`token-badge ${token ? 'active' : ''}`} style={{ marginLeft: 'auto' }}>
+            <span className="dot" />
+            {token ? `${token.slice(0, 16)}…` : 'no token'}
           </div>
-          <div style={{ marginTop: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
-            <button onClick={onLogin}>Get token</button>
-            <span style={{ opacity: 0.8 }}>
-              Token: {token ? `${token.slice(0, 18)}…` : '(none)'}
-            </span>
-          </div>
-          <p style={{ marginBottom: 0, opacity: 0.75 }}>
-            Demo accounts: <code>customer/password</code> or <code>admin/password</code>
-          </p>
+        </div>
+        <div className="field-row field-row-2">
+          <label>
+            Username
+            <input value={username} onChange={(e) => setUsername(e.target.value)} />
+          </label>
+          <label>
+            Password
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
+          </label>
+        </div>
+        <div className="btn-row">
+          <button className="primary" onClick={onLogin} disabled={loading}>
+            Get token
+          </button>
+        </div>
+        <p className="hint">Demo: <code>customer / password</code> or <code>admin / password</code></p>
+      </div>
+
+      {/* Step 2 — Create order */}
+      <div className="card">
+        <div className="card-title">
+          <span className="step-num">2</span>
+          <h2>Create order</h2>
+        </div>
+        <div className="field-row field-row-3">
+          <label>
+            SKU
+            <select value={sku} onChange={(e) => setSku(e.target.value)}>
+              <option value="SKU-APPLE">SKU-APPLE</option>
+              <option value="SKU-BANANA">SKU-BANANA</option>
+              <option value="SKU-COFFEE">SKU-COFFEE</option>
+            </select>
+          </label>
+          <label>
+            Quantity
+            <input
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              type="number"
+              min={1}
+            />
+          </label>
+          <label>
+            Unit price
+            <input
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(Number(e.target.value))}
+              type="number"
+              min={0}
+              step={0.01}
+            />
+          </label>
+        </div>
+        <div className="btn-row">
+          <button onClick={onCreateOrder} disabled={!token || loading}>Create order</button>
+          <button onClick={onGetOrder} disabled={!token || !order || loading}>Refresh</button>
         </div>
 
-        <div className="card" style={{ textAlign: 'left', marginTop: 16 }}>
-          <h2 style={{ marginTop: 0 }}>2) Create an order</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-            <label>
-              SKU
-              <select value={sku} onChange={(e) => setSku(e.target.value)} style={{ width: '100%' }}>
-                <option value="SKU-APPLE">SKU-APPLE</option>
-                <option value="SKU-BANANA">SKU-BANANA</option>
-                <option value="SKU-COFFEE">SKU-COFFEE</option>
-              </select>
-            </label>
-            <label>
-              Quantity
-              <input
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                type="number"
-                min={1}
-                style={{ width: '100%' }}
-              />
-            </label>
-            <label>
-              Unit price
-              <input
-                value={unitPrice}
-                onChange={(e) => setUnitPrice(Number(e.target.value))}
-                type="number"
-                min={0}
-                step={0.01}
-                style={{ width: '100%' }}
-              />
-            </label>
-          </div>
-          <div style={{ marginTop: 12, display: 'flex', gap: 12 }}>
-            <button onClick={onCreateOrder} disabled={!token}>
-              Create order
-            </button>
-            <button onClick={onGetOrder} disabled={!token || !order}>
-              Refresh order
-            </button>
-          </div>
-          {order && (
-            <div style={{ marginTop: 12, padding: 12, border: '1px solid #2a2a2a', borderRadius: 8 }}>
-              <div>
-                <strong>Order ID:</strong> <code>{order.id}</code>
-              </div>
-              <div>
-                <strong>Status:</strong> {order.status}
-              </div>
-              <div>
-                <strong>Total:</strong> {order.totalAmount}
-              </div>
+        {order && (
+          <div className="order-result">
+            <div className="order-result-row">
+              <span className="label">ID</span>
+              <span className="val">{order.id}</span>
             </div>
-          )}
-        </div>
+            <div className="order-result-row">
+              <span className="label">Status</span>
+              <span className="val"><StatusBadge status={order.status} /></span>
+            </div>
+            <div className="order-result-row">
+              <span className="label">Total</span>
+              <span className="val">£{order.totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+        )}
+      </div>
 
-        <div className="card" style={{ textAlign: 'left', marginTop: 16 }}>
-          <h2 style={{ marginTop: 0 }}>3) Confirm order</h2>
-          <p style={{ marginTop: 0, opacity: 0.8 }}>
-            Runs the flow: reserve stock in inventory-service → create payment in payment-service.
-          </p>
-          <button onClick={onConfirmOrder} disabled={!token || !order}>
+      {/* Step 3 — Confirm */}
+      <div className="card">
+        <div className="card-title">
+          <span className="step-num">3</span>
+          <h2>Confirm order</h2>
+        </div>
+        <p className="card-desc">
+          Reserves stock in inventory-service then creates payment in payment-service.
+        </p>
+        <div className="btn-row">
+          <button className="primary" onClick={onConfirmOrder} disabled={!token || !order || loading}>
             Confirm
           </button>
         </div>
+      </div>
 
-        <div className="card" style={{ textAlign: 'left', marginTop: 16 }}>
-          <h2 style={{ marginTop: 0 }}>4) Cancel order</h2>
-          <p style={{ marginTop: 0, opacity: 0.8 }}>
-            Cancels the order. If CONFIRMED, releases reserved inventory as compensation.
-          </p>
-          <button
-            onClick={onCancelOrder}
-            disabled={!token || !order}
-            style={{ background: '#8b2500' }}
-          >
+      {/* Step 4 — Cancel */}
+      <div className="card">
+        <div className="card-title">
+          <span className="step-num">4</span>
+          <h2>Cancel order</h2>
+        </div>
+        <p className="card-desc">
+          Cancels the order. If already confirmed, releases the reserved inventory.
+        </p>
+        <div className="btn-row">
+          <button className="danger" onClick={onCancelOrder} disabled={!token || !order || loading}>
             Cancel order
           </button>
         </div>
-
-        {!!status && (
-          <p style={{ marginTop: 16, opacity: 0.9 }}>
-            <strong>Status:</strong> {status}
-          </p>
-        )}
-        {!!error && (
-          <pre style={{ marginTop: 16, padding: 12, background: '#2b1b1b', border: '1px solid #6b2a2a', borderRadius: 8, overflowX: 'auto' }}>
-{error}
-          </pre>
-        )}
       </div>
+
+      {!!status && !error && (
+        <div className="status-bar">{status}</div>
+      )}
+      {!!error && (
+        <div className="error-box">{error}</div>
+      )}
     </>
   )
 }
