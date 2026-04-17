@@ -1,0 +1,10 @@
+[build]
+  base    = "web-ui"
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from   = "/api/*"
+  to     = "http://java-order-ms-alb-582221347.eu-west-2.elb.amazonaws.com/:splat"
+  status = 200
+  force  = true
