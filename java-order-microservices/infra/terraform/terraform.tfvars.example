@@ -1,0 +1,11 @@
+project_name             = "java-order-ms"
+aws_region               = "eu-west-2"
+vpc_cidr                 = "10.42.0.0/16"
+public_subnet_cidrs      = ["10.42.1.0/24", "10.42.2.0/24"]
+order_jwt_secret         = "replace-with-long-random-secret-at-least-32-chars"
+
+db_passwords = {
+  orders    = "replace-orders-password"
+  inventory = "replace-inventory-password"
+  payments  = "replace-payments-password"
+}

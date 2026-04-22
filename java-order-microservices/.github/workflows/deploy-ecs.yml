@@ -1,0 +1,95 @@
+name: Build and Deploy ECS Services
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "order-service/**"
+      - "inventory-service/**"
+      - "payment-service/**"
+      - ".github/workflows/deploy-ecs.yml"
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECS_CLUSTER_NAME: ${{ secrets.ECS_CLUSTER_NAME }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - order-service
+          - inventory-service
+          - payment-service
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Run tests
+        working-directory: ./${{ matrix.service }}
+        run: chmod +x gradlew && ./gradlew test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - order-service
+          - inventory-service
+          - payment-service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          SERVICE: ${{ matrix.service }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$SERVICE:$IMAGE_TAG ./$SERVICE
+          docker tag $ECR_REGISTRY/$SERVICE:$IMAGE_TAG $ECR_REGISTRY/$SERVICE:latest
+          docker push $ECR_REGISTRY/$SERVICE:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$SERVICE:latest
+
+      - name: Force new ECS deployment
+        env:
+          SERVICE: ${{ matrix.service }}
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER_NAME" \
+            --service "$SERVICE" \
+            --force-new-deployment
+
+      - name: Wait for service stability
+        env:
+          SERVICE: ${{ matrix.service }}
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER_NAME" \
+            --services "$SERVICE"
