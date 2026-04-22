@@ -10,12 +10,9 @@ description = 'Demo project for Spring Boot'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
+		languageVersion = JavaLanguageVersion.of(24)
 	}
 }
-
-ext['mockito.version'] = '5.18.0'
-ext['byte-buddy.version'] = '1.17.5'
 
 repositories {
 	mavenCentral()
