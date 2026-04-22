@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - "order-service/**"
-      - "inventory-service/**"
-      - "payment-service/**"
+      - "java-order-microservices/order-service/**"
+      - "java-order-microservices/inventory-service/**"
+      - "java-order-microservices/payment-service/**"
       - ".github/workflows/deploy-ecs.yml"
   workflow_dispatch:
 
@@ -39,7 +39,7 @@ jobs:
           java-version: '25'
 
       - name: Run tests
-        working-directory: ./${{ matrix.service }}
+        working-directory: ./java-order-microservices/${{ matrix.service }}
         run: chmod +x gradlew && ./gradlew test
 
   deploy:
@@ -72,7 +72,7 @@ jobs:
           SERVICE: ${{ matrix.service }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$SERVICE:$IMAGE_TAG ./$SERVICE
+          docker build -t $ECR_REGISTRY/$SERVICE:$IMAGE_TAG ./java-order-microservices/$SERVICE
           docker tag $ECR_REGISTRY/$SERVICE:$IMAGE_TAG $ECR_REGISTRY/$SERVICE:latest
           docker push $ECR_REGISTRY/$SERVICE:$IMAGE_TAG
           docker push $ECR_REGISTRY/$SERVICE:latest
