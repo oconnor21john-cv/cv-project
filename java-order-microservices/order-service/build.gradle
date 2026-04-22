@@ -14,6 +14,9 @@ java {
 	}
 }
 
+ext['mockito.version'] = '5.18.0'
+ext['byte-buddy.version'] = '1.17.5'
+
 repositories {
 	mavenCentral()
 }
@@ -41,8 +44,6 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.wiremock:wiremock-standalone:3.5.4'
-	testImplementation 'org.mockito:mockito-core:5.18.0'
-	testImplementation 'net.bytebuddy:byte-buddy:1.17.5'
 	testRuntimeOnly 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
