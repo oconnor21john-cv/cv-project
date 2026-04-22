@@ -30,7 +30,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'software.amazon.awssdk:sqs:2.25.52'
 	compileOnly 'org.checkerframework:checker-qual:3.48.0'
-	implementation 'com.amazonaws:aws-xray-recorder-sdk-spring:2.18.2'
+	implementation 'com.amazonaws:aws-xray-recorder-sdk-core:2.18.2'
 	implementation 'com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2:2.18.2'
 	implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
