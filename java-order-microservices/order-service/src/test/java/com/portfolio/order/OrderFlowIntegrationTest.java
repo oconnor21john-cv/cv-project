@@ -92,8 +92,9 @@ class OrderFlowIntegrationTest {
 
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> createOrder(HttpHeaders headers) {
+		stubInventoryPrices();
 		var json = """
-				{"items":[{"sku":"SKU-APPLE","quantity":2,"unitPrice":0.50}]}""";
+				{"items":[{"sku":"SKU-APPLE","quantity":2}]}""";
 		var resp = rest.exchange("/orders", HttpMethod.POST,
 				new HttpEntity<>(json, headers), Map.class);
 		assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -235,6 +236,12 @@ class OrderFlowIntegrationTest {
 		paymentMock.stubFor(post(urlEqualTo("/payments"))
 				.willReturn(okJson("""
 						{"status":"SUCCEEDED","message":"ok"}""")));
+	}
+
+	private void stubInventoryPrices() {
+		inventoryMock.stubFor(get(urlPathEqualTo("/products/prices"))
+				.willReturn(okJson("""
+						{"SKU-APPLE":0.50}""")));
 	}
 
 	private void stubInventoryReleaseOk() {
