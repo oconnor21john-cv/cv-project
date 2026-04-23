@@ -50,6 +50,6 @@ tasks.named('test') {
 	testLogging {
 		events "passed", "failed"
 		exceptionFormat "full"
-		showStandardStreams = false
+		showStandardStreams = true
 	}
 }
