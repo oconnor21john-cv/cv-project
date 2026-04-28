@@ -881,6 +881,100 @@
 .s-PAYMENT_FAILED { background: var(--red-bg);   color: var(--red);   border: 1px solid rgba(248,113,113,0.25); }
 
 /* ───────────────────────────────────────────────────────────────────
+   Completion card
+   ─────────────────────────────────────────────────────────────────── */
+
+.completion-card {
+  text-align: center;
+  padding: 36px 28px;
+  animation: fadeUp 0.4s ease-out;
+}
+
+.completion-success {
+  border-color: rgba(52, 211, 153, 0.3);
+  background: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, var(--surface) 100%);
+}
+
+.completion-failed {
+  border-color: rgba(248, 113, 113, 0.25);
+  background: linear-gradient(180deg, rgba(248, 113, 113, 0.06) 0%, var(--surface) 100%);
+}
+
+.completion-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 auto 18px;
+}
+
+.completion-success .completion-icon {
+  background: var(--green-bg);
+  border: 2px solid var(--green-border);
+  color: var(--green);
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.15);
+}
+
+.completion-failed .completion-icon {
+  background: var(--red-bg);
+  border: 2px solid rgba(248, 113, 113, 0.3);
+  color: var(--red);
+  box-shadow: 0 0 24px rgba(248, 113, 113, 0.12);
+}
+
+.completion-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.completion-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto 22px;
+  line-height: 1.6;
+}
+
+.completion-summary {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 24px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+}
+
+.completion-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  font-size: 13px;
+}
+
+.completion-row + .completion-row {
+  border-top: 1px solid var(--border);
+}
+
+.completion-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.history-active-row {
+  background: rgba(111, 157, 255, 0.06);
+  border-left: 2px solid var(--accent);
+}
+
+/* ───────────────────────────────────────────────────────────────────
    Event log
    ─────────────────────────────────────────────────────────────────── */
 

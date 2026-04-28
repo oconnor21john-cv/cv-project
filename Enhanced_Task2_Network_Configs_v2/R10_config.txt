@@ -1,0 +1,31 @@
+enable
+configure terminal
+hostname R10
+!
+ip cef
+no ipv6 cef
+!
+spanning-tree mode pvst
+!
+interface GigabitEthernet0/0
+ description Connected to Local ISP R3
+ ip address 10.0.0.6 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+ exit
+!
+interface GigabitEthernet0/1
+ description Connected to L3-1
+ ip address 10.83.64.133 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+ exit
+!
+router ospf 1
+ network 10.0.0.0 0.255.255.255 area 0
+ exit
+!
+end
+

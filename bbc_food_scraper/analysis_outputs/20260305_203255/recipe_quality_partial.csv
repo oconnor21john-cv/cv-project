@@ -1,0 +1,31 @@
+run_idx,repeat,query,query_category,source,source_name,recipe_title,recipe_url,extraction_method,has_title,has_ingredients,has_instructions,has_image,ingredient_count,instruction_count,completeness_score,formatting_artifact
+1,1,chicken curry,main,bbc,BBC Food,"Black chicken curry, fried leeks and yellow rice",https://www.bbc.co.uk/food/recipes/black_chicken_curry_00331,Schema.org JSON-LD,1,1,1,0,46,19,1.0,0
+1,1,chicken curry,main,bbc,BBC Food,Chicken and coconut curry,https://www.bbc.co.uk/food/recipes/chicken_and_coconut_85358,Schema.org JSON-LD,1,1,1,1,17,8,1.0,0
+2,1,chicken curry,main,simply,Simply Recipes,My Mom’s Korean Curry Rice Is My Favorite Comfort Food,https://www.simplyrecipes.com/korean-curry-rice-recipe-11727095,Mirror markdown parsing,1,1,1,1,9,5,1.0,0
+2,1,chicken curry,main,simply,Simply Recipes,This Guyanese Chicken Curry Recipe Is Forehead-Sweating Good,https://www.simplyrecipes.com/guyanese-chicken-curry-recipe-5235736,Mirror markdown parsing,1,1,1,0,28,8,1.0,0
+3,1,chicken curry,main,serious,Serious Eats,Grilled Curry Chicken Kebabs Recipe,https://www.seriouseats.com/grilled-curry-chicken-kebab-recipe,Mirror markdown parsing,1,1,1,1,8,4,1.0,0
+3,1,chicken curry,main,serious,Serious Eats,Dinner Tonight: Cashew Chicken Curry with Cilantro Sauce Recipe,https://www.seriouseats.com/cashew-chicken-curry-with-cilantro-recipe,Mirror markdown parsing,1,1,1,1,8,5,1.0,0
+4,1,vegetarian pasta,main,bbc,BBC Food,Vegetarian bolognese,https://www.bbc.co.uk/food/recipes/puy_lentil_bolognaise_40407,Schema.org JSON-LD,1,1,1,1,15,6,1.0,0
+4,1,vegetarian pasta,main,bbc,BBC Food,Creamy pasta with broccoli and sweetcorn,https://www.bbc.co.uk/food/recipes/creamy_pasta_with_99280,Schema.org JSON-LD,1,1,1,1,7,3,1.0,0
+5,1,vegetarian pasta,main,simply,Simply Recipes,This Greek Pasta Salad Is Anything But Boring,https://www.simplyrecipes.com/recipes/greek_pasta_salad/,Mirror markdown parsing,1,1,1,1,17,4,1.0,0
+5,1,vegetarian pasta,main,simply,Simply Recipes,Easy Pasta with Winter Greens,https://www.simplyrecipes.com/easy-pasta-with-winter-greens-recipe-5207178,Mirror markdown parsing,1,1,1,0,8,7,1.0,0
+7,1,chocolate cake,dessert,bbc,BBC Food,Chocolate drip cake,https://www.bbc.co.uk/food/recipes/chocolate_drip_cake_48926,Schema.org JSON-LD,1,1,1,1,21,14,1.0,0
+7,1,chocolate cake,dessert,bbc,BBC Food,Easy chocolate cake,https://www.bbc.co.uk/food/recipes/easy_chocolate_cake_31070,Schema.org JSON-LD,1,1,1,1,12,9,1.0,0
+8,1,chocolate cake,dessert,simply,Simply Recipes,The Most Decadent Gluten-Free Chocolate Cake Recipe,https://www.simplyrecipes.com/flourless-chocolate-cake-recipe-6504181,Mirror markdown parsing,1,1,1,0,15,10,1.0,0
+8,1,chocolate cake,dessert,simply,Simply Recipes,The Chocolate Dump Cake My Family Can’t Stop Eating,https://www.simplyrecipes.com/chocolate-dump-cake-recipe-8787677,Mirror markdown parsing,1,1,1,1,8,3,1.0,0
+9,1,chocolate cake,dessert,serious,Serious Eats,This German Chocolate Cake Recipe Has Thick Coconut-Pecan Frosting in Every Bite,https://www.seriouseats.com/german-chocolate-cake-recipe-11916175,Mirror markdown parsing,1,1,1,0,20,14,1.0,0
+9,1,chocolate cake,dessert,serious,Serious Eats,Molten Chocolate Cake Recipe,https://www.seriouseats.com/molten-chocolate-cake-for-two-dessert-recipe,Mirror markdown parsing,1,1,1,1,11,5,1.0,0
+10,1,beef stew,main,bbc,BBC Food,Easy slow cooker beef stew,https://www.bbc.co.uk/food/recipes/slow_cooker_beef_stew_24305,Schema.org JSON-LD,1,1,1,1,15,3,1.0,0
+10,1,beef stew,main,bbc,BBC Food,Beef stew and dumplings,https://www.bbc.co.uk/food/recipes/beefstewwithdumpling_87333,Schema.org JSON-LD,1,1,1,1,24,9,1.0,0
+13,1,mushroom soup,main,bbc,BBC Food,Mushroom soup with garlic bread,https://www.bbc.co.uk/food/recipes/wild_mushroom_soup_with_65367,Schema.org JSON-LD,1,1,1,0,15,9,1.0,0
+13,1,mushroom soup,main,bbc,BBC Food,Creamy mushroom soup,https://www.bbc.co.uk/food/recipes/mushroomsoup_83366,Schema.org JSON-LD,1,1,1,0,10,5,1.0,0
+16,1,salmon,main,bbc,BBC Food,How to cook salmon,https://www.bbc.co.uk/food/recipes/how_to_cook_salmon_70504,Schema.org JSON-LD,1,1,1,1,11,8,1.0,0
+16,1,salmon,main,bbc,BBC Food,Salmon in pastry,https://www.bbc.co.uk/food/recipes/salmon_in_pastry_84486,Schema.org JSON-LD,1,1,1,0,24,11,1.0,0
+19,1,lentil dal,main,bbc,BBC Food,Chana dal with crispy tarka,https://www.bbc.co.uk/food/recipes/chana_daal_with_tarka_62765,Schema.org JSON-LD,1,1,1,1,18,6,1.0,0
+19,1,lentil dal,main,bbc,BBC Food,Dosa with potato filling,https://www.bbc.co.uk/food/recipes/dosa_potato_filling_77669,Schema.org JSON-LD,1,1,1,1,37,11,1.0,0
+22,1,apple pie,dessert,bbc,BBC Food,Perfect apple pie,https://www.bbc.co.uk/food/recipes/perfect_apple_pie_73735,Schema.org JSON-LD,1,1,1,1,9,11,1.0,0
+22,1,apple pie,dessert,bbc,BBC Food,Apple and blackberry pie,https://www.bbc.co.uk/food/recipes/apple_and_blackberry_pie_80942,Schema.org JSON-LD,1,1,1,1,10,13,1.0,0
+25,1,lasagne,main,bbc,BBC Food,Lasagne al forno,https://www.bbc.co.uk/food/recipes/mary_berrys_lasagne_al_16923,Schema.org JSON-LD,1,1,1,1,19,10,1.0,0
+25,1,lasagne,main,bbc,BBC Food,Express lasagne,https://www.bbc.co.uk/food/recipes/express_lasagne_51375,Schema.org JSON-LD,1,1,1,1,17,8,1.0,0
+28,1,thai curry,main,bbc,BBC Food,Easy Thai green curry,https://www.bbc.co.uk/food/recipes/thaigreencurry_67788,Schema.org JSON-LD,1,1,1,1,10,4,1.0,0
+28,1,thai curry,main,bbc,BBC Food,Chicken Thai green curry with aubergine,https://www.bbc.co.uk/food/recipes/thai_green_curry_65278,Schema.org JSON-LD,1,1,1,0,27,4,1.0,0

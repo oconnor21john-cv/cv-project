@@ -1,0 +1,8 @@
+test,metric,statistic,p_value,dof,n_pairs,improved_pairs,regressed_pairs,note
+kruskal_wallis,recipes_found,37.80925925925929,6.163447051493145e-09,,,,,
+kruskal_wallis,latency_ms,39.895409836065596,2.1718099948919006e-09,,,,,
+kruskal_wallis,completeness_score,,,,,,,
+chi_square_success_by_source,success,36.76767676767677,1.0375294519214613e-08,2.0,,,,
+mcnemar_formatting_artifact_pre_post,artifact_binary,0.0,0.0078125,,13.0,8.0,0.0,
+wilcoxon_pre_post_binary_delta,artifact_delta,0.0,0.0078125,,,,,
+logistic_regression,success,,,,,,,Model failed: math range error

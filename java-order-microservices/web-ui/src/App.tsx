@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
-import { Admin } from './pages/Admin'
 import { ArchitecturePage } from './pages/ArchitecturePage'
 import { Dashboard } from './pages/Dashboard'
 import { Home } from './pages/Home'
@@ -19,7 +18,6 @@ function App() {
             <Route path="/architecture" element={<ArchitecturePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

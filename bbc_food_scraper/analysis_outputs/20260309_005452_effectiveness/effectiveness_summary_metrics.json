@@ -1,0 +1,21 @@
+{
+  "query_success_rate": 1.0,
+  "recipes_per_query_mean": 11.375,
+  "recipes_per_query_median": 11.0,
+  "source_diversity_mean": 6.0,
+  "duplicate_rate_mean": 0.0,
+  "latency_p50_ms": 42384.01710000471,
+  "latency_p95_ms": 45048.90849000367,
+  "latency_median_ci_low": 40714.23759998288,
+  "latency_median_ci_high": 44197.73569999961,
+  "completeness_mean": 1.0,
+  "completeness_median": 1.0,
+  "artifact_free_rate": 1.0,
+  "artifact_free_ci_low": 0.9594959960711197,
+  "artifact_free_ci_high": 0.9999999999999999,
+  "allergen_macro_precision": 0.9201246487430698,
+  "allergen_macro_recall": 1.0,
+  "allergen_macro_f1": 0.948259943855479,
+  "allergen_overall_false_negative_rate": 0.0,
+  "allergen_overall_false_positive_rate": 0.01876172607879925
+}

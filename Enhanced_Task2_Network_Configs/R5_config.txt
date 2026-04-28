@@ -1,0 +1,70 @@
+!
+! R5 Configuration - Enhanced Task 2 Network (2901)
+! Generated on 2025-10-24 15:32:15
+! Excludes ISP devices as specified
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R5
+!
+enable secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+ip cef
+no ipv6 cef
+!
+username admin privilege 15 secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+spanning-tree mode pvst
+!
+!
+ip dhcp pool VLAN5_POOL
+ network 192.168.5.0 255.255.255.0
+ default-router 192.168.5.1
+ dns-server 8.8.8.8
+!
+!
+interface GigabitEthernetg0/0
+ description Connected to R2
+ ip address 10.2.25.2 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+!
+!
+interface GigabitEthernetg0/1
+ description Connected to SW5
+ ip address 192.168.5.1 255.255.255.0
+ ip helper-address 192.168.5.1
+ duplex auto
+ speed auto
+ no shutdown
+!
+!
+router ospf 1
+ log-adjacency-changes
+ network 10.2.25.0 0.0.0.3 area 0
+ network 192.168.5.0 0.0.0.255 area 0
+!
+ip classless
+!
+banner motd ^C
+******************************************
+*        AUTHORIZED ACCESS ONLY         *
+*   Enhanced Task 2 Network - R5 (2901)   *
+*     ISP devices excluded as requested *
+******************************************
+^C
+!
+line con 0
+ password cisco
+ login
+!
+line vty 0 4
+ password cisco
+ login local
+ transport input ssh
+!
+end

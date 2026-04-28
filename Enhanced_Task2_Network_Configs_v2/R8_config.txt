@@ -1,0 +1,52 @@
+enable
+configure terminal
+hostname R8
+!
+ip cef
+no ipv6 cef
+!
+spanning-tree mode pvst
+!
+ip dhcp pool VLAN4_POOL
+ network 172.16.0.0 255.255.192.0
+ default-router 172.16.0.1
+ dns-server 8.8.8.8
+ exit
+!
+ip dhcp pool VLAN5_POOL
+ network 172.16.96.0 255.255.224.0
+ default-router 172.16.96.1
+ dns-server 8.8.8.8
+ exit
+!
+interface GigabitEthernet0/0
+ description Connected to S6
+ ip address 172.16.144.8 255.255.240.0
+ duplex auto
+ speed auto
+ no shutdown
+ exit
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ no shutdown
+!
+interface GigabitEthernet0/1.4
+ encapsulation dot1Q 4
+ ip address 172.16.0.1 255.255.192.0
+ ip helper-address 172.16.0.1
+ exit
+!
+interface GigabitEthernet0/1.5
+ encapsulation dot1Q 5
+ ip address 172.16.96.1 255.255.224.0
+ ip helper-address 172.16.96.1
+ exit
+!
+router ospf 1
+ network 172.16.0.0 0.0.255.255 area 0
+ exit
+!
+end

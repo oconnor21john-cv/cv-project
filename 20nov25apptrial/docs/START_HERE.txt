@@ -1,0 +1,78 @@
+================================================================================
+  ALLERGEN-FILTERED RECIPE SEARCH TOOL
+  Quick Start Guide
+================================================================================
+
+TO RUN THE APPLICATION:
+-----------------------
+
+METHOD 1 (Easiest):
+  Double-click: run_app.bat
+
+METHOD 2 (Manual):
+  1. Open PowerShell/Terminal
+  2. Navigate to this folder
+  3. Run: python app.py
+  4. Open browser: http://localhost:5000
+
+TO STOP THE APPLICATION:
+------------------------
+  Press Ctrl+C in the terminal window
+
+
+IMPORTANT FILES:
+----------------
+✓ app.py              - Main application (THIS IS THE ONLY FILE YOU RUN)
+✓ scraper_api.py      - Gets real recipes from TheMealDB API
+✓ allergen_detector.py - Detects allergens in ingredients
+✓ templates/          - HTML frontend
+✓ static/             - CSS and JavaScript
+
+DO NOT RUN THESE SEPARATELY - They are imported automatically!
+
+
+FILE EXECUTION ORDER:
+---------------------
+1. Run: python app.py
+2. That's it! Everything else is automatic.
+
+
+TROUBLESHOOTING:
+----------------
+Problem: "Module not found"
+Solution: pip install -r requirements.txt
+
+Problem: "Port already in use"
+Solution: Stop other Flask instances or restart computer
+
+Problem: No recipes showing
+Solution: Check terminal for errors, server should be running
+
+
+DOCUMENTATION:
+--------------
+📖 RUN_ORDER.md    - Detailed file execution order
+📖 QUICK_RUN.md    - Quick reference guide
+📖 README.md       - Full project documentation
+📖 USAGE_GUIDE.md  - How to use the application
+
+
+WHAT YOU'LL SEE:
+----------------
+1. Terminal shows: "Running on http://127.0.0.1:5000"
+2. Open that URL in your browser
+3. Search for recipes (e.g., "chicken", "pasta", "beef")
+4. Filter by allergens using checkboxes
+5. View real recipes from TheMealDB!
+
+
+NEED HELP?
+----------
+Check the documentation files listed above or look for error messages
+in the terminal window.
+
+
+================================================================================
+  Ready to start? Run: python app.py
+================================================================================
+

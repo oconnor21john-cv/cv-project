@@ -1,0 +1,325 @@
+# S1 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.1.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.1.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 1
+# Network: 192.168.1.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.1.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S2 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.2.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.2.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 2
+# Network: 192.168.2.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.2.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S3 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.3.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.3.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 3
+# Network: 192.168.3.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.3.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S4 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.4.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.4.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 4
+# Network: 192.168.4.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.4.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S5 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.5.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.5.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 5
+# Network: 192.168.5.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.5.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S6 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.6.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.6.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 6
+# Network: 192.168.6.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.6.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S8 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.8.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.8.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 8
+# Network: 192.168.8.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.8.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S11 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.11.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.11.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 11
+# Network: 192.168.11.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.11.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S12 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.12.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.12.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 12
+# Network: 192.168.12.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.12.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S13 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.13.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.13.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 13
+# Network: 192.168.13.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.13.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S14 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.14.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.14.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 14
+# Network: 192.168.14.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.14.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S15 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.15.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.15.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 15
+# Network: 192.168.15.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.15.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================
+# S16 Configuration - Enhanced Task 2 Network v2
+# Generated on 2025-10-25 16:18:47
+# ISP servers excluded as requested
+
+# Static IP Configuration
+IP Address: 192.168.16.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.16.1
+DNS Server: 8.8.8.8
+
+# VLAN Assignment: 16
+# Network: 192.168.16.0/24
+
+# Services Configuration:
+# - Web Server (HTTP/HTTPS)
+# - FTP Server
+# - DNS Server (optional)
+# - DHCP Relay (configured on router)
+
+# Test Commands:
+# ping 192.168.16.1  (Test gateway connectivity)
+# ping 8.8.8.8             (Test internet connectivity - will fail without ISP)
+# ipconfig                 (View IP configuration)
+
+============================================================

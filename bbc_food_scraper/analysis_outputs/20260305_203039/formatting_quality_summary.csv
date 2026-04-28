@@ -1,0 +1,4 @@
+source,n_recipes,artifact_free_rate,artifact_free_ci_low,artifact_free_ci_high
+bbc,40,1.0,0.9123783988027134,1.0000000000000002
+serious,7,1.0,0.6456695649333125,0.9999999999999999
+simply,6,1.0,0.6096657120978346,1.0

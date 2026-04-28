@@ -1,0 +1,7 @@
+test,metric,statistic,p_value,dof,n_pairs,improved_pairs,regressed_pairs,note
+kruskal_wallis,recipes_found,7.999999999999997,0.018315638888734206,,,,,
+kruskal_wallis,latency_ms,5.422222222222217,0.06646291798667335,,,,,
+kruskal_wallis,completeness_score,,,,,,,
+chi_square_success_by_source,success,9.0,0.011108996538242308,2.0,,,,
+mcnemar_formatting_artifact_pre_post,artifact_binary,0.0,1.0,,3.0,0.0,0.0,
+logistic_regression,success,,,,,,,Model failed: Singular matrix

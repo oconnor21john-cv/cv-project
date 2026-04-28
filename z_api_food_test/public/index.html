@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Finder</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true"></div>
+
+    <main class="container">
+      <header class="header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">RF</div>
+          <div>
+            <h1>Recipe Finder</h1>
+            <p class="muted">Search Spoonacular and browse results.</p>
+          </div>
+        </div>
+
+        <form id="searchForm" class="search" autocomplete="off">
+          <label class="sr-only" for="q">Search recipes</label>
+          <input
+            id="q"
+            name="q"
+            type="search"
+            placeholder="Try “pasta”, “chicken”, “vegan brownies”…"
+            spellcheck="false"
+          />
+          <button id="searchBtn" type="submit">Search</button>
+        </form>
+      </header>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Results</h2>
+            <p id="meta" class="muted">Type a query and hit search.</p>
+          </div>
+          <div class="right">
+            <div class="pager" aria-label="Pagination controls">
+              <button id="prevBtn" class="btn" type="button" disabled>Prev</button>
+              <span id="pageInfo" class="pill">Page 1</span>
+              <button id="nextBtn" class="btn" type="button" disabled>Next</button>
+            </div>
+            <span id="statusPill" class="pill" hidden>Loading…</span>
+          </div>
+        </div>
+
+        <div id="message" class="message" hidden></div>
+
+        <div id="grid" class="grid" aria-live="polite" aria-busy="false"></div>
+      </section>
+
+      <div id="modal" class="modal" hidden>
+        <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+        <div
+          class="modal-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modalTitle"
+        >
+          <div class="modal-head">
+            <div>
+              <h3 id="modalTitle">Recipe</h3>
+              <p id="modalSub" class="muted">Loading…</p>
+            </div>
+            <button id="closeBtn" class="icon-btn" type="button" aria-label="Close">
+              ✕
+            </button>
+          </div>
+          <div id="modalBody" class="modal-body"></div>
+        </div>
+      </div>
+
+      <footer class="footer muted">
+        Built for coursework. Don’t expose API keys in the browser.
+      </footer>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

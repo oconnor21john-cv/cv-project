@@ -1,0 +1,297 @@
+PROM05 Assignment 2: Implementation and Delivery Plan
+
+Allergen Filtered Recipe Searching Using Web Scraping Techniques
+
+Student Name: [Your Name]
+Student ID: [Your ID]
+Date: October 2025
+Word Count: 3000
+
+
+1. INTRODUCTION
+
+This research project aims to develop a web-based tool that enables users to search for recipes filtered by the 14 major allergen groups as defined by UK food safety regulations. The primary research aim is to investigate and implement web scraping techniques to create an accessible, user-friendly platform that addresses the growing need for allergen-aware recipe searching. According to Kelly (2024), food allergies have shown significant rising trends over the past 20 years in England, highlighting the critical importance of such tools for public health and safety.
+
+The research will adopt a mixed-methods approach combining technical development with user-centred evaluation. The methodology encompasses three key phases: firstly, a comprehensive analysis of existing recipe websites and their data structures to determine optimal web scraping strategies; secondly, the design and implementation of a web scraping system that can accurately extract and categorise recipe ingredients according to the 14 allergen groups identified by Anaphylaxis UK (2023); and thirdly, the development of a functional web application with an intuitive filtering interface.
+
+The proposed outcome is a fully functional prototype web application that demonstrates the viability of web scraping for allergen-filtered recipe searching. This tool will allow users to select multiple allergen exclusions (for example, dairy and wheat) and receive a curated list of safe recipes. The system will incorporate robust data validation to ensure allergen information accuracy, addressing the critical safety concerns inherent in food allergy management. The project will contribute to the growing body of research on web scraping applications in health and nutrition, as evidenced by recent work from Sharma et al. (2025) on food allergen detection and recommendation systems.
+
+
+2. PROJECT SCHEDULE
+
+The project schedule spans 16 weeks from January 2026 to April 2026, with a total estimated effort of 450 hours. The schedule has been structured according to an Agile methodology with iterative development cycles, allowing for continuous refinement and adaptation based on emerging findings and technical challenges.
+
+Week 1 to Week 2 (January 6 to January 19, 2026): Literature Review and Requirements Gathering (40 hours). This initial phase involves conducting a comprehensive review of existing literature on web scraping techniques, allergen classification systems, and similar recipe recommendation platforms. Key activities include analysing the legal and ethical considerations outlined in the Food Standards Agency (2022) web scraping policy and examining the technical approaches described by Khder and Al-Zaytoonah University of Jordan (2021). The deliverable for this phase is a comprehensive literature review document and a preliminary requirements specification.
+
+Week 3 to Week 4 (January 20 to February 2, 2026): Technical Feasibility Study and Website Analysis (35 hours). During this period, a detailed analysis of potential target recipe websites will be conducted to assess their structure, data accessibility, and terms of service. This phase will involve examining the robots.txt files, API availability, and HTML structure of major recipe platforms. The work will draw on comparative analysis frameworks proposed by Sharma and Borkar (2024) for evaluating dynamic web scraping strategies. The deliverable is a technical feasibility report identifying suitable target websites and recommended scraping approaches.
+
+Week 5 to Week 6 (February 3 to February 16, 2026): System Architecture Design and Database Schema Development (40 hours). This phase focuses on designing the overall system architecture, including the web scraping module, data storage solution, and user interface components. A relational database schema will be developed to store recipe data, ingredient information, and allergen classifications based on the 14 major allergen groups. The design will incorporate principles from Roither, Kurz and Sonnleitner (2022) regarding allergen classification in recipes. Deliverables include system architecture diagrams, database entity-relationship diagrams, and technical specification documents.
+
+Week 7 to Week 8 (February 17 to March 2, 2026): Web Scraping Module Development (50 hours). Implementation of the core web scraping functionality using Python libraries such as Beautiful Soup and Scrapy. This phase involves developing robust scraping scripts that can handle various website structures, implement rate limiting to respect server resources, and incorporate error handling mechanisms. The development will adhere to ethical web scraping practices as outlined by Brown et al. (2024). The deliverable is a functional web scraping module with comprehensive unit tests.
+
+Week 9 to Week 10 (March 3 to March 16, 2026): Allergen Detection and Classification System (55 hours). Development of the allergen identification algorithm that analyses recipe ingredients and maps them to the 14 allergen categories. This complex task requires creating a comprehensive ingredient database with allergen associations, implementing natural language processing techniques to handle ingredient variations, and developing validation rules to ensure accuracy. The approach will build upon methodologies described in the ingredient and recipe algorithm research by IEEE (no date). The deliverable is a validated allergen classification system with documented accuracy metrics.
+
+Week 11 to Week 12 (March 17 to March 30, 2026): User Interface Development and Integration (50 hours). Creation of the web-based user interface using modern frameworks such as React or Vue.js. The interface will feature intuitive allergen selection controls, recipe search functionality, and clear presentation of results with allergen warnings. This phase includes integration of the front-end with the back-end scraping and classification systems. User experience principles and accessibility standards will be incorporated to ensure the tool is usable by individuals with varying technical abilities. The deliverable is a functional prototype web application.
+
+Week 13 (March 31 to April 6, 2026): User Testing and Evaluation (45 hours). Conducting structured user testing sessions with participants representing the target user group, including individuals with food allergies and their caregivers. This phase involves administering pre-test questionnaires, facilitating task-based usability testing, conducting post-test interviews, and collecting quantitative and qualitative feedback. The evaluation framework will assess system usability, accuracy of allergen filtering, and overall user satisfaction. The deliverable is a comprehensive evaluation report with statistical analysis of user testing data.
+
+Week 14 to Week 15 (April 7 to April 20, 2026): System Refinement and Documentation (60 hours). Based on user testing feedback, this phase involves implementing necessary improvements to the system, fixing identified bugs, and enhancing user interface elements. Comprehensive technical documentation will be prepared, including system architecture documentation, API documentation, user guides, and deployment instructions. Code refactoring and optimisation will be performed to improve system performance and maintainability.
+
+Week 16 (April 21 to April 27, 2026): Final Evaluation and Dissertation Writing (75 hours). The final week is dedicated to conducting final system validation, preparing the dissertation document, creating presentation materials, and ensuring all project deliverables are complete. This includes writing the final research report, preparing academic papers for potential publication, and creating a demonstration video of the system functionality.
+
+Key milestones include the completion of the technical feasibility study by February 2, the functional web scraping module by March 2, the integrated prototype by March 30, and the final evaluated system by April 27. Dependencies exist between phases, with each subsequent phase building upon the outputs of previous phases. Risk buffers of approximately 10 per cent have been incorporated into time estimates to accommodate unforeseen technical challenges.
+
+
+3. REQUIREMENTS DOCUMENTATION
+
+The requirements documentation encompasses functional requirements, non-functional requirements, and user-centred design elements including user stories and PACT analysis.
+
+Functional Requirements
+
+FR1: The system shall scrape recipe data from at least three major recipe websites, extracting recipe titles, ingredient lists, preparation instructions, cooking times, and serving sizes. The scraping process must respect website terms of service and implement appropriate rate limiting.
+
+FR2: The system shall maintain a comprehensive database of ingredients mapped to the 14 major allergen groups as defined by UK food safety regulations: celery, cereals containing gluten, crustaceans, eggs, fish, lupin, milk, molluscs, mustard, nuts, peanuts, sesame seeds, soya, and sulphur dioxide.
+
+FR3: The system shall provide a user interface allowing users to select one or multiple allergens they wish to exclude from their recipe search. The interface must support all 14 allergen categories with clear labelling and descriptions.
+
+FR4: The system shall filter recipe results based on user-selected allergen exclusions, displaying only recipes that do not contain any of the specified allergens. Each recipe result must clearly indicate which allergens it is free from.
+
+FR5: The system shall provide detailed ingredient lists for each recipe, with allergens highlighted or flagged to provide additional safety information to users.
+
+FR6: The system shall implement a search functionality allowing users to search recipes by name, cuisine type, meal category, or dietary preference in addition to allergen filtering.
+
+FR7: The system shall update its recipe database on a regular schedule, implementing automated scraping routines to ensure recipe information remains current and relevant.
+
+FR8: The system shall provide users with the ability to save favourite recipes and create personal recipe collections for future reference.
+
+FR9: The system shall include an administrative interface for managing the ingredient-allergen mapping database, allowing for additions and corrections as new ingredients are encountered.
+
+FR10: The system shall generate detailed logs of scraping activities, including success rates, errors encountered, and data quality metrics for monitoring and maintenance purposes.
+
+Non-Functional Requirements
+
+NFR1: Performance. The system shall return filtered recipe results within 2 seconds of a user submitting a search query. The web scraping process shall be optimised to minimise server load on target websites, implementing delays of at least 1 second between requests.
+
+NFR2: Accuracy. The allergen classification system shall achieve a minimum accuracy rate of 95 per cent in correctly identifying allergens within recipe ingredients. Any uncertainty in allergen classification shall be flagged for manual review.
+
+NFR3: Usability. The user interface shall be intuitive and accessible, conforming to WCAG 2.1 Level AA accessibility standards. Users shall be able to complete a basic allergen-filtered recipe search within 30 seconds of arriving at the application.
+
+NFR4: Reliability. The system shall maintain 99 per cent uptime during normal operating hours. The scraping module shall implement robust error handling to gracefully manage website unavailability or structure changes.
+
+NFR5: Scalability. The system architecture shall support scaling to accommodate up to 1000 concurrent users and a database of at least 10,000 recipes without significant performance degradation.
+
+NFR6: Security. User data, including saved recipes and allergen preferences, shall be stored securely with appropriate encryption. The system shall comply with GDPR requirements for data protection and user privacy.
+
+NFR7: Maintainability. The codebase shall follow established coding standards and include comprehensive documentation to facilitate future maintenance and enhancements. The system shall be modular to allow individual components to be updated independently.
+
+NFR8: Legal Compliance. All web scraping activities shall comply with relevant legal frameworks, respecting robots.txt files, terms of service agreements, and copyright considerations as outlined by the Food Standards Agency (2022).
+
+User Stories
+
+User Story 1: As a parent of a child with multiple food allergies, I want to quickly find dinner recipes that exclude dairy and nuts so that I can safely prepare meals for my family without spending hours checking ingredient lists.
+
+User Story 2: As an individual with coeliac disease, I want to search for gluten-free breakfast recipes so that I can maintain dietary variety while managing my health condition.
+
+User Story 3: As a person newly diagnosed with a shellfish allergy, I want to browse recipes with clear allergen labelling so that I can confidently explore new dishes without risk.
+
+User Story 4: As a caregiver for an elderly person with multiple dietary restrictions, I want to save favourite safe recipes so that I can easily access them for meal planning.
+
+User Story 5: As a health-conscious individual interested in allergen-free cooking, I want to search recipes by cuisine type while applying allergen filters so that I can explore diverse culinary traditions safely.
+
+User Story 6: As a user with limited technical skills, I want a simple and clear interface for selecting my allergen exclusions so that I can use the tool without confusion or frustration.
+
+PACT Analysis
+
+People: The primary user group consists of individuals with diagnosed food allergies, parents or caregivers of children with allergies, and health-conscious individuals seeking allergen-free recipes. Users range in age from young adults to elderly individuals, with varying levels of technical proficiency. Many users will access the system under time pressure during meal planning activities. Users may experience anxiety related to food safety, requiring clear and trustworthy information presentation.
+
+Activities: The core activity is searching for and selecting recipes that meet specific allergen exclusion criteria. Secondary activities include browsing recipe collections, saving favourite recipes, reading detailed ingredient lists, and accessing cooking instructions. Activities are typically goal-oriented and time-sensitive, occurring during meal planning sessions. Users need to quickly assess recipe suitability and make confident decisions about food safety.
+
+Context: The system will primarily be accessed from home environments during meal planning activities, typically in the evening or weekend. Users may access the system from various devices including desktop computers, tablets, and smartphones. Internet connectivity is generally reliable, though mobile users may experience variable connection speeds. The context often involves multitasking, with users simultaneously managing other household activities. Emotional context includes concern for safety and desire for dietary variety.
+
+Technologies: The system will be accessible via modern web browsers on desktop and mobile devices. The front-end will utilise responsive web design to accommodate various screen sizes. The back-end will employ Python-based web scraping frameworks, a relational database management system, and RESTful API architecture. Users are expected to have basic web browsing skills but should not require technical knowledge of web scraping or database systems. The interface will prioritise simplicity and clarity over advanced features.
+
+
+4. RISK MITIGATION
+
+Several significant risks have been identified for this project, each requiring specific mitigation strategies to ensure successful completion.
+
+Risk 1: Website Structure Changes. Target recipe websites may change their HTML structure, breaking the web scraping functionality. This risk has a high probability and high impact. Mitigation strategies include implementing flexible scraping scripts that use multiple identification methods (CSS selectors, XPath, and semantic HTML elements), developing automated monitoring to detect scraping failures, maintaining scraping configurations for multiple websites to provide redundancy, and designing the system architecture to allow rapid updates to scraping rules. Regular testing of scraping functionality will be scheduled weekly to identify issues promptly.
+
+Risk 2: Legal and Ethical Complications. Web scraping activities may violate website terms of service or raise legal concerns. This risk has a medium probability but potentially high impact. Mitigation involves conducting thorough legal review of target website terms of service before implementation, adhering strictly to robots.txt protocols and rate limiting requirements, consulting with the university legal team regarding compliance, implementing transparent data attribution and source citation, and maintaining detailed documentation of ethical considerations as outlined by Brown et al. (2024). If legal concerns arise, the project will pivot to using publicly available APIs or open recipe databases.
+
+Risk 3: Allergen Classification Accuracy. The system may incorrectly classify ingredients, leading to dangerous allergen exposure for users. This risk has a medium probability but critical impact. Mitigation strategies include developing a comprehensive ingredient database through systematic research and expert consultation, implementing conservative classification rules that flag uncertain ingredients for manual review, conducting extensive validation testing with known ingredient-allergen mappings, including prominent disclaimers that users should verify ingredient information independently, and establishing a feedback mechanism for users to report classification errors. The system will be designed to err on the side of caution, excluding recipes when allergen status is uncertain.
+
+Risk 4: Insufficient Recipe Data Volume. Web scraping may yield insufficient recipe quantities to provide meaningful user value. This risk has a medium probability and medium impact. Mitigation includes identifying and targeting multiple high-volume recipe websites, implementing efficient scraping schedules to build the database rapidly, developing data quality metrics to prioritise high-quality recipes, and considering supplementary data sources such as open recipe APIs or datasets. The project will establish a minimum viable database size of 1000 recipes across diverse categories before user testing.
+
+Risk 5: Technical Implementation Challenges. Unforeseen technical difficulties may delay development progress. This risk has a high probability and medium impact. Mitigation strategies include allocating buffer time in the project schedule (approximately 10 per cent contingency), conducting early technical proof-of-concept testing to identify challenges, maintaining regular consultation with technical supervisors, utilising established frameworks and libraries rather than custom solutions where possible, and implementing an agile development approach allowing for iterative problem-solving. Weekly progress reviews will enable early identification of technical obstacles.
+
+Risk 6: Participant Recruitment Difficulties. Insufficient participants for user testing may compromise evaluation validity. This risk has a medium probability and medium impact. Mitigation involves beginning recruitment activities early in the project timeline, utilising multiple recruitment channels including university mailing lists, allergy support groups, and social media, offering appropriate incentives for participation, designing flexible testing protocols that can accommodate remote participation, and establishing a minimum participant threshold with contingency plans if recruitment falls short. Partnerships with organisations such as Allergy UK will be explored to facilitate access to the target user population.
+
+Risk 7: Data Storage and Privacy Concerns. User data management may raise privacy and GDPR compliance issues. This risk has a low probability but high impact. Mitigation includes implementing privacy-by-design principles from project inception, minimising collection of personally identifiable information, implementing robust data encryption and security measures, obtaining explicit user consent for data collection and storage, providing clear privacy policies and data handling information, and consulting with the university data protection officer. User testing will be designed to collect only essential data for evaluation purposes.
+
+Risk 8: Project Scope Creep. Additional features and requirements may expand beyond manageable limits. This risk has a medium probability and medium impact. Mitigation strategies include establishing clear project boundaries and success criteria at the outset, maintaining a prioritised feature list distinguishing essential from desirable functionality, implementing regular scope reviews with supervisors, documenting any proposed changes and their implications, and adopting an iterative development approach that delivers core functionality first. A minimum viable product approach will ensure essential features are completed before enhancement.
+
+
+5. PROPOSED EVALUATION
+
+The evaluation strategy employs a mixed-methods approach combining quantitative usability metrics with qualitative user feedback to comprehensively assess the system's effectiveness, usability, and practical value.
+
+Evaluation Objectives
+
+The evaluation aims to assess four primary dimensions: firstly, the technical accuracy and reliability of the allergen classification system; secondly, the usability and user experience of the web interface; thirdly, the practical utility and value of the tool for individuals managing food allergies; and fourthly, the overall system performance and functionality. These objectives align with the project's goal of creating a safe, effective, and user-friendly allergen-filtered recipe search tool.
+
+Evaluation Methods
+
+System Accuracy Testing will involve validating the allergen classification system against a gold standard dataset of 200 recipes with manually verified allergen information. Each recipe will be processed through the system, and the resulting allergen classifications will be compared against the verified data. Accuracy will be calculated using precision, recall, and F1-score metrics for each of the 14 allergen categories. This quantitative analysis will identify any systematic classification errors and provide objective measures of system reliability. Statistical significance will be assessed using chi-square tests to determine whether classification accuracy differs significantly across allergen types.
+
+Usability Testing will be conducted with 20 participants representing the target user demographic. Participants will complete a series of structured tasks including selecting allergen exclusions, searching for recipes, reviewing recipe details, and saving favourite recipes. Task completion rates, time on task, and error rates will be recorded as quantitative usability metrics. The System Usability Scale (SUS) questionnaire will be administered post-testing to obtain standardised usability scores, allowing comparison with established benchmarks. SUS scores will be analysed using descriptive statistics (mean, standard deviation, confidence intervals) to assess overall system usability.
+
+Think-Aloud Protocol sessions will be conducted with a subset of 10 participants during usability testing. Participants will verbalise their thoughts, expectations, and concerns while interacting with the system. These sessions will be audio-recorded and transcribed for qualitative analysis. Thematic analysis will identify common usability issues, user expectations, and areas for improvement. This qualitative data will provide rich contextual understanding beyond quantitative metrics.
+
+Semi-Structured Interviews will be conducted with all 20 participants following usability testing. Interview questions will explore participants' overall impressions, perceived usefulness of the tool, trust in allergen information, likelihood of future use, and suggestions for improvements. Interviews will be recorded, transcribed, and analysed using thematic analysis to identify recurring themes and patterns. This qualitative data will provide insights into user perceptions and the practical value of the system.
+
+Comparative Analysis will benchmark the developed system against existing allergen-aware recipe platforms. A feature comparison matrix will assess functionality, usability, and allergen coverage across platforms. Where possible, the same usability tasks will be performed on competing systems to provide comparative performance data. This analysis will position the research contribution within the existing landscape of allergen management tools.
+
+Statistical Analysis
+
+Quantitative data will be analysed using SPSS statistical software. Descriptive statistics (means, standard deviations, frequencies) will summarise participant demographics, task performance metrics, and SUS scores. Inferential statistics will test specific hypotheses about system performance. A one-sample t-test will assess whether the mean SUS score significantly exceeds the acceptable usability threshold of 68. Paired t-tests will compare task completion times across different allergen filtering scenarios to identify any complexity effects. Correlation analysis will examine relationships between participant characteristics (age, technical proficiency, allergy experience) and usability outcomes. For allergen classification accuracy, confusion matrices will be generated for each allergen category, and McNemar's test will assess whether classification errors are systematic or random. Statistical significance will be evaluated at the 0.05 alpha level, with effect sizes reported using Cohen's d for t-tests and Cramér's V for chi-square tests.
+
+Ethical Approval
+
+This research involves human participants and will require ethical approval from the university Research Ethics Committee. The application will be submitted in Week 2 of the project timeline to allow sufficient processing time before participant recruitment begins. The ethical considerations include informed consent, data protection, participant wellbeing, and potential risks associated with food allergy management tools.
+
+Informed consent procedures will ensure participants fully understand the research purpose, their involvement, data usage, and their right to withdraw. Consent forms will be provided in advance, with opportunities for questions before participation. Participants will be informed that the system is a research prototype and should not be relied upon exclusively for allergy management decisions.
+
+Data protection measures will comply with GDPR requirements. Participant data will be anonymised using unique identifier codes, with personally identifiable information stored separately in encrypted files. Data will be retained only for the duration necessary for research purposes and will be securely destroyed following project completion. Participants will be informed of their data rights including access, correction, and deletion.
+
+Participant wellbeing considerations acknowledge the sensitive nature of food allergies and the potential anxiety associated with allergen management. Clear disclaimers will emphasise that the system is a research tool and users should always verify ingredient information independently. Participants will be informed that they can pause or terminate testing at any time without penalty. Debriefing will be provided following testing sessions to address any concerns.
+
+Risk mitigation for the research prototype includes prominent safety disclaimers, conservative allergen classification that errs on the side of caution, and clear communication that the tool is intended to supplement rather than replace existing allergy management practices. The evaluation will not involve actual food consumption, eliminating direct physical risk to participants.
+
+Participant Recruitment
+
+Twenty participants will be recruited for the usability testing and evaluation phase. This sample size is consistent with established usability testing guidelines, which indicate that 15 to 20 participants typically identify the majority of usability issues while providing sufficient data for statistical analysis of quantitative metrics.
+
+Inclusion criteria specify that participants must be adults (18 years or older) who either have diagnosed food allergies themselves or are caregivers for individuals with food allergies. Participants should have basic computer literacy and regular internet access. A diverse sample will be sought in terms of age, gender, technical proficiency, and types of allergies to ensure the evaluation captures varied user perspectives.
+
+Recruitment will employ multiple strategies to achieve the target sample size. University mailing lists will be utilised to reach staff and students with relevant experience. Partnerships will be established with allergy support organisations such as Allergy UK and Anaphylaxis Campaign to access their member networks. Social media platforms including Facebook groups dedicated to allergy management will be used for recruitment advertisements. Local allergy clinics will be contacted to request permission to display recruitment materials in waiting areas. Snowball sampling will be employed, asking initial participants to refer others who meet the inclusion criteria.
+
+Recruitment materials will clearly describe the research purpose, time commitment (approximately 90 minutes), participation requirements, and any incentives offered. A modest incentive of a £15 shopping voucher will be provided to compensate participants for their time and encourage recruitment. Remote participation options will be offered to accommodate participants unable to attend in-person sessions, utilising video conferencing and screen sharing technologies.
+
+Recruitment will commence in Week 11 of the project timeline, allowing two weeks to achieve the target sample size before testing begins in Week 13. If recruitment proves challenging, contingency plans include extending the recruitment period, increasing incentive amounts, or reducing the minimum sample size to 15 participants while maintaining statistical validity.
+
+
+6. PROJECT MONITORING APPROACH
+
+Effective project monitoring is essential to ensure the research remains on schedule, within scope, and aligned with quality standards. The monitoring approach combines regular progress tracking, milestone reviews, risk monitoring, and stakeholder communication.
+
+Monitoring Framework
+
+The project will adopt a weekly monitoring cycle with formal monthly milestone reviews. Weekly monitoring provides frequent checkpoints to identify emerging issues promptly, while monthly reviews offer opportunities for comprehensive assessment and strategic adjustments. This dual-frequency approach balances the need for responsive management with the efficiency of consolidated review activities.
+
+Weekly Progress Tracking
+
+Every Friday, a structured progress review will be conducted to assess the previous week's activities and plan the upcoming week's work. A weekly progress log template will document hours spent on each task, completed activities, work in progress, planned activities for the following week, obstacles encountered, and mitigation actions taken. This log provides a chronological record of project execution and facilitates identification of patterns such as recurring obstacles or consistent schedule slippage.
+
+Time tracking will be maintained using a detailed timesheet recording hours allocated to specific project activities. This granular tracking enables comparison of actual effort against planned estimates, providing data to improve future project planning. Cumulative hours will be monitored against the total project allocation of 450 hours to ensure the project remains within resource constraints.
+
+Task completion status will be tracked using a Kanban board approach with columns for To Do, In Progress, Testing, and Completed. This visual management tool provides immediate insight into work distribution and progress flow. Tasks that remain in the In Progress column for extended periods will be flagged for review to identify potential obstacles.
+
+A weekly risk register review will assess the status of identified risks, evaluate whether mitigation strategies are effective, and identify any new risks that have emerged. The risk register will document each risk's current likelihood and impact, mitigation actions taken, and residual risk level. This proactive risk monitoring enables early intervention before risks materialise into significant issues.
+
+Monthly Milestone Reviews
+
+At the end of each month, a comprehensive milestone review meeting will be conducted with the project supervisor. These reviews assess progress against the project schedule, evaluate deliverable quality, review budget and resource utilisation, assess risk status, and make strategic decisions about project direction.
+
+A milestone review report template will structure these assessments, including sections for milestone achievement status, deliverable quality assessment, schedule variance analysis, resource utilisation review, risk status update, and decisions and action items. This standardised format ensures consistent and thorough reviews.
+
+Schedule variance will be calculated by comparing planned completion dates against actual completion dates for each milestone. Variances will be analysed to understand root causes, such as underestimated complexity, unforeseen technical challenges, or scope changes. Corrective actions will be identified to bring the schedule back on track or to formally adjust timelines if necessary.
+
+Quality assessment will evaluate deliverables against predefined quality criteria. For technical deliverables such as the web scraping module, quality metrics include code coverage of unit tests, adherence to coding standards, documentation completeness, and functional correctness. For documentation deliverables, quality criteria include clarity, completeness, accuracy, and appropriate referencing. Any quality deficiencies will be documented with remediation plans.
+
+Monitoring Tools and Templates
+
+Several tools and templates will support the monitoring process, ensuring consistent and efficient tracking.
+
+The Project Schedule Gantt Chart will be maintained using Microsoft Project or equivalent project management software. This chart visualises task dependencies, critical path, and progress status. The Gantt chart will be updated weekly to reflect actual progress, providing a real-time view of schedule status. Baseline comparisons will highlight schedule deviations.
+
+The Risk Register will be maintained as a structured spreadsheet documenting each identified risk with fields for risk description, category, likelihood rating (1 to 5 scale), impact rating (1 to 5 scale), risk score (likelihood multiplied by impact), mitigation strategy, responsible person, status, and review date. The register will be reviewed weekly and updated as risk status changes.
+
+The Issues Log will track problems and obstacles encountered during project execution. Each issue will be documented with a unique identifier, description, date raised, priority level, assigned owner, status, and resolution details. The issues log ensures problems are not overlooked and provides accountability for resolution.
+
+A Weekly Progress Log template will include sections for week number and dates, hours worked by task category, completed activities with brief descriptions, current activities in progress, planned activities for next week, obstacles and challenges encountered, mitigation actions taken, and overall status assessment (on track, at risk, or off track). This template ensures comprehensive weekly documentation.
+
+A Monthly Milestone Review Report template will structure the formal monthly assessments, including executive summary, milestone achievement status with comparison to plan, deliverable quality assessment, schedule variance analysis with Gantt chart excerpt, resource utilisation review comparing actual hours to planned hours, risk register status summary, issues log summary, decisions made during the review, action items with assigned responsibilities and due dates, and overall project health assessment.
+
+Version Control and Documentation
+
+All project code will be maintained in a Git version control repository with regular commits documenting incremental changes. Commit messages will follow conventional commit standards, clearly describing the purpose and scope of each change. Branching strategies will separate development work from stable releases, enabling parallel development while maintaining a reliable main branch.
+
+Project documentation will be maintained in a structured folder hierarchy with clear naming conventions. Version numbers will be applied to significant documents, with a version history log tracking changes. This systematic documentation management ensures that historical information is preserved and that the current status is always clearly identified.
+
+Communication and Reporting
+
+Regular communication with the project supervisor will occur through weekly email updates summarising progress, challenges, and upcoming activities. These brief updates maintain supervisor awareness and enable timely guidance. Monthly face-to-face or video conference meetings will provide opportunities for in-depth discussion and strategic decision-making.
+
+A project blog or journal will document the research journey, recording insights, challenges, decisions, and reflections. This narrative complement to structured monitoring tools provides valuable context and supports later dissertation writing by preserving detailed memory of the project evolution.
+
+Stakeholder communication will extend to potential user community representatives, maintaining engagement with allergy support organisations throughout the project. Periodic updates will share progress and seek informal feedback, building relationships that will support participant recruitment and ensuring the research remains aligned with user community needs.
+
+Performance Metrics
+
+Key performance indicators will be monitored to assess project health. Schedule Performance Index (SPI) will be calculated as the ratio of completed work to planned work, with values below 1.0 indicating schedule delays. Effort Variance will compare actual hours spent to planned hours, identifying tasks that require more or less effort than estimated. Defect Density will track the number of bugs or issues identified per unit of code or functionality, providing insight into quality. User Satisfaction scores from evaluation testing will assess whether the system meets user needs and expectations.
+
+These metrics will be tracked over time, with trends analysed to identify patterns and inform process improvements. Metrics will be presented visually using charts and graphs in monthly review reports, facilitating quick comprehension of project status.
+
+Continuous Improvement
+
+The monitoring process itself will be subject to continuous improvement. At the end of each monthly review, the effectiveness of monitoring tools and processes will be briefly assessed. Questions will include whether the monitoring approach provided sufficient visibility into project status, whether any important information was missing, whether the monitoring overhead was appropriate, and what improvements could enhance future monitoring. This reflexive approach ensures the monitoring system evolves to meet project needs effectively.
+
+
+REFERENCES
+
+Anaphylaxis UK (2023) The 14 Major Food Allergens. Available at: https://www.anaphylaxis.org.uk/about-anaphylaxis/14-major-food-allergens/ (Accessed: 23 October 2025).
+
+Brown, M.A. et al. (2024) Web Scraping for research: legal, ethical, institutional, and scientific considerations. Available at: https://arxiv.org/abs/2410.23432 (Accessed: 23 October 2025).
+
+Food Standards Agency (2022) Web scraping policy. Available at: https://www.food.gov.uk/print/pdf/node/5356 (Accessed: 23 October 2025).
+
+IEEE (no date) Ingredient/Recipe Algorithm using Web Mining and Web Scraping for Smart Chef. Available at: https://ieeexplore.ieee.org/document/9198450 (Accessed: 23 October 2025).
+
+Kelly, M. (2024) Rising Trends in Food Allergies: A 20-Year Study from England. Available at: https://www.anaphylaxis.org.uk/rising-trends-in-food-allergies-a-20-year-study-from-england/ (Accessed: 23 October 2025).
+
+Khder, M.A. and Al-Zaytoonah University of Jordan (2021) 'Web scraping or web crawling: state of art, techniques, approaches and application', International Journal of Advance Soft Computing Applications, 13(3), pp. 145-166. Available at: https://www.i-csrs.org/Volumes/ijasca/2021.3.11.pdf (Accessed: 23 October 2025).
+
+Roither, A., Kurz, M. and Sonnleitner, E. (2022) 'The Chef's Choice: system for allergen and style classification in recipes', Applied Sciences, 12(5), p. 2590. doi: 10.3390/app12052590.
+
+Sharma, K. and Borkar, G.M. (2024) 'Comparative Analysis of dynamic web scraping strategies: Evaluating Techniques for Enhanced Data Acquisition', in Soft Computing Research Society eBooks, pp. 241-252. doi: 10.56155/978-81-955020-7-3-22.
+
+Sharma, P. et al. (2025) 'Food allergen detection and recommendation', SSRN Electronic Journal [Preprint]. doi: 10.2139/ssrn.5198646.
+
+Suwalka, N. et al. (2023) 'Food Genie, Recipe Search Algorithm Using Web Scraping', in 2023 3rd Asian Conference on Innovation in Technology (ASIANCON). Ravet, India, pp. 1-6. doi: 10.1109/ASIANCON58793.2023.10270597.
+
+Trzmielewski, M. (2024) 'Towards an Allergy Ontology: A Utility-Based Contextual Approach', Knowledge Organization, 51(3), pp. 151-168. doi: 10.5771/0943-7444-2024-3-151.
+
+
+APPENDICES
+
+Appendix A: Project Schedule Gantt Chart
+[To be inserted: Visual Gantt chart showing all project phases, tasks, dependencies, and milestones]
+
+Appendix B: Risk Register Template
+[To be inserted: Detailed risk register spreadsheet with all identified risks and mitigation strategies]
+
+Appendix C: Weekly Progress Log Template
+[To be inserted: Blank template for weekly progress tracking]
+
+Appendix D: User Testing Protocol
+[To be inserted: Detailed protocol for conducting user testing sessions including task descriptions and evaluation instruments]
+
+Appendix E: Informed Consent Form
+[To be inserted: Participant consent form for ethical approval]
+
+Appendix F: System Usability Scale Questionnaire
+[To be inserted: Standard SUS questionnaire to be administered to participants]
+
+
+Word Count: 6,847 words (main body excluding references and appendices)

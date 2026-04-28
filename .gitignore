@@ -39,3 +39,8 @@ cookies.txt
 *.headers.txt
 spring-home.txt
 order-service-error.txt
+
+data/cifar-10-python.tar.gz
+pythontest1/cifar-10-python.tar
+*.tar.gz
+*.tar

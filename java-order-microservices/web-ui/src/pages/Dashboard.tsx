@@ -15,6 +15,14 @@ const CATALOG: Record<string, { name: string; price: number }> = {
   'SKU-COFFEE': { name: 'Coffee', price: 4.99 },
 }
 
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleString('en-GB', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+    })
+  } catch { return iso }
+}
+
 export function Dashboard() {
   const location = useLocation()
   const {
@@ -31,11 +39,25 @@ export function Dashboard() {
   const [sku, setSku] = useState('SKU-APPLE')
   const [quantity, setQuantity] = useState(2)
   const [error, setError] = useState('')
+  const [history, setHistory] = useState<OrderResponse[]>([])
+  const [historyLoading, setHistoryLoading] = useState(false)
+
+  // Fetch order history on mount and after order changes
+  useEffect(() => {
+    if (!token) return
+    let cancelled = false
+    setHistoryLoading(true)
+    getJson<OrderResponse[]>(`${baseUrl}/orders`, token)
+      .then((orders) => { if (!cancelled) setHistory(orders) })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setHistoryLoading(false) })
+    return () => { cancelled = true }
+  }, [token, baseUrl, order?.status])
 
   // Poll order status every 5 seconds when an active order exists
   useEffect(() => {
     if (!order || !token) return
-    const terminal = ['CANCELLED', 'STOCK_FAILED', 'PAYMENT_FAILED']
+    const terminal = ['CANCELLED', 'STOCK_FAILED', 'PAYMENT_FAILED', 'CONFIRMED']
     if (terminal.includes(order.status)) return
 
     const interval = setInterval(async () => {
@@ -96,17 +118,6 @@ export function Dashboard() {
     `POST /orders — ${quantity} × ${sku} @ £${unitPrice.toFixed(2)}`,
   )
 
-  const onRefresh = wrap(
-    'idle',
-    async () => {
-      if (!order) return
-      const fetched = await getJson<OrderResponse>(`${baseUrl}/orders/${order.id}`, token)
-      setOrder(fetched)
-      addLog('info', `GET /orders/${fetched.id.slice(0, 8)}… → ${fetched.status}`)
-    },
-    `GET /orders/${order?.id.slice(0, 8) ?? ''}… — refreshing`,
-  )
-
   const onConfirm = wrap(
     'confirm',
     async () => {
@@ -129,6 +140,15 @@ export function Dashboard() {
     'POST /orders/{id}/cancel — releasing reservation',
   )
 
+  function onNewOrder() {
+    setOrder(null)
+    setError('')
+  }
+
+  const isTerminal = order && ['CONFIRMED', 'CANCELLED', 'STOCK_FAILED', 'PAYMENT_FAILED'].includes(order.status)
+  const isSuccess = order?.status === 'CONFIRMED'
+  const isFailed = order && ['CANCELLED', 'STOCK_FAILED', 'PAYMENT_FAILED'].includes(order.status)
+
   let stageIndex = 1
   if (order) stageIndex = 2
   if (order?.status === 'CONFIRMED') stageIndex = 3
@@ -149,11 +169,11 @@ export function Dashboard() {
           { n: 1, label: 'Authenticate' },
           { n: 2, label: 'Create order' },
           { n: 3, label: 'Confirm' },
-          { n: 4, label: cancelled ? 'Cancelled' : 'Done' },
+          { n: 4, label: cancelled ? 'Cancelled' : isFailed ? 'Failed' : 'Done' },
         ].map((s, i) => {
-          const done = !cancelled && i < stageIndex
-          const active = !cancelled && i === stageIndex
-          const isCancelStep = cancelled && i === 3
+          const done = !cancelled && !isFailed && i < stageIndex
+          const active = !cancelled && !isFailed && i === stageIndex
+          const isCancelStep = (cancelled || isFailed) && i === 3
           return (
             <div
               key={s.n}
@@ -168,129 +188,206 @@ export function Dashboard() {
 
       <div className="grid">
         <div className="col">
-          <section className={`card panel ${order ? 'panel-done' : ''}`}>
-            <header className="panel-head">
-              <div className="panel-num">1</div>
-              <h2>Create order</h2>
-            </header>
-            <div className="fields fields-2">
-              <label>
-                <span>Product</span>
-                <select value={sku} onChange={(e) => setSku(e.target.value)} disabled={busy !== 'idle'}>
-                  {Object.entries(CATALOG).map(([code, p]) => (
-                    <option key={code} value={code}>
-                      {p.name} — £{p.price.toFixed(2)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                <span>Quantity</span>
-                <input
-                  type="number"
-                  min={1}
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  disabled={busy !== 'idle'}
-                />
-              </label>
-            </div>
-            <div className="row">
-              <button className="btn-primary" onClick={onCreateOrder} disabled={busy !== 'idle'}>
-                {busy === 'create' ? <span className="spin" /> : null}
-                Create order
-              </button>
-              <button className="btn-ghost" onClick={onRefresh} disabled={!order || busy !== 'idle'}>
-                Refresh
-              </button>
-              <div className="total-preview">
-                Preview: <strong>£{(quantity * unitPrice).toFixed(2)}</strong>
-              </div>
-            </div>
-
-            {order && (
-              <div className="order-card">
-                <div className="order-card-head">
-                  <span className="order-card-title">Order</span>
+          {/* ── Completion card (shown when order reaches a terminal state) ── */}
+          {isTerminal && (
+            <section className={`card completion-card ${isSuccess ? 'completion-success' : 'completion-failed'}`}>
+              <div className="completion-icon">{isSuccess ? '✓' : '×'}</div>
+              <h2 className="completion-title">
+                {isSuccess ? 'Order confirmed' : order.status === 'CANCELLED' ? 'Order cancelled' : order.status === 'STOCK_FAILED' ? 'Out of stock' : 'Payment failed'}
+              </h2>
+              <p className="completion-desc">
+                {isSuccess
+                  ? 'Stock was reserved in inventory-service and payment was processed by payment-service.'
+                  : order.status === 'CANCELLED'
+                    ? 'The order was cancelled. Any reserved inventory has been released.'
+                    : order.status === 'STOCK_FAILED'
+                      ? 'inventory-service could not reserve the requested items.'
+                      : 'payment-service declined the transaction. Reserved stock has been released.'}
+              </p>
+              <div className="completion-summary">
+                <div className="completion-row">
+                  <span className="completion-label">Order</span>
+                  <span className="mono">{order.id.slice(0, 8)}…</span>
+                </div>
+                <div className="completion-row">
+                  <span className="completion-label">Total</span>
+                  <span className="mono">£{order.totalAmount.toFixed(2)}</span>
+                </div>
+                <div className="completion-row">
+                  <span className="completion-label">Items</span>
+                  <span>{order.items.map(i => `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}`).join(', ')}</span>
+                </div>
+                <div className="completion-row">
+                  <span className="completion-label">Status</span>
                   <StatusPill status={order.status} />
                 </div>
-                <div className="order-card-grid">
-                  <div>
-                    <div className="kv-key">ID</div>
-                    <div className="kv-val mono">{order.id}</div>
-                  </div>
-                  <div>
-                    <div className="kv-key">Total</div>
-                    <div className="kv-val big">£{order.totalAmount.toFixed(2)}</div>
+              </div>
+              <button className="btn-primary" onClick={onNewOrder}>
+                Place another order
+              </button>
+            </section>
+          )}
+
+          {/* ── Create order panel ── */}
+          {!isTerminal && (
+            <>
+              <section className={`card panel ${order ? 'panel-done' : ''}`}>
+                <header className="panel-head">
+                  <div className="panel-num">1</div>
+                  <h2>Create order</h2>
+                </header>
+                <div className="fields fields-2">
+                  <label>
+                    <span>Product</span>
+                    <select value={sku} onChange={(e) => setSku(e.target.value)} disabled={busy !== 'idle'}>
+                      {Object.entries(CATALOG).map(([code, p]) => (
+                        <option key={code} value={code}>
+                          {p.name} — £{p.price.toFixed(2)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    <span>Quantity</span>
+                    <input
+                      type="number"
+                      min={1}
+                      value={quantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                      disabled={busy !== 'idle'}
+                    />
+                  </label>
+                </div>
+                <div className="row">
+                  <button className="btn-primary" onClick={onCreateOrder} disabled={busy !== 'idle'}>
+                    {busy === 'create' ? <span className="spin" /> : null}
+                    Create order
+                  </button>
+                  <div className="total-preview">
+                    Preview: <strong>£{(quantity * unitPrice).toFixed(2)}</strong>
                   </div>
                 </div>
-                {order.items && order.items.length > 0 && (
-                  <div className="order-items">
-                    <div className="order-items-head">Line items</div>
-                    <table className="order-items-table">
-                      <thead>
-                        <tr>
-                          <th>Product</th>
-                          <th>Qty</th>
-                          <th>Unit price</th>
-                          <th>Subtotal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {order.items.map((item, idx) => (
-                          <tr key={idx}>
-                            <td>{CATALOG[item.sku]?.name ?? item.sku}</td>
-                            <td className="mono">{item.quantity}</td>
-                            <td className="mono">£{item.unitPrice.toFixed(2)}</td>
-                            <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+
+                {order && (
+                  <div className="order-card">
+                    <div className="order-card-head">
+                      <span className="order-card-title">Order</span>
+                      <StatusPill status={order.status} />
+                    </div>
+                    <div className="order-card-grid">
+                      <div>
+                        <div className="kv-key">ID</div>
+                        <div className="kv-val mono">{order.id}</div>
+                      </div>
+                      <div>
+                        <div className="kv-key">Total</div>
+                        <div className="kv-val big">£{order.totalAmount.toFixed(2)}</div>
+                      </div>
+                    </div>
+                    {order.items && order.items.length > 0 && (
+                      <div className="order-items">
+                        <div className="order-items-head">Line items</div>
+                        <table className="order-items-table">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th>Qty</th>
+                              <th>Unit price</th>
+                              <th>Subtotal</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {order.items.map((item, idx) => (
+                              <tr key={idx}>
+                                <td>{CATALOG[item.sku]?.name ?? item.sku}</td>
+                                <td className="mono">{item.quantity}</td>
+                                <td className="mono">£{item.unitPrice.toFixed(2)}</td>
+                                <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 )}
+              </section>
+
+              <section className="card panel panel-split">
+                <div>
+                  <header className="panel-head">
+                    <div className="panel-num">2</div>
+                    <h2>Confirm</h2>
+                  </header>
+                  <p className="panel-desc">
+                    Reserves stock in <code>inventory-service</code> then creates payment in <code>payment-service</code>.
+                  </p>
+                  <button
+                    className="btn-primary"
+                    onClick={onConfirm}
+                    disabled={!order || order.status !== 'PLACED' || busy !== 'idle'}
+                  >
+                    {busy === 'confirm' ? <span className="spin" /> : null}
+                    Confirm order
+                  </button>
+                </div>
+                <div>
+                  <header className="panel-head">
+                    <div className="panel-num">3</div>
+                    <h2>Cancel</h2>
+                  </header>
+                  <p className="panel-desc">
+                    Cancels the order. If already confirmed, reserved inventory is released.
+                  </p>
+                  <button
+                    className="btn-danger"
+                    onClick={onCancel}
+                    disabled={!order || order.status === 'CANCELLED' || busy !== 'idle'}
+                  >
+                    {busy === 'cancel' ? <span className="spin" /> : null}
+                    Cancel order
+                  </button>
+                </div>
+              </section>
+            </>
+          )}
+
+          {error && <div className="error-box">{error}</div>}
+
+          {/* ── Order history ── */}
+          <section className="card">
+            <div className="card-label">Order history</div>
+            {historyLoading && <p className="loading-msg">Loading orders…</p>}
+            {!historyLoading && history.length === 0 && (
+              <p className="empty-msg">No orders yet. Create one above to get started.</p>
+            )}
+            {!historyLoading && history.length > 0 && (
+              <div className="orders-table-wrap">
+                <table className="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {history.map((o) => (
+                      <tr key={o.id} className={order?.id === o.id ? 'history-active-row' : ''}>
+                        <td className="mono">{o.id.slice(0, 8)}…</td>
+                        <td>{o.items.map(i => `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}`).join(', ')}</td>
+                        <td className="mono">£{o.totalAmount.toFixed(2)}</td>
+                        <td><StatusPill status={o.status} /></td>
+                        <td className="text-dim">{formatDate(o.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </section>
-
-          <section className="card panel panel-split">
-            <div>
-              <header className="panel-head">
-                <div className="panel-num">2</div>
-                <h2>Confirm</h2>
-              </header>
-              <p className="panel-desc">
-                Reserves stock in <code>inventory-service</code> then creates payment in <code>payment-service</code>.
-              </p>
-              <button
-                className="btn-primary"
-                onClick={onConfirm}
-                disabled={!order || order.status !== 'PLACED' || busy !== 'idle'}
-              >
-                {busy === 'confirm' ? <span className="spin" /> : null}
-                Confirm order
-              </button>
-            </div>
-            <div>
-              <header className="panel-head">
-                <div className="panel-num">3</div>
-                <h2>Cancel</h2>
-              </header>
-              <p className="panel-desc">
-                Cancels the order. If already confirmed, reserved inventory is released.
-              </p>
-              <button
-                className="btn-danger"
-                onClick={onCancel}
-                disabled={!order || order.status === 'CANCELLED' || busy !== 'idle'}
-              >
-                {busy === 'cancel' ? <span className="spin" /> : null}
-                Cancel order
-              </button>
-            </div>
-          </section>
-
-          {error && <div className="error-box">{error}</div>}
         </div>
 
         <EventLog />

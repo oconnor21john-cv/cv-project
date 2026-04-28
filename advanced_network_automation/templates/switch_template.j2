@@ -1,0 +1,238 @@
+{#
+Cisco Switch Configuration Template
+Jinja2 template for generating switch configurations
+#}
+!
+! {{ device.hostname }} Configuration - Task 2 Network
+! Generated on {{ generation_time }}
+! Device Type: {{ device.device_type | title }}
+! Model: {{ device.model }}
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname {{ device.hostname }}
+!
+enable secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+{% if stp_config %}
+{% if stp_config.priority %}
+spanning-tree vlan {{ stp_config.vlans }} priority {{ stp_config.priority }}
+{% endif %}
+{% if stp_config.root_primary %}
+spanning-tree vlan {{ stp_config.vlans }} root primary
+{% elif stp_config.root_secondary %}
+spanning-tree vlan {{ stp_config.vlans }} root secondary
+{% endif %}
+{% endif %}
+!
+{# VLAN Configuration #}
+{% if vlans %}
+{% for vlan_id, vlan_info in vlans.items() %}
+vlan {{ vlan_id }}
+ name {{ vlan_info.name }}
+{% if vlan_info.description %}
+ description {{ vlan_info.description }}
+{% endif %}
+!
+{% endfor %}
+{% endif %}
+
+{# Interface Configuration #}
+{% for interface in device.interfaces %}
+!
+interface {{ interface.name }}
+{% if interface.description %}
+ description {{ interface.description }}
+{% endif %}
+{% if interface.trunk %}
+ switchport mode trunk
+ switchport trunk native vlan {{ trunk_native_vlan | default(99) }}
+ switchport trunk allowed vlan {{ trunk_allowed_vlans | default("all") }}
+{% elif interface.vlan and interface.vlan != 99 %}
+ switchport mode access
+ switchport access vlan {{ interface.vlan }}
+{% if port_security %}
+ switchport port-security
+ switchport port-security maximum {{ port_security.max_addresses | default(2) }}
+ switchport port-security mac-address sticky
+ switchport port-security violation {{ port_security.violation_action | default("shutdown") }}
+{% endif %}
+{% if interface.name.startswith("FastEthernet") %}
+ spanning-tree portfast
+{% endif %}
+{% elif interface.vlan == 99 %}
+{# Management VLAN interface #}
+{% if interface.ip_address and interface.ip_address != "" %}
+ ip address {{ interface.ip_address }} {{ interface.subnet_mask }}
+{% else %}
+ no ip address
+{% endif %}
+{% endif %}
+{% if not interface.name.startswith("Vlan") %}
+ no shutdown
+{% else %}
+ no shutdown
+{% endif %}
+!
+{% endfor %}
+
+{# Shutdown unused ports #}
+{% if shutdown_unused_ports %}
+!
+{% for port_range in unused_port_ranges %}
+interface range {{ port_range }}
+ shutdown
+!
+{% endfor %}
+{% endif %}
+
+{# Management Configuration #}
+{% if management_config %}
+!
+{% if management_config.default_gateway %}
+ip default-gateway {{ management_config.default_gateway }}
+{% endif %}
+{% if management_config.domain_name %}
+ip domain-name {{ management_config.domain_name }}
+{% endif %}
+!
+{% endif %}
+
+{# VTP Configuration #}
+{% if vtp_config %}
+!
+vtp mode {{ vtp_config.mode | default("transparent") }}
+{% if vtp_config.domain %}
+vtp domain {{ vtp_config.domain }}
+{% endif %}
+{% if vtp_config.password %}
+vtp password {{ vtp_config.password }}
+{% endif %}
+vtp version {{ vtp_config.version | default(2) }}
+!
+{% endif %}
+
+{# Port Channel Configuration #}
+{% if port_channels %}
+!
+{% for pc in port_channels %}
+interface port-channel {{ pc.number }}
+ switchport mode {{ pc.mode | default("trunk") }}
+{% if pc.mode == "trunk" %}
+ switchport trunk allowed vlan {{ pc.allowed_vlans | default("all") }}
+{% else %}
+ switchport access vlan {{ pc.vlan }}
+{% endif %}
+!
+{% for member in pc.members %}
+interface {{ member }}
+ channel-group {{ pc.number }} mode {{ pc.channel_mode | default("active") }}
+!
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{# SNMP Configuration #}
+{% if snmp_config %}
+!
+{% for community in snmp_config.communities %}
+snmp-server community {{ community.name }} {{ community.permission }}
+{% endfor %}
+{% if snmp_config.location %}
+snmp-server location {{ snmp_config.location }}
+{% endif %}
+{% if snmp_config.contact %}
+snmp-server contact {{ snmp_config.contact }}
+{% endif %}
+!
+{% endif %}
+
+{# Logging Configuration #}
+{% if logging_config %}
+!
+{% if logging_config.console_level %}
+logging console {{ logging_config.console_level }}
+{% endif %}
+{% if logging_config.buffer_size %}
+logging buffered {{ logging_config.buffer_size }}
+{% endif %}
+{% for server in logging_config.servers %}
+logging {{ server }}
+{% endfor %}
+!
+{% endif %}
+
+{# NTP Configuration #}
+{% if ntp_servers %}
+!
+{% for server in ntp_servers %}
+ntp server {{ server }}
+{% endfor %}
+!
+{% endif %}
+
+{# AAA Configuration #}
+{% if aaa_config %}
+!
+aaa new-model
+{% for method_list in aaa_config.authentication %}
+aaa authentication {{ method_list.type }} {{ method_list.name }} {{ method_list.methods | join(' ') }}
+{% endfor %}
+{% for method_list in aaa_config.authorization %}
+aaa authorization {{ method_list.type }} {{ method_list.name }} {{ method_list.methods | join(' ') }}
+{% endfor %}
+!
+{% endif %}
+
+{# Banner Configuration #}
+banner motd ^C
+******************************************
+*        AUTHORIZED ACCESS ONLY         *
+*     Task 2 Network - {{ device.hostname }}{{ ' ' * (15 - device.hostname|length) }}*
+*     Location: {{ device.location }}{{ ' ' * (22 - device.location|length) }}*
+*     Generated: {{ generation_time[:10] }}{{ ' ' * (13 - generation_time[:10]|length) }}*
+******************************************
+^C
+!
+{# Line Configuration #}
+line con 0
+ password {{ device.credentials.password }}
+ login
+ logging synchronous
+ exec-timeout 5 0
+!
+line vty 0 4
+ password {{ device.credentials.password }}
+ login
+ exec-timeout 10 0
+!
+line vty 5 15
+ password {{ device.credentials.password }}
+ login
+ exec-timeout 10 0
+!
+!
+{# SSH Configuration #}
+{% if ssh_config %}
+!
+ip domain-name {{ ssh_config.domain }}
+crypto key generate rsa general-keys modulus {{ ssh_config.key_size | default(1024) }}
+ip ssh version {{ ssh_config.version | default(2) }}
+ip ssh time-out {{ ssh_config.timeout | default(60) }}
+ip ssh authentication-retries {{ ssh_config.retries | default(3) }}
+!
+{% endif %}
+
+!
+end
+

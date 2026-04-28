@@ -1,0 +1,230 @@
+source,query,allergen,confidence,correct_against_silver_truth
+bbc,chicken curry,milk,HIGH,1
+bbc,chicken curry,mustard,HIGH,1
+bbc,chicken curry,soya,MEDIUM,0
+bbcgoodfood,chicken curry,fish,HIGH,1
+bbcgoodfood,chicken curry,gluten,HIGH,1
+bbcgoodfood,chicken curry,soya,HIGH,1
+foodafactoflife,chicken curry,gluten,HIGH,1
+foodafactoflife,chicken curry,nuts,HIGH,1
+ocado,chicken curry,gluten,MEDIUM,0
+ocado,chicken curry,milk,HIGH,1
+ocado,chicken curry,gluten,HIGH,1
+ocado,chicken curry,eggs,HIGH,1
+ocado,chicken curry,mustard,HIGH,1
+ocado,chicken curry,soya,HIGH,1
+realfooddietitians,chicken curry,nuts,HIGH,1
+realfooddietitians,chicken curry,sesame,HIGH,1
+tomkerridge,chicken curry,celery,HIGH,1
+tomkerridge,chicken curry,gluten,MEDIUM,1
+tomkerridge,chicken curry,milk,HIGH,1
+tomkerridge,chicken curry,gluten,HIGH,1
+tomkerridge,chicken curry,eggs,HIGH,1
+tomkerridge,chicken curry,molluscs,HIGH,1
+tomkerridge,chicken curry,sesame,HIGH,1
+tomkerridge,chicken curry,soya,HIGH,1
+tomkerridge,chicken curry,sulphites,MEDIUM,1
+bbc,vegetarian pasta,celery,HIGH,1
+bbc,vegetarian pasta,gluten,HIGH,1
+bbc,vegetarian pasta,milk,HIGH,1
+bbc,vegetarian pasta,gluten,HIGH,1
+bbc,vegetarian pasta,milk,HIGH,1
+bbcgoodfood,vegetarian pasta,milk,HIGH,1
+bbcgoodfood,vegetarian pasta,gluten,MEDIUM,1
+bbcgoodfood,vegetarian pasta,milk,HIGH,1
+bbcgoodfood,vegetarian pasta,sulphites,MEDIUM,1
+foodafactoflife,vegetarian pasta,gluten,HIGH,1
+foodafactoflife,vegetarian pasta,milk,HIGH,1
+ocado,vegetarian pasta,gluten,HIGH,1
+ocado,vegetarian pasta,milk,HIGH,1
+ocado,vegetarian pasta,gluten,HIGH,1
+realfooddietitians,vegetarian pasta,gluten,HIGH,1
+realfooddietitians,vegetarian pasta,milk,HIGH,1
+realfooddietitians,vegetarian pasta,gluten,HIGH,1
+realfooddietitians,vegetarian pasta,crustaceans,HIGH,1
+realfooddietitians,vegetarian pasta,milk,HIGH,1
+tomkerridge,vegetarian pasta,gluten,HIGH,1
+tomkerridge,vegetarian pasta,milk,HIGH,1
+tomkerridge,vegetarian pasta,gluten,MEDIUM,0
+tomkerridge,vegetarian pasta,milk,HIGH,1
+bbc,chocolate cake,gluten,MEDIUM,1
+bbc,chocolate cake,eggs,HIGH,1
+bbc,chocolate cake,milk,HIGH,1
+bbc,chocolate cake,gluten,MEDIUM,1
+bbc,chocolate cake,eggs,HIGH,1
+bbc,chocolate cake,milk,HIGH,1
+bbcgoodfood,chocolate cake,gluten,MEDIUM,1
+bbcgoodfood,chocolate cake,eggs,HIGH,1
+bbcgoodfood,chocolate cake,milk,HIGH,1
+bbcgoodfood,chocolate cake,sulphites,MEDIUM,0
+bbcgoodfood,chocolate cake,gluten,MEDIUM,1
+bbcgoodfood,chocolate cake,eggs,HIGH,1
+bbcgoodfood,chocolate cake,milk,HIGH,1
+bbcgoodfood,chocolate cake,sulphites,MEDIUM,0
+foodafactoflife,chocolate cake,gluten,MEDIUM,1
+foodafactoflife,chocolate cake,eggs,HIGH,1
+foodafactoflife,chocolate cake,sulphites,MEDIUM,0
+ocado,chocolate cake,gluten,MEDIUM,1
+ocado,chocolate cake,eggs,HIGH,1
+ocado,chocolate cake,milk,HIGH,1
+ocado,chocolate cake,nuts,HIGH,1
+ocado,chocolate cake,sulphites,MEDIUM,0
+ocado,chocolate cake,gluten,HIGH,1
+ocado,chocolate cake,eggs,HIGH,1
+ocado,chocolate cake,milk,HIGH,1
+realfooddietitians,chocolate cake,gluten,MEDIUM,1
+realfooddietitians,chocolate cake,eggs,HIGH,1
+realfooddietitians,chocolate cake,fish,HIGH,1
+realfooddietitians,chocolate cake,nuts,HIGH,1
+realfooddietitians,chocolate cake,gluten,MEDIUM,0
+realfooddietitians,chocolate cake,eggs,HIGH,1
+realfooddietitians,chocolate cake,milk,HIGH,1
+tomkerridge,chocolate cake,gluten,MEDIUM,1
+tomkerridge,chocolate cake,eggs,HIGH,1
+tomkerridge,chocolate cake,milk,HIGH,1
+tomkerridge,chocolate cake,gluten,MEDIUM,1
+tomkerridge,chocolate cake,eggs,HIGH,1
+tomkerridge,chocolate cake,milk,HIGH,1
+tomkerridge,chocolate cake,sulphites,MEDIUM,0
+bbc,beef stew,celery,HIGH,1
+bbc,beef stew,gluten,MEDIUM,1
+bbc,beef stew,sulphites,MEDIUM,0
+bbc,beef stew,celery,HIGH,1
+bbc,beef stew,gluten,MEDIUM,1
+bbc,beef stew,fish,MEDIUM,1
+bbc,beef stew,milk,HIGH,1
+bbc,beef stew,sulphites,MEDIUM,1
+bbcgoodfood,beef stew,celery,HIGH,1
+bbcgoodfood,beef stew,gluten,LOW,0
+bbcgoodfood,beef stew,fish,MEDIUM,1
+bbcgoodfood,beef stew,milk,MEDIUM,0
+bbcgoodfood,beef stew,sulphites,MEDIUM,0
+bbcgoodfood,beef stew,celery,HIGH,1
+bbcgoodfood,beef stew,gluten,MEDIUM,1
+bbcgoodfood,beef stew,fish,MEDIUM,1
+bbcgoodfood,beef stew,milk,HIGH,1
+foodafactoflife,beef stew,gluten,MEDIUM,1
+foodafactoflife,beef stew,eggs,HIGH,1
+foodafactoflife,beef stew,sulphites,MEDIUM,0
+foodafactoflife,beef stew,gluten,HIGH,1
+foodafactoflife,beef stew,milk,HIGH,1
+ocado,beef stew,sesame,HIGH,1
+ocado,beef stew,gluten,MEDIUM,0
+ocado,beef stew,milk,HIGH,1
+realfooddietitians,beef stew,eggs,HIGH,1
+realfooddietitians,beef stew,mustard,HIGH,1
+tomkerridge,beef stew,milk,HIGH,1
+tomkerridge,beef stew,mustard,HIGH,1
+tomkerridge,beef stew,sulphites,MEDIUM,1
+tomkerridge,beef stew,celery,HIGH,1
+tomkerridge,beef stew,milk,HIGH,1
+tomkerridge,beef stew,sulphites,MEDIUM,0
+bbc,mushroom soup,milk,HIGH,1
+bbc,mushroom soup,molluscs,HIGH,1
+bbc,mushroom soup,milk,HIGH,1
+bbc,mushroom soup,sulphites,MEDIUM,1
+bbcgoodfood,mushroom soup,gluten,MEDIUM,1
+bbcgoodfood,mushroom soup,milk,HIGH,1
+bbcgoodfood,mushroom soup,nuts,HIGH,1
+bbcgoodfood,mushroom soup,milk,HIGH,1
+bbcgoodfood,mushroom soup,nuts,HIGH,1
+foodafactoflife,mushroom soup,gluten,HIGH,1
+ocado,mushroom soup,fish,HIGH,1
+ocado,mushroom soup,celery,HIGH,1
+ocado,mushroom soup,gluten,MEDIUM,1
+ocado,mushroom soup,eggs,HIGH,1
+ocado,mushroom soup,milk,HIGH,1
+ocado,mushroom soup,nuts,HIGH,1
+realfooddietitians,mushroom soup,milk,HIGH,1
+realfooddietitians,mushroom soup,gluten,MEDIUM,0
+realfooddietitians,mushroom soup,celery,HIGH,1
+realfooddietitians,mushroom soup,milk,HIGH,1
+tomkerridge,mushroom soup,gluten,HIGH,1
+tomkerridge,mushroom soup,eggs,HIGH,1
+tomkerridge,mushroom soup,molluscs,HIGH,1
+tomkerridge,mushroom soup,sesame,HIGH,1
+tomkerridge,mushroom soup,soya,HIGH,1
+tomkerridge,mushroom soup,sulphites,MEDIUM,1
+tomkerridge,mushroom soup,gluten,HIGH,1
+tomkerridge,mushroom soup,eggs,HIGH,1
+tomkerridge,mushroom soup,soya,HIGH,1
+bbc,salmon,fish,HIGH,1
+bbc,salmon,gluten,HIGH,1
+bbc,salmon,eggs,HIGH,1
+bbc,salmon,fish,HIGH,1
+bbc,salmon,milk,HIGH,1
+bbc,salmon,sulphites,MEDIUM,1
+bbcgoodfood,salmon,fish,HIGH,1
+bbcgoodfood,salmon,milk,HIGH,1
+bbcgoodfood,salmon,gluten,HIGH,1
+bbcgoodfood,salmon,fish,HIGH,1
+bbcgoodfood,salmon,sesame,HIGH,1
+bbcgoodfood,salmon,soya,HIGH,1
+foodafactoflife,salmon,gluten,MEDIUM,1
+foodafactoflife,salmon,eggs,HIGH,1
+foodafactoflife,salmon,sulphites,MEDIUM,0
+foodafactoflife,salmon,gluten,HIGH,1
+foodafactoflife,salmon,milk,HIGH,1
+ocado,salmon,fish,HIGH,1
+ocado,salmon,gluten,HIGH,1
+ocado,salmon,fish,HIGH,1
+ocado,salmon,milk,HIGH,1
+ocado,salmon,sesame,HIGH,1
+ocado,salmon,soya,HIGH,1
+realfooddietitians,salmon,fish,HIGH,1
+realfooddietitians,salmon,milk,HIGH,1
+realfooddietitians,salmon,fish,HIGH,1
+realfooddietitians,salmon,milk,HIGH,1
+tomkerridge,salmon,eggs,HIGH,1
+tomkerridge,salmon,fish,HIGH,1
+tomkerridge,salmon,milk,HIGH,1
+tomkerridge,salmon,fish,HIGH,1
+tomkerridge,salmon,milk,HIGH,1
+tomkerridge,salmon,nuts,HIGH,1
+bbc,lentil dal,milk,HIGH,1
+bbc,lentil dal,mustard,HIGH,1
+bbc,lentil dal,soya,MEDIUM,0
+bbc,lentil dal,gluten,MEDIUM,1
+bbc,lentil dal,mustard,HIGH,1
+bbc,lentil dal,soya,MEDIUM,0
+bbcgoodfood,lentil dal,gluten,HIGH,1
+bbcgoodfood,lentil dal,milk,HIGH,1
+foodafactoflife,lentil dal,gluten,MEDIUM,1
+foodafactoflife,lentil dal,eggs,HIGH,1
+foodafactoflife,lentil dal,sulphites,MEDIUM,0
+foodafactoflife,lentil dal,gluten,HIGH,1
+foodafactoflife,lentil dal,milk,HIGH,1
+ocado,lentil dal,mustard,HIGH,1
+ocado,lentil dal,nuts,HIGH,1
+tomkerridge,lentil dal,gluten,HIGH,1
+tomkerridge,lentil dal,eggs,HIGH,1
+tomkerridge,lentil dal,sesame,HIGH,1
+bbc,apple pie,gluten,MEDIUM,1
+bbc,apple pie,eggs,HIGH,1
+bbc,apple pie,milk,HIGH,1
+bbc,apple pie,gluten,MEDIUM,1
+bbc,apple pie,eggs,HIGH,1
+bbc,apple pie,milk,HIGH,1
+bbcgoodfood,apple pie,gluten,MEDIUM,1
+bbcgoodfood,apple pie,eggs,HIGH,1
+bbcgoodfood,apple pie,milk,HIGH,1
+bbcgoodfood,apple pie,gluten,MEDIUM,1
+bbcgoodfood,apple pie,milk,HIGH,1
+foodafactoflife,apple pie,celery,HIGH,1
+foodafactoflife,apple pie,gluten,HIGH,1
+foodafactoflife,apple pie,fish,MEDIUM,1
+foodafactoflife,apple pie,milk,HIGH,1
+foodafactoflife,apple pie,soya,HIGH,1
+foodafactoflife,apple pie,gluten,MEDIUM,1
+foodafactoflife,apple pie,milk,HIGH,1
+foodafactoflife,apple pie,sulphites,HIGH,1
+ocado,apple pie,milk,HIGH,1
+ocado,apple pie,milk,HIGH,1
+realfooddietitians,apple pie,eggs,HIGH,1
+tomkerridge,apple pie,celery,HIGH,1
+tomkerridge,apple pie,fish,MEDIUM,1
+tomkerridge,apple pie,milk,HIGH,1
+tomkerridge,apple pie,gluten,HIGH,1
+tomkerridge,apple pie,eggs,HIGH,1
+tomkerridge,apple pie,milk,HIGH,1
+tomkerridge,apple pie,mustard,HIGH,1

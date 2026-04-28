@@ -94,7 +94,7 @@ export function Login() {
 
         <div className="login-foot">
           <div className="creds-hint">
-            Demo credentials: <code>customer / password</code> &nbsp;·&nbsp; <code>admin / password</code>
+            Demo credentials: <code>customer / password</code>
           </div>
         </div>
       </div>

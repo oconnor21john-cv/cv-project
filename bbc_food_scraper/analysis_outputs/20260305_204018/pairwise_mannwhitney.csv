@@ -1,0 +1,8 @@
+metric,source_a,source_b,u_statistic,p_value,rank_biserial,p_value_bh
+recipes_found,bbc,simply,4.5,1.0,0.0,1.0
+recipes_found,bbc,serious,9.0,0.04685417760387376,-1.0,0.07028126640581064
+recipes_found,simply,serious,9.0,0.04685417760387376,-1.0,0.07028126640581064
+latency_ms,bbc,simply,0.0,0.1,1.0,0.15000000000000002
+latency_ms,bbc,serious,0.0,0.1,1.0,0.15000000000000002
+latency_ms,simply,serious,5.0,1.0,-0.11111111111111116,1.0
+completeness_score,bbc,simply,4.5,1.0,0.0,1.0

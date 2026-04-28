@@ -1,0 +1,19 @@
+{
+  "overall_accuracy": 0.4741,
+  "best_architecture": "{'conv': [(32, 3), (64, 3)], 'dense': [128]}",
+  "best_learning_rate": 0.0005,
+  "final_epochs": 5,
+  "overfitting_gap": 0.0078200101852417,
+  "class_accuracy": {
+    "airplane": 0.505,
+    "automobile": 0.642,
+    "bird": 0.068,
+    "cat": 0.134,
+    "deer": 0.28,
+    "dog": 0.288,
+    "frog": 0.973,
+    "horse": 0.468,
+    "ship": 0.758,
+    "truck": 0.625
+  }
+}

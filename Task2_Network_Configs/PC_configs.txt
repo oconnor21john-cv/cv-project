@@ -1,0 +1,142 @@
+# PC Configuration Guide - Task 2 Network
+# Generated for Packet Tracer Implementation
+
+==================================================
+PC1 Configuration (Connected to SW1 F0/1)
+==================================================
+IP Address: 192.168.10.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 10 (Sales)
+Network: 192.168.10.0/24
+
+Test Commands:
+- ping 192.168.10.1  (Test gateway connectivity)
+- ping 192.168.20.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC2 Configuration (Connected to SW1 F0/2)
+==================================================
+IP Address: 192.168.10.101
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 10 (Sales)
+Network: 192.168.10.0/24
+
+Test Commands:
+- ping 192.168.10.1  (Test gateway connectivity)
+- ping 192.168.30.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC3 Configuration (Connected to SW2 F0/1)
+==================================================
+IP Address: 192.168.20.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 20 (Marketing)
+Network: 192.168.20.0/24
+
+Test Commands:
+- ping 192.168.20.1  (Test gateway connectivity)
+- ping 192.168.10.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC4 Configuration (Connected to SW2 F0/2)
+==================================================
+IP Address: 192.168.20.101
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 20 (Marketing)
+Network: 192.168.20.0/24
+
+Test Commands:
+- ping 192.168.20.1  (Test gateway connectivity)
+- ping 192.168.40.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC5 Configuration (Connected to SW3 F0/1)
+==================================================
+IP Address: 192.168.30.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.30.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 30 (IT)
+Network: 192.168.30.0/24
+
+Test Commands:
+- ping 192.168.30.1  (Test gateway connectivity)
+- ping 192.168.10.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC6 Configuration (Connected to SW3 F0/2)
+==================================================
+IP Address: 192.168.30.101
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.30.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 30 (IT)
+Network: 192.168.30.0/24
+
+Test Commands:
+- ping 192.168.30.1  (Test gateway connectivity)
+- ping 192.168.20.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC7 Configuration (Connected to SW4 F0/1)
+==================================================
+IP Address: 192.168.40.100
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.40.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 40 (Finance)
+Network: 192.168.40.0/24
+
+Test Commands:
+- ping 192.168.40.1  (Test gateway connectivity)
+- ping 192.168.30.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+PC8 Configuration (Connected to SW4 F0/2)
+==================================================
+IP Address: 192.168.40.101
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.40.1
+DNS Server: 8.8.8.8
+
+VLAN Assignment: 40 (Finance)
+Network: 192.168.40.0/24
+
+Test Commands:
+- ping 192.168.40.1  (Test gateway connectivity)
+- ping 192.168.10.100 (Test inter-VLAN routing)
+- ipconfig           (View IP configuration)
+
+==================================================
+Configuration Notes:
+==================================================
+1. Configure each PC with static IP addressing
+2. Use the Desktop > IP Configuration in Packet Tracer
+3. Test connectivity after all devices are configured
+4. Verify inter-VLAN routing is working properly
+
+
+
+

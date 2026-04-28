@@ -1,0 +1,4 @@
+test,metric,statistic,p_value,dof
+kruskal_wallis,recipes_found,299.0000000000002,1.1829733350269617e-65,
+kruskal_wallis,latency_ms,182.97672026578084,1.8497372220597046e-40,
+chi_square_success_by_source,success,299.99999999999994,7.175095973164651e-66,2.0

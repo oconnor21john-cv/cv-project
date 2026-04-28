@@ -10,17 +10,17 @@ const flowSteps = [
   {
     num: '02',
     title: 'Order is created',
-    body: 'POST /orders persists a PENDING order row in the order-service Postgres database. Only the service owning the data writes to it.',
+    body: 'POST /orders fetches live prices from inventory-service, persists a PLACED order row in the order-service Postgres database, and publishes a domain event to SQS.',
   },
   {
     num: '03',
     title: 'Confirm fans out via HTTP + SQS',
-    body: 'order-service calls inventory-service to reserve stock, then payment-service to take payment. Domain events are published to SQS for downstream consumers.',
+    body: 'order-service calls inventory-service to reserve stock, then payment-service to take payment. All inter-service calls are wrapped with Resilience4j circuit breakers. If payment fails, reserved stock is automatically released. Domain events are published to SQS for downstream consumers.',
   },
   {
     num: '04',
     title: 'Cancel releases the reservation',
-    body: 'Cancelling a confirmed order triggers an inventory release. If the order was only PENDING, nothing else has to happen.',
+    body: 'Cancelling a confirmed order triggers an inventory release. If the order was only PLACED, no compensation is needed.',
   },
 ]
 
@@ -31,6 +31,8 @@ const infraPoints = [
   ['RDS Postgres', 'One db.t3.micro per service — data boundaries stay strict.'],
   ['Secrets Manager', 'DB passwords and JWT secret injected as ECS secrets.'],
   ['SQS', 'One queue per service for asynchronous domain events.'],
+  ['X-Ray', 'Distributed tracing across all three services (active in AWS profile).'],
+  ['Resilience4j', 'Circuit breakers on every inter-service HTTP call with sliding-window failure detection.'],
 ]
 
 export function ArchitecturePage() {

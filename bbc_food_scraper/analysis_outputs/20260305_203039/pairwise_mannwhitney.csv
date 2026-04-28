@@ -1,0 +1,10 @@
+metric,source_a,source_b,u_statistic,p_value,rank_biserial,p_value_bh
+recipes_found,bbc,simply,370.0,8.64113160831182e-08,-0.8500000000000001,1.6693644222409458e-07
+recipes_found,bbc,serious,370.0,1.1129096148272972e-07,-0.8500000000000001,1.6693644222409458e-07
+recipes_found,simply,serious,191.5,0.7429358392509968,0.04249999999999998,0.7429358392509968
+latency_ms,bbc,simply,0.0,6.79561512817336e-08,1.0,1.019342269226004e-07
+latency_ms,bbc,serious,0.0,6.79561512817336e-08,1.0,1.019342269226004e-07
+latency_ms,simply,serious,159.0,0.2732851201810752,0.20499999999999996,0.2732851201810752
+completeness_score,bbc,simply,30.0,1.0,0.0,1.0
+completeness_score,bbc,serious,40.0,1.0,0.0,1.0
+completeness_score,simply,serious,6.0,1.0,0.0,1.0

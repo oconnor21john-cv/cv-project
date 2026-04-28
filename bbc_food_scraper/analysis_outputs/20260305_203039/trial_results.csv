@@ -1,0 +1,61 @@
+run_idx,repeat,query,query_category,source,source_name,source_status,recipes_found,success,has_403,latency_ms,fallback_external_used,fallback_mirror_used,source_unavailable,http_statuses
+1,1,chicken curry,main,bbc,BBC Food,ok,2,1,0,11285.143499990227,0,0,0,[200]
+2,1,chicken curry,main,simply,Simply Recipes,partial,2,1,1,98300.26980000548,1,1,0,"[202, 403]"
+3,1,chicken curry,main,serious,Serious Eats,partial,2,1,1,105140.2734000003,1,1,0,"[202, 403]"
+4,1,vegetarian pasta,main,bbc,BBC Food,ok,2,1,0,12140.410000021802,0,0,0,[200]
+5,1,vegetarian pasta,main,simply,Simply Recipes,partial,2,1,1,124485.28590000933,1,1,0,"[202, 403]"
+6,1,vegetarian pasta,main,serious,Serious Eats,temporarily_unavailable,0,0,1,135201.4763999905,1,1,1,"[202, 403]"
+7,1,chocolate cake,dessert,bbc,BBC Food,ok,2,1,0,12027.189199987333,0,0,0,[200]
+8,1,chocolate cake,dessert,simply,Simply Recipes,temporarily_unavailable,0,0,1,17515.645499981474,1,1,1,"[202, 403]"
+9,1,chocolate cake,dessert,serious,Serious Eats,partial,2,1,1,174871.7555999756,1,1,0,"[202, 403]"
+10,1,beef stew,main,bbc,BBC Food,ok,2,1,0,12056.29740000586,0,0,0,[200]
+11,1,beef stew,main,simply,Simply Recipes,partial,2,1,1,138389.2610000039,1,1,0,"[202, 403]"
+12,1,beef stew,main,serious,Serious Eats,partial,2,1,1,179728.45180000877,1,1,0,"[202, 403]"
+13,1,mushroom soup,main,bbc,BBC Food,ok,2,1,0,11760.502600023756,0,0,0,[200]
+14,1,mushroom soup,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,15279.691000003368,1,1,1,"[202, 403]"
+15,1,mushroom soup,main,serious,Serious Eats,partial,1,1,1,137007.5167999894,1,1,0,"[202, 403]"
+16,1,salmon,main,bbc,BBC Food,ok,2,1,0,12112.290699995356,0,0,0,[200]
+17,1,salmon,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,14443.295800010674,1,1,1,"[202, 403]"
+18,1,salmon,main,serious,Serious Eats,temporarily_unavailable,0,0,1,15868.727299995953,1,1,1,"[202, 403]"
+19,1,lentil dal,main,bbc,BBC Food,ok,2,1,0,11054.125900001964,0,0,0,[200]
+20,1,lentil dal,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,16503.63209997886,1,1,1,"[202, 403]"
+21,1,lentil dal,main,serious,Serious Eats,temporarily_unavailable,0,0,1,14833.534700010205,1,1,1,"[202, 403]"
+22,1,apple pie,dessert,bbc,BBC Food,ok,2,1,0,10768.258599971887,0,0,0,[200]
+23,1,apple pie,dessert,simply,Simply Recipes,temporarily_unavailable,0,0,1,38526.678499998525,1,1,1,[403]
+24,1,apple pie,dessert,serious,Serious Eats,temporarily_unavailable,0,0,1,58434.67640000745,1,1,1,[403]
+25,1,lasagne,main,bbc,BBC Food,ok,2,1,0,11172.877700009849,0,0,0,[200]
+26,1,lasagne,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,58666.1794000247,1,1,1,[403]
+27,1,lasagne,main,serious,Serious Eats,temporarily_unavailable,0,0,1,59593.64869998535,1,1,1,[403]
+28,1,thai curry,main,bbc,BBC Food,ok,2,1,0,12149.243699997896,0,0,0,[200]
+29,1,thai curry,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57013.77180000418,1,1,1,[403]
+30,1,thai curry,main,serious,Serious Eats,temporarily_unavailable,0,0,1,57430.39730002056,1,1,1,[403]
+31,1,brownies,dessert,bbc,BBC Food,ok,2,1,0,11514.277000009315,0,0,0,[200]
+32,1,brownies,dessert,simply,Simply Recipes,temporarily_unavailable,0,0,1,56965.821899997536,1,1,1,[403]
+33,1,brownies,dessert,serious,Serious Eats,temporarily_unavailable,0,0,1,57016.709600022295,1,1,1,[403]
+34,1,risotto,main,bbc,BBC Food,ok,2,1,0,11306.868699990446,0,0,0,[200]
+35,1,risotto,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57169.69219999737,1,1,1,[403]
+36,1,risotto,main,serious,Serious Eats,temporarily_unavailable,0,0,1,57816.38249999378,1,1,1,[403]
+37,1,vegan burger,main,bbc,BBC Food,ok,2,1,0,11703.67570000235,0,0,0,[200]
+38,1,vegan burger,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57803.96700001438,1,1,1,[403]
+39,1,vegan burger,main,serious,Serious Eats,temporarily_unavailable,0,0,1,56444.09510001424,1,1,1,[403]
+40,1,banana bread,dessert,bbc,BBC Food,ok,2,1,0,11112.19440001878,0,0,0,[200]
+41,1,banana bread,dessert,simply,Simply Recipes,temporarily_unavailable,0,0,1,57626.05099999928,1,1,1,[403]
+42,1,banana bread,dessert,serious,Serious Eats,temporarily_unavailable,0,0,1,56207.02510001138,1,1,1,[403]
+43,1,roast chicken,main,bbc,BBC Food,ok,2,1,0,11466.000299988082,0,0,0,[200]
+44,1,roast chicken,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57181.30460000248,1,1,1,[403]
+45,1,roast chicken,main,serious,Serious Eats,temporarily_unavailable,0,0,1,56419.89079999621,1,1,1,[403]
+46,1,tacos,main,bbc,BBC Food,ok,2,1,0,12630.29679999454,0,0,0,[200]
+47,1,tacos,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57159.37599999597,1,1,1,[403]
+48,1,tacos,main,serious,Serious Eats,temporarily_unavailable,0,0,1,58779.50040000724,1,1,1,[403]
+49,1,pancakes,breakfast,bbc,BBC Food,ok,2,1,0,11725.569500005804,0,0,0,[200]
+50,1,pancakes,breakfast,simply,Simply Recipes,temporarily_unavailable,0,0,1,59064.18809999013,1,1,1,[403]
+51,1,pancakes,breakfast,serious,Serious Eats,temporarily_unavailable,0,0,1,58146.00150001934,1,1,1,[403]
+52,1,omelette,breakfast,bbc,BBC Food,ok,2,1,0,11342.05259999726,0,0,0,[200]
+53,1,omelette,breakfast,simply,Simply Recipes,temporarily_unavailable,0,0,1,57678.9165000082,1,1,1,[403]
+54,1,omelette,breakfast,serious,Serious Eats,temporarily_unavailable,0,0,1,57244.76530001266,1,1,1,[403]
+55,1,ramen,main,bbc,BBC Food,ok,2,1,0,14262.324899988016,0,0,0,[200]
+56,1,ramen,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57738.552199996775,1,1,1,[403]
+57,1,ramen,main,serious,Serious Eats,temporarily_unavailable,0,0,1,56864.51309997938,1,1,1,[403]
+58,1,stir fry,main,bbc,BBC Food,ok,2,1,0,12217.075499997009,0,0,0,[200]
+59,1,stir fry,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57047.33020000276,1,1,1,[403]
+60,1,stir fry,main,serious,Serious Eats,temporarily_unavailable,0,0,1,58300.78950000461,1,1,1,[403]

@@ -1,0 +1,42 @@
+enable
+configure terminal
+hostname L3-3
+!
+ip routing
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan 100
+ name VLAN100
+ exit
+!
+vlan 200
+ name VLAN200
+ exit
+!
+vlan 300
+ name VLAN300
+ exit
+!
+interface GigabitEthernet0/1
+ description To R13
+ no switchport
+ ip address 10.83.64.130 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+ exit
+!
+interface Vlan200
+ description VLAN 200 Interface
+ ip address 10.83.64.2 255.255.255.0
+ no shutdown
+ exit
+!
+router ospf 1
+ network 10.0.0.0 0.255.255.255 area 0
+ exit
+!
+end
+

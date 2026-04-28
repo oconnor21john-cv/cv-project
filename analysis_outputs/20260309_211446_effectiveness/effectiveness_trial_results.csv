@@ -1,0 +1,49 @@
+run_idx,repeat,query,query_category,source,source_name,source_status,recipes_found,success,latency_ms,has_403,has_429,source_unavailable,fallback_external_used,fallback_mirror_used
+1,1,chicken curry,main,bbc,BBC Food,ok,2,1,6391.486200000003,0,0,0,0,0
+2,1,chicken curry,main,bbcgoodfood,BBC Good Food,ok,2,1,5881.459200000023,0,0,0,0,0
+3,1,chicken curry,main,foodafactoflife,Food - a Fact of Life,ok,1,1,5100.528300000007,0,0,0,0,0
+4,1,chicken curry,main,ocado,Ocado,ok,2,1,7513.614000000018,0,0,0,0,0
+5,1,chicken curry,main,realfooddietitians,The Real Food Dietitians,ok,2,1,8926.938800000016,0,0,0,0,0
+6,1,chicken curry,main,tomkerridge,Tom Kerridge,ok,2,1,8266.14459999999,0,0,0,0,0
+7,1,vegetarian pasta,main,bbc,BBC Food,ok,2,1,6779.896699999995,0,0,0,0,0
+8,1,vegetarian pasta,main,bbcgoodfood,BBC Good Food,ok,2,1,6724.342900000011,0,0,0,0,0
+9,1,vegetarian pasta,main,foodafactoflife,Food - a Fact of Life,ok,1,1,4773.350399999998,0,0,0,0,0
+10,1,vegetarian pasta,main,ocado,Ocado,ok,2,1,7388.7075000000095,0,0,0,0,0
+11,1,vegetarian pasta,main,realfooddietitians,The Real Food Dietitians,ok,2,1,7094.300500000003,0,0,0,0,0
+12,1,vegetarian pasta,main,tomkerridge,Tom Kerridge,ok,2,1,8976.139700000032,0,0,0,0,0
+13,1,chocolate cake,dessert,bbc,BBC Food,ok,2,1,7095.188199999995,0,0,0,0,0
+14,1,chocolate cake,dessert,bbcgoodfood,BBC Good Food,ok,2,1,6786.4925000000085,0,0,0,0,0
+15,1,chocolate cake,dessert,foodafactoflife,Food - a Fact of Life,ok,1,1,4429.853299999991,0,0,0,0,0
+16,1,chocolate cake,dessert,ocado,Ocado,ok,2,1,5779.900400000031,0,0,0,0,0
+17,1,chocolate cake,dessert,realfooddietitians,The Real Food Dietitians,ok,2,1,10920.796999999993,0,0,0,0,0
+18,1,chocolate cake,dessert,tomkerridge,Tom Kerridge,ok,2,1,7717.764499999987,0,0,0,0,0
+19,1,beef stew,main,bbc,BBC Food,ok,2,1,7188.075800000035,0,0,0,0,0
+20,1,beef stew,main,bbcgoodfood,BBC Good Food,ok,2,1,6364.451299999984,0,0,0,0,0
+21,1,beef stew,main,foodafactoflife,Food - a Fact of Life,ok,2,1,7249.953800000014,0,0,0,0,0
+22,1,beef stew,main,ocado,Ocado,ok,2,1,6813.323300000036,0,0,0,0,0
+23,1,beef stew,main,realfooddietitians,The Real Food Dietitians,ok,2,1,6562.988800000028,0,0,0,0,0
+24,1,beef stew,main,tomkerridge,Tom Kerridge,ok,2,1,8068.367800000033,0,0,0,0,0
+25,1,mushroom soup,main,bbc,BBC Food,ok,2,1,7261.180700000012,0,0,0,0,0
+26,1,mushroom soup,main,bbcgoodfood,BBC Good Food,ok,2,1,6530.437200000051,0,0,0,0,0
+27,1,mushroom soup,main,foodafactoflife,Food - a Fact of Life,ok,1,1,4765.6504999999925,0,0,0,0,0
+28,1,mushroom soup,main,ocado,Ocado,ok,2,1,7222.888300000022,0,0,0,0,0
+29,1,mushroom soup,main,realfooddietitians,The Real Food Dietitians,ok,2,1,10072.479999999985,0,0,0,0,0
+30,1,mushroom soup,main,tomkerridge,Tom Kerridge,ok,2,1,8445.122599999992,0,0,0,0,0
+31,1,salmon,main,bbc,BBC Food,ok,2,1,6492.873499999973,0,0,0,0,0
+32,1,salmon,main,bbcgoodfood,BBC Good Food,ok,2,1,6893.270400000006,0,0,0,0,0
+33,1,salmon,main,foodafactoflife,Food - a Fact of Life,ok,2,1,7213.358599999992,0,0,0,0,0
+34,1,salmon,main,ocado,Ocado,ok,2,1,6578.198999999984,0,0,0,0,0
+35,1,salmon,main,realfooddietitians,The Real Food Dietitians,ok,2,1,8462.70919999995,0,0,0,0,0
+36,1,salmon,main,tomkerridge,Tom Kerridge,ok,2,1,8328.453500000023,0,0,0,0,0
+37,1,lentil dal,main,bbc,BBC Food,ok,2,1,6532.895499999995,0,0,0,0,0
+38,1,lentil dal,main,bbcgoodfood,BBC Good Food,ok,2,1,7803.269800000009,0,0,0,0,0
+39,1,lentil dal,main,foodafactoflife,Food - a Fact of Life,ok,2,1,5873.178799999949,0,0,0,0,0
+40,1,lentil dal,main,ocado,Ocado,ok,2,1,5900.851100000011,0,0,0,0,0
+41,1,lentil dal,main,realfooddietitians,The Real Food Dietitians,ok,2,1,9544.249600000001,0,0,0,0,0
+42,1,lentil dal,main,tomkerridge,Tom Kerridge,ok,1,1,5487.073000000009,0,0,0,0,0
+43,1,apple pie,dessert,bbc,BBC Food,ok,2,1,7982.856099999992,0,0,0,0,0
+44,1,apple pie,dessert,bbcgoodfood,BBC Good Food,ok,2,1,6431.9931,0,0,0,0,0
+45,1,apple pie,dessert,foodafactoflife,Food - a Fact of Life,ok,2,1,7207.191200000011,0,0,0,0,0
+46,1,apple pie,dessert,ocado,Ocado,ok,2,1,7047.564599999987,0,0,0,0,0
+47,1,apple pie,dessert,realfooddietitians,The Real Food Dietitians,ok,2,1,8622.647700000016,0,0,0,0,0
+48,1,apple pie,dessert,tomkerridge,Tom Kerridge,ok,2,1,7876.223699999969,0,0,0,0,0

@@ -1,0 +1,228 @@
+enable
+configure terminal
+hostname S15
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan 13
+ name VLAN13_DHCP
+ exit
+!
+vlan 14
+ name VLAN14_DHCP
+ exit
+!
+vlan 99
+ name MANAGEMENT
+ exit
+!
+interface GigabitEthernet0/1
+ description Trunk to R15
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 13,14,99
+ no shutdown
+ exit
+!
+interface FastEthernet0/1
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/2
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/3
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/4
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/5
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/6
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/7
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/8
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/9
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/10
+ description Access port VLAN 13
+ switchport mode access
+ switchport access vlan 13
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/11
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/12
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/13
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/14
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/15
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface FastEthernet0/16
+ description Access port VLAN 14
+ switchport mode access
+ switchport access vlan 14
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ no shutdown
+ exit
+!
+interface Vlan99
+ description Management Interface
+ ip address 192.168.2.130 255.255.255.224
+ no shutdown
+ exit
+!
+ip default-gateway 192.168.2.129
+!
+end

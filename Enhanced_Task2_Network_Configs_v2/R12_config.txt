@@ -1,0 +1,40 @@
+enable
+configure terminal
+hostname R12
+!
+ip cef
+no ipv6 cef
+!
+spanning-tree mode pvst
+!
+ip dhcp pool VLAN20_POOL
+ network 10.0.0.0 255.192.0.0
+ default-router 10.0.0.1
+ dns-server 8.8.8.8
+ exit
+!
+interface GigabitEthernet0/0
+ description Connected to L3-2
+ ip address 10.83.64.129 255.255.255.252
+ duplex auto
+ speed auto
+ no shutdown
+ exit
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ no shutdown
+!
+interface GigabitEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 10.0.0.1 255.192.0.0
+ ip helper-address 10.0.0.1
+ exit
+!
+router ospf 1
+ network 10.0.0.0 0.255.255.255 area 0
+ exit
+!
+end

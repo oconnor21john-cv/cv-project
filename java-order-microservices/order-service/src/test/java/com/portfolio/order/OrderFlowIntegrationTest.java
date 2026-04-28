@@ -120,9 +120,7 @@ class OrderFlowIntegrationTest {
 		// confirm (reserve + pay)
 		var confirm = rest.exchange("/orders/" + orderId + "/confirm",
 				HttpMethod.POST, new HttpEntity<>(null, headers), Map.class);
-		assertThat(confirm.getStatusCode())
-				.as("confirm response body: %s", confirm.getBody())
-				.isEqualTo(HttpStatus.OK);
+		assertThat(confirm.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(confirm.getBody().get("status")).isEqualTo("CONFIRMED");
 
 		// cancel (should release inventory)

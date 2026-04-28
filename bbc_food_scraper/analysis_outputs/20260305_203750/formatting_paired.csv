@@ -1,0 +1,5 @@
+source,query,recipe_url,raw_has_artifact,cleaned_has_artifact
+simply,chicken curry,https://www.simplyrecipes.com/korean-curry-rice-recipe-11727095,0,0
+serious,chicken curry,https://www.seriouseats.com/grilled-curry-chicken-kebab-recipe,1,0
+simply,vegetarian pasta,https://www.simplyrecipes.com/recipes/greek_pasta_salad/,1,0
+serious,chocolate cake,https://www.seriouseats.com/german-chocolate-cake-recipe-11916175,0,0

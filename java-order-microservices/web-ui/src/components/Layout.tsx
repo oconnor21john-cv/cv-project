@@ -4,7 +4,7 @@ import { ToastContainer } from './Toast'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Layout() {
-  const { token, username, isAdmin, clearToken, apiHealthy } = useApp()
+  const { token, username, clearToken, apiHealthy } = useApp()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -44,11 +44,6 @@ export function Layout() {
               <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
                 Dashboard
               </NavLink>
-              {isAdmin && (
-                <NavLink to="/admin" className={({ isActive }) => (isActive ? 'active admin-link' : 'admin-link')}>
-                  Admin
-                </NavLink>
-              )}
             </>
           ) : (
             <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -65,7 +60,6 @@ export function Layout() {
           </div>
           {token && username && (
             <span className="user-label">
-              {isAdmin && <span className="role-badge">Admin</span>}
               {username}
             </span>
           )}
@@ -82,7 +76,6 @@ export function Layout() {
       </main>
 
       <footer className="footer">
-        <span>Built with Spring Boot, Terraform, and a lot of coffee.</span>
         <span className="footer-links">
           <NavLink to="/architecture">Architecture</NavLink>
           <NavLink to="/login">Login</NavLink>

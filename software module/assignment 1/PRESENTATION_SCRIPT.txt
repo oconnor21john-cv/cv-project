@@ -1,0 +1,379 @@
+TRIVIA QUIZ APPLICATION - PRESENTATION SCRIPT
+Duration: 10 Minutes
+Author: John
+Date: November 2025
+
+================================================================================
+INTRODUCTION (0:00 - 0:45)
+================================================================================
+
+[SCREEN: Show desktop with quiz_application.py file visible]
+
+"Hello, and welcome to my presentation of the Trivia Quiz Application. 
+Today I'll be demonstrating a Python-based quiz system 
+that I've developed for this software development assignment.
+
+This application allows multiple users to take a trivia quiz with 15 questions,
+tracks scores, and displays comprehensive statistics at the end. The system 
+includes robust error handling, random question ordering, and customizable 
+quiz lengths.
+
+Let's begin by looking at the user interface and then dive into the code 
+that makes it all work."
+
+================================================================================
+PART 1: USER INTERFACE DEMONSTRATION (0:45 - 3:30)
+================================================================================
+
+[SCREEN: Open Python IDLE and run quiz_application.py]
+
+"First, let me show you the user interface. I'll run the program in Python IDLE."
+
+[Press F5 to run]
+
+--- Welcome Screen (0:45 - 1:00) ---
+
+"As you can see, the program starts with a clear welcome screen that displays:
+- The quiz title
+- A welcome message
+- A list of key features including random question ordering, customizable 
+  question count, detailed feedback, and score tracking."
+
+--- Customization Feature (1:00 - 1:20) ---
+
+"The first prompt asks if I'd like to choose the number of questions. This is 
+one of the extra features - users can select anywhere from 1 to 15 questions.
+Let me type 'yes' to demonstrate this."
+
+[Type: yes]
+
+"Now it asks how many questions I want. I'll choose 5 for this demonstration 
+to keep it brief."
+
+[Type: 5]
+
+--- Name Input (1:20 - 1:35) ---
+
+"Next, the system asks for my name. This demonstrates basic input validation."
+
+[Type: John]
+
+"Great! The system welcomes me and starts the quiz."
+
+--- Question Display (1:35 - 2:30) ---
+
+"Notice how each question is clearly numbered and shows my progress - 
+'Question 1 of 5'. Let me answer this multiple choice question."
+
+[Show first multiple choice question]
+
+"The options are clearly labeled a, b, c, and d. I'll select answer 'b'."
+
+[Type: b]
+
+"Excellent! The system immediately tells me if I'm correct or incorrect. 
+This provides instant feedback to the user.
+
+Let me continue through a few more questions to show the variety."
+
+[Answer 2-3 more questions, including one text answer question]
+
+"Notice this question asks me to type my answer directly - this is a text 
+answer question. The system accepts both word answers like 'three' and 
+numeric answers like '3' for this particular question. I'll type 'three'."
+
+[Type: three]
+
+"Perfect! The system handles both formats correctly."
+
+--- Results Display (2:30 - 3:00) ---
+
+[Complete remaining questions]
+
+"Now that I've completed all questions, the system displays my results:
+- My name
+- My score in fraction format: 4 out of 5
+- My percentage: 80%
+- A personalized performance message based on my score
+
+Below that is a detailed breakdown showing:
+- Each question I answered
+- My answer versus the correct answer
+- Interesting explanations for each question"
+
+--- Multiple Users (3:00 - 3:30) ---
+
+"The system now asks if anyone else wants to take the quiz. This demonstrates
+the multiple user functionality. Let me say 'no' for now so we can move to 
+the code walkthrough."
+
+[Type: no]
+
+"Since only one person took the quiz, it shows a simple thank you message. 
+If multiple users had participated, we'd see a leaderboard with rankings, 
+the highest scorer, average score, and total participants."
+
+================================================================================
+PART 2: SOURCE CODE OVERVIEW (3:30 - 5:30)
+================================================================================
+
+[SCREEN: Open quiz_application.py in editor, scroll to top]
+
+--- Module Structure (3:30 - 4:00) ---
+
+"Now let's examine the source code. At the top, we have the module docstring 
+explaining what the program does, followed by the necessary imports:
+- random module for shuffling questions
+- typing module for type hints
+
+The code is organized into clear sections with comments."
+
+[Scroll to show structure]
+
+--- Question Bank Function (4:00 - 4:30) ---
+
+"Here's the get_quiz_questions function. This returns a list of 15 question 
+dictionaries. Each question has:
+- The question text
+- For multiple choice: an options dictionary with keys a, b, c, d
+- For text questions: a 'type' field set to 'text'
+- The correct answer (which can be a string or a list for multiple acceptable 
+  answers)
+- An explanation providing interesting facts
+
+Notice question 13 about Henry VIII - the answer is a list containing both 
+'three' and '3', demonstrating how the system accepts multiple correct formats."
+
+[Scroll through questions slowly]
+
+--- Input Validation Functions (4:30 - 5:30) ---
+
+[Scroll to validation functions section]
+
+"The program includes several validation functions that handle user errors:
+
+1. get_valid_name() - This function:
+   - Uses a while loop to keep asking until valid input is received
+   - Checks if the name is empty
+   - Verifies the name contains at least one letter using a for loop
+   - Returns the validated name
+
+2. get_valid_yes_no() - This function:
+   - Accepts 'yes', 'y', 'no', or 'n' in any case
+   - Uses explicit comparisons with 'or' operators
+   - Keeps looping until valid input is received
+
+3. get_valid_number() - This function:
+   - Uses try-except to catch ValueError for non-numeric input
+   - Checks if input is empty
+   - Validates the number is within the specified range
+   - Uses explicit comparisons rather than compound conditions
+
+4. get_answer() - This validates multiple choice answers:
+   - Ensures answer is not empty
+   - Checks if answer is a, b, c, or d
+   - Uses explicit comparisons for validation"
+
+================================================================================
+PART 3: CORE FUNCTIONALITY (5:30 - 7:30)
+================================================================================
+
+[Scroll to check_answer function]
+
+--- Answer Checking (5:30 - 6:00) ---
+
+"The check_answer function is crucial. It:
+- Converts both user and correct answers to lowercase
+- Strips whitespace from both
+- Checks if the correct answer is a list using type()
+- If it's a list, loops through each possible answer
+- Returns True if any match is found
+- This makes all answers case-insensitive and handles multiple correct formats"
+
+[Scroll to run_quiz function]
+
+--- Quiz Execution (6:00 - 6:45) ---
+
+"The run_quiz function orchestrates the quiz:
+- It uses random.sample() to select random questions from the bank
+- Initializes score to 0 and an empty results list
+- Uses a for loop with a manual counter instead of enumerate
+- For each question, it checks the type:
+  - If type is 'text', it gets a text answer
+  - Otherwise, it displays options and gets a multiple choice answer
+- It checks if the answer is correct using our check_answer function
+- Updates the score using explicit addition: score = score + 1
+- Stores detailed results in a dictionary with explicit key assignments
+- Returns both the score and results list"
+
+[Scroll to display_results function]
+
+--- Results Display (6:45 - 7:30) ---
+
+"The display_results function:
+- Calculates percentage using division
+- Displays score and percentage
+- Provides performance feedback using if-elif statements with explicit 
+  comparisons
+- If show_details is True, it loops through all results
+- For each result, it checks if options is None to determine question type
+- Displays the user's answer and, if incorrect, shows the correct answer 
+  and explanation
+- Uses explicit equality checks throughout"
+
+================================================================================
+PART 4: STATISTICS AND MAIN FUNCTION (7:30 - 9:00)
+================================================================================
+
+[Scroll to display_statistics function]
+
+--- Statistics Display (7:30 - 8:15) ---
+
+"The display_statistics function demonstrates advanced data processing:
+- First, it checks if the results list is empty
+- It creates a copy of the results list
+- Then implements a bubble sort algorithm to sort by score
+- This uses nested for loops with explicit index calculations
+- After sorting, it displays a leaderboard using a manual counter
+- It finds the highest score and loops through to find all users with that score
+- It calculates the average score using a for loop to sum all scores
+- Then divides by the number of users
+- Finally displays the average score, percentage, and total participants
+
+Notice I'm using manual loops and explicit operations rather than built-in 
+functions like sorted() or sum() - this demonstrates understanding of 
+fundamental programming concepts."
+
+[Scroll to main function]
+
+--- Main Function (8:15 - 9:00) ---
+
+"The main function ties everything together:
+- Displays the welcome screen
+- Gets all questions and counts them
+- Asks if user wants to customize using get_valid_yes_no
+- If yes, gets the number of questions using get_valid_number
+- Otherwise defaults to 10 questions
+- Initializes an empty results list
+- Uses a while loop with a boolean flag 'keep_going'
+- For each user:
+  - Gets their name
+  - Runs the quiz
+  - Calculates percentage
+  - Stores results in a dictionary with explicit key assignments
+  - Displays their results
+  - Asks if another user wants to play
+- After the loop, checks if more than one user played
+- If so, displays statistics
+- Finally shows a thank you message
+
+The program also includes error handling at the bottom using try-except 
+to catch KeyboardInterrupt and general exceptions."
+
+================================================================================
+PART 5: ERROR HANDLING DEMONSTRATION (9:00 - 10:00)
+================================================================================
+
+[SCREEN: Run the program again]
+
+"Now let me demonstrate the error handling capabilities."
+
+[Run program]
+
+--- Empty Name Error (9:00 - 9:15) ---
+
+"First, I'll try entering an empty name."
+
+[Press Enter without typing anything]
+
+"See how it displays 'Error: Name cannot be empty. Please try again.' 
+and prompts me again."
+
+--- Invalid Name Error (9:15 - 9:25) ---
+
+"Now I'll try entering only numbers."
+
+[Type: 12345]
+
+"The system catches this and says 'Error: Name must contain at least one letter.'
+This shows the validation checking for alphabetic characters."
+
+[Type: John]
+
+--- Invalid Yes/No (9:25 - 9:35) ---
+
+[Type: yes, then when asked for number of questions, type: yes]
+
+"Let me try an invalid response for the question count."
+
+[Type: maybe]
+
+"It displays 'Error: Please enter a number between 1 and 15.' and asks again."
+
+--- Out of Range Number (9:35 - 9:45) ---
+
+[Type: 20]
+
+"Now I'll try a number outside the valid range."
+
+"The system says 'Error: Number must be between 1 and 15.' Perfect!"
+
+[Type: 5]
+
+--- Invalid Answer (9:45 - 9:55) ---
+
+[Enter name, start quiz]
+
+"For a multiple choice question, let me try an invalid option."
+
+[Type: e]
+
+"It says 'Error: Please enter a valid option: a, b, c, or d.' 
+and prompts again. This ensures data integrity throughout the quiz."
+
+[Type: a]
+
+================================================================================
+CONCLUSION (9:55 - 10:00)
+================================================================================
+
+"In summary, this Trivia Quiz Application demonstrates:
+- Clean, user-friendly interface
+- Robust error handling for all input types
+- Multiple question formats
+- Random question ordering
+- Customizable quiz length
+- Multiple user support with statistics
+- Manual implementation of algorithms like bubble sort
+- Comprehensive use of loops, conditionals, functions, and data structures
+
+Thank you for watching this presentation!"
+
+[SCREEN: Show final results or return to code]
+
+================================================================================
+END OF PRESENTATION SCRIPT
+================================================================================
+
+TIMING BREAKDOWN:
+- Introduction: 45 seconds
+- UI Demonstration: 2 minutes 45 seconds
+- Source Code Overview: 2 minutes
+- Core Functionality: 2 minutes
+- Statistics & Main: 1 minute 30 seconds
+- Error Handling: 1 minute
+- Conclusion: 5 seconds
+TOTAL: 10 minutes
+
+TIPS FOR RECORDING:
+1. Speak clearly and at a moderate pace
+2. Pause briefly between sections
+3. Use mouse to highlight code sections as you discuss them
+4. Keep the screen uncluttered - close unnecessary windows
+5. Test audio levels before recording
+6. Practice the script once to ensure smooth delivery
+7. Have the program ready to run in IDLE
+8. Have the code open in a readable font size (14-16pt)
+9. Consider using screen recording software like OBS Studio
+10. If you make a mistake, pause and re-record that section
+

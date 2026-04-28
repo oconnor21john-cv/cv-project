@@ -1,0 +1,98 @@
+Presentation Structure (10 slides, ~12 minutes)
+
+Slide 1 - Title & Project Snapshot (0:45)
+Title: Multi-Source Allergen-Aware Recipe Scraping System
+Include:
+- Your name / programme / date
+- One-sentence problem statement
+- One-sentence research aim
+Say: Why this matters and what your project delivers.
+
+Slide 2 - Motivation & Research Gap (1:00)
+Include:
+- Rising allergy burden + online recipe dependency
+- Gap: fragmented recipe data, variable reliability, unclear allergen risk
+- Gap in literature: technical feasibility often separated from safety ethics
+Visual: 3-box problem diagram (Health risk / Data fragmentation / Transparency gap).
+
+Slide 3 - Aim, Hypothesis, Objectives (1:00)
+Include:
+- Aim (one line)
+- Hypothesis (one line)
+- 4-6 SMART objectives (short bullets)
+Tip: Keep each objective one line max.
+
+Slide 4 - Research Context (Literature Synthesis) (1:15)
+Include:
+- Web scraping methods literature (Khder; Sharma and Borkar)
+- Recipe/allergen systems literature (Roither; Sharma et al.; Suwalka; Chaudhari)
+- Ethical/regulatory context (Brown et al.; FSA; Anaphylaxis UK)
+Visual: Table with 3 columns: Theme | Key finding | Design implication.
+
+Slide 5 - System Architecture (1:30)
+Include:
+- Frontend <-> Flask API <-> Source-specific scrapers <-> Allergen detector
+- Source diagnostics model (ok, unavailable, etc.)
+- Why modular design was chosen
+Visual: Clean architecture diagram with arrows + 1-line explanation per layer.
+
+Slide 6 - Methodology & Evaluation Design (1:30)
+Include:
+- Design-science / iterative build-test-refine
+- Benchmark setup (queries, sources, repeats)
+- Metric groups:
+  - Reliability/retrieval
+  - Quality/completeness
+  - Allergen performance
+  - Safety filtering
+  - Latency
+Visual: Evaluation pipeline flow: Run trials -> Capture metrics -> Analyse -> Interpret.
+
+Slide 7 - Key Quantitative Results (1:30)
+Include (headline numbers):
+- Query success rate
+- Completeness / formatting quality
+- Allergen macro precision/recall/F1
+- False-negative rate
+- Latency p50/p95
+Visual: 2 charts max:
+- Bar/summary for core metrics
+- Box or bar for latency/source comparison
+
+Slide 8 - Critical Evaluation (1:30)
+Include:
+- What worked well
+- What was partial
+- Limitations (silver-truth labeling, drift, latency, representativeness)
+- Ethical/legal trade-offs handled
+Visual: Strengths vs Limitations split slide.
+
+Slide 9 - Conclusions & Recommendations (1:15)
+Include:
+- Direct answer to aim/hypothesis
+- Objective verdicts (met / partially met)
+- Prioritised recommendations (technical + research)
+Visual: Priority roadmap (Now / Next / Later).
+
+Slide 10 - Demo & Closing (1:15)
+Include:
+- 30-60 sec demo flow:
+  - query -> results from multiple sources
+  - allergen filter
+  - source-status messaging
+- Final takeaway sentence
+- Q&A prompt
+Tip: If live demo is risky, use screenshots/GIF sequence.
+
+Slide Design Rules (important for marks)
+- Max 10 slides, minimal text, strong visuals.
+- One key message per slide.
+- Use consistent style: same font, color palette, heading format.
+- Cite key references on relevant slides in small footer text.
+- Show evidence, not just claims.
+
+Speaker Timing Plan (12 min target)
+- Intro + context: 3 min
+- Design + methodology: 3 min
+- Results + evaluation: 4 min
+- Conclusions + demo + close: 2 min

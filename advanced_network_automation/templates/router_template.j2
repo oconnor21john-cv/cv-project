@@ -1,0 +1,214 @@
+{#
+Cisco Router Configuration Template
+Jinja2 template for generating router configurations
+#}
+!
+! {{ device.hostname }} Configuration - Task 2 Network
+! Generated on {{ generation_time }}
+! Device Type: {{ device.device_type | title }}
+! Model: {{ device.model }}
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname {{ device.hostname }}
+!
+!
+!
+enable secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+username {{ device.credentials.username }} privilege 15 secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+license udi pid CISCO2901/K9 sn FTX1524MW6A-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+{# Interface Configuration #}
+{% for interface in device.interfaces %}
+!
+interface {{ interface.name }}
+{% if interface.description %}
+ description {{ interface.description }}
+{% endif %}
+{% if interface.ip_address and interface.ip_address != "" %}
+ ip address {{ interface.ip_address }} {{ interface.subnet_mask }}
+{% else %}
+ no ip address
+{% endif %}
+ duplex auto
+ speed auto
+ no shutdown
+!
+{% endfor %}
+
+{# OSPF Configuration #}
+{% if ospf_config %}
+!
+router ospf {{ ospf_config.process_id | default(1) }}
+ log-adjacency-changes
+{% for network in ospf_config.networks %}
+ network {{ network.network }} {{ network.wildcard }} area {{ network.area | default(0) }}
+{% endfor %}
+{% if ospf_config.router_id %}
+ router-id {{ ospf_config.router_id }}
+{% endif %}
+!
+{% endif %}
+
+{# Static Routes (if any) #}
+{% if static_routes %}
+!
+{% for route in static_routes %}
+ip route {{ route.network }} {{ route.mask }} {{ route.next_hop }}{% if route.distance %} {{ route.distance }}{% endif %}
+{% endfor %}
+!
+{% endif %}
+
+{# Access Control Lists (if any) #}
+{% if acls %}
+!
+{% for acl in acls %}
+{% if acl.type == "standard" %}
+access-list {{ acl.number }} {{ acl.action }} {{ acl.source }}{% if acl.wildcard %} {{ acl.wildcard }}{% endif %}
+{% elif acl.type == "extended" %}
+access-list {{ acl.number }} {{ acl.action }} {{ acl.protocol }} {{ acl.source }} {{ acl.source_wildcard }} {{ acl.destination }} {{ acl.dest_wildcard }}{% if acl.port %} eq {{ acl.port }}{% endif %}
+{% endif %}
+{% endfor %}
+!
+{% endif %}
+
+{# NAT Configuration (if any) #}
+{% if nat_config %}
+!
+{% for nat_rule in nat_config %}
+{% if nat_rule.type == "inside_source" %}
+ip nat inside source {{ nat_rule.source }} {{ nat_rule.translation }}
+{% elif nat_rule.type == "pool" %}
+ip nat pool {{ nat_rule.name }} {{ nat_rule.start_ip }} {{ nat_rule.end_ip }} netmask {{ nat_rule.netmask }}
+{% endif %}
+{% endfor %}
+!
+{% endif %}
+
+{# Default routing #}
+ip classless
+{% if default_route %}
+ip route 0.0.0.0 0.0.0.0 {{ default_route }}
+{% endif %}
+!
+ip flow-export version 9
+!
+!
+!
+{# SNMP Configuration (if enabled) #}
+{% if snmp_config %}
+!
+{% for community in snmp_config.communities %}
+snmp-server community {{ community.name }} {{ community.permission }}
+{% endfor %}
+{% if snmp_config.location %}
+snmp-server location {{ snmp_config.location }}
+{% endif %}
+{% if snmp_config.contact %}
+snmp-server contact {{ snmp_config.contact }}
+{% endif %}
+!
+{% endif %}
+
+{# Logging Configuration #}
+{% if logging_config %}
+!
+{% if logging_config.console_level %}
+logging console {{ logging_config.console_level }}
+{% endif %}
+{% if logging_config.buffer_size %}
+logging buffered {{ logging_config.buffer_size }}
+{% endif %}
+{% for server in logging_config.servers %}
+logging {{ server }}
+{% endfor %}
+!
+{% endif %}
+
+{# NTP Configuration #}
+{% if ntp_servers %}
+!
+{% for server in ntp_servers %}
+ntp server {{ server }}
+{% endfor %}
+!
+{% endif %}
+
+{# Banner Configuration #}
+banner motd ^C
+******************************************
+*        AUTHORIZED ACCESS ONLY         *
+*     Task 2 Network - {{ device.hostname }}{{ ' ' * (15 - device.hostname|length) }}*
+*     Location: {{ device.location }}{{ ' ' * (22 - device.location|length) }}*
+*     Generated: {{ generation_time[:10] }}{{ ' ' * (13 - generation_time[:10]|length) }}*
+******************************************
+^C
+!
+!
+!
+{# Line Configuration #}
+line con 0
+ password {{ device.credentials.password }}
+ login
+ logging synchronous
+ exec-timeout 5 0
+!
+line aux 0
+!
+line vty 0 4
+ password {{ device.credentials.password }}
+ login local
+ transport input ssh
+ exec-timeout 10 0
+!
+line vty 5 15
+ password {{ device.credentials.password }}
+ login local
+ transport input ssh
+ exec-timeout 10 0
+!
+!
+{# SSH Configuration #}
+{% if ssh_config %}
+!
+ip domain-name {{ ssh_config.domain }}
+crypto key generate rsa general-keys modulus {{ ssh_config.key_size | default(1024) }}
+ip ssh version {{ ssh_config.version | default(2) }}
+ip ssh time-out {{ ssh_config.timeout | default(60) }}
+ip ssh authentication-retries {{ ssh_config.retries | default(3) }}
+!
+{% endif %}
+
+!
+end
+

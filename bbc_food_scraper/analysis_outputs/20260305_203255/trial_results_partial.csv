@@ -1,0 +1,31 @@
+run_idx,repeat,query,query_category,source,source_name,source_status,recipes_found,success,has_403,latency_ms,fallback_external_used,fallback_mirror_used,source_unavailable,http_statuses
+1,1,chicken curry,main,bbc,BBC Food,ok,2,1,0,11249.10240000463,0,0,0,[200]
+2,1,chicken curry,main,simply,Simply Recipes,partial,2,1,1,141938.74780001352,1,1,0,"[202, 403]"
+3,1,chicken curry,main,serious,Serious Eats,partial,2,1,1,210938.46460001078,1,1,0,"[202, 403]"
+4,1,vegetarian pasta,main,bbc,BBC Food,ok,2,1,0,12376.047500001732,0,0,0,[200]
+5,1,vegetarian pasta,main,simply,Simply Recipes,partial,2,1,1,144154.98289998504,1,1,0,"[202, 403]"
+6,1,vegetarian pasta,main,serious,Serious Eats,temporarily_unavailable,0,0,1,153086.75210000365,1,1,1,"[202, 403]"
+7,1,chocolate cake,dessert,bbc,BBC Food,ok,2,1,0,11744.500000000698,0,0,0,[200]
+8,1,chocolate cake,dessert,simply,Simply Recipes,partial,2,1,1,169326.03930000914,1,1,0,"[202, 403]"
+9,1,chocolate cake,dessert,serious,Serious Eats,partial,2,1,1,180806.2315999996,1,1,0,"[202, 403]"
+10,1,beef stew,main,bbc,BBC Food,ok,2,1,0,12197.417899995344,0,0,0,[200]
+11,1,beef stew,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,15912.857599993004,1,1,1,"[202, 403]"
+12,1,beef stew,main,serious,Serious Eats,temporarily_unavailable,0,0,1,78193.37250001263,1,1,1,"[202, 403]"
+13,1,mushroom soup,main,bbc,BBC Food,ok,2,1,0,10957.042099995306,0,0,0,[200]
+14,1,mushroom soup,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,15178.837099985685,1,1,1,"[202, 403]"
+15,1,mushroom soup,main,serious,Serious Eats,temporarily_unavailable,0,0,1,14932.91400000453,1,1,1,"[202, 403]"
+16,1,salmon,main,bbc,BBC Food,ok,2,1,0,11711.320400005206,0,0,0,[200]
+17,1,salmon,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,14602.482599992072,1,1,1,"[202, 403]"
+18,1,salmon,main,serious,Serious Eats,temporarily_unavailable,0,0,1,14575.124800001504,1,1,1,"[202, 403]"
+19,1,lentil dal,main,bbc,BBC Food,ok,2,1,0,11117.010600020876,0,0,0,[200]
+20,1,lentil dal,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,57137.912400008645,1,1,1,[403]
+21,1,lentil dal,main,serious,Serious Eats,temporarily_unavailable,0,0,1,57010.83089999156,1,1,1,[403]
+22,1,apple pie,dessert,bbc,BBC Food,ok,2,1,0,11578.671800001757,0,0,0,[200]
+23,1,apple pie,dessert,simply,Simply Recipes,temporarily_unavailable,0,0,1,57130.30250000884,1,1,1,[403]
+24,1,apple pie,dessert,serious,Serious Eats,temporarily_unavailable,0,0,1,56104.64239999419,1,1,1,[403]
+25,1,lasagne,main,bbc,BBC Food,ok,2,1,0,11979.454999993322,0,0,0,[200]
+26,1,lasagne,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,60490.38890001248,1,1,1,[403]
+27,1,lasagne,main,serious,Serious Eats,temporarily_unavailable,0,0,1,58416.591999994125,1,1,1,[403]
+28,1,thai curry,main,bbc,BBC Food,ok,2,1,0,11689.605999999912,0,0,0,[200]
+29,1,thai curry,main,simply,Simply Recipes,temporarily_unavailable,0,0,1,58008.7553000194,1,1,1,[403]
+30,1,thai curry,main,serious,Serious Eats,temporarily_unavailable,0,0,1,57108.86490001576,1,1,1,[403]

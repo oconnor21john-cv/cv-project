@@ -37,7 +37,7 @@ public class ApiExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ProblemDetail catchAll(Exception ex) {
 		var pd = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-		pd.setDetail(ex.getClass().getName() + ": " + ex.getMessage());
+		pd.setDetail("An unexpected error occurred");
 		return pd;
 	}
 }

@@ -1,0 +1,84 @@
+@startuml St_Johns_Hospital_ERD
+
+' Entity-Relationship Diagram for St. John's Hospital Pharmacy System
+' Using Crow's Foot Notation
+
+skinparam linetype ortho
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+entity "PATIENT" as patient {
+    * **patient_id** : PK
+    --
+    * first_name
+    * last_name
+    * address_line1
+      address_line2
+    * city
+    * postcode
+    * date_of_birth
+    * telephone_number
+}
+
+entity "DOCTOR" as doctor {
+    * **doctor_id** : PK
+    --
+    * first_name
+    * last_name
+    * specialisation
+}
+
+entity "PHARMACIST" as pharmacist {
+    * **pharmacist_id** : PK
+    --
+    * first_name
+    * last_name
+    * registration_number
+}
+
+entity "PRESCRIPTION" as prescription {
+    * **prescription_no** : PK
+    --
+    * patient_id : FK
+    * doctor_id : FK
+    * pharmacist_id : FK
+    * date_prescribed
+    * issue_date
+}
+
+entity "DRUG" as drug {
+    * **drug_id** : PK
+    --
+    * drug_name
+    * item_cost
+    * stock_quantity
+    * reorder_level
+}
+
+entity "PRESCRIPTION_ITEM" as prescription_item {
+    * **prescription_no** : PK, FK
+    * **drug_id** : PK, FK
+    --
+    * quantity_prescribed
+    * quantity_issued
+}
+
+' Relationships with Cardinality
+
+patient ||--o{ prescription : "receives"
+doctor ||--o{ prescription : "prescribes"
+pharmacist ||--o{ prescription : "dispenses"
+prescription ||--|{ prescription_item : "contains"
+drug ||--o{ prescription_item : "included in"
+
+note bottom of prescription_item
+  Junction/Associative entity
+  linking PRESCRIPTION to DRUG
+  Composite PK: (prescription_no, drug_id)
+end note
+
+@enduml
+

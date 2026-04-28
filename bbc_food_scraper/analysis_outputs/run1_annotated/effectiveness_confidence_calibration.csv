@@ -1,0 +1,3 @@
+confidence,count,correct,precision,ground_truth_source
+HIGH,161,120,0.7453416149068323,manual annotations
+MEDIUM,37,20,0.5405405405405406,manual annotations
