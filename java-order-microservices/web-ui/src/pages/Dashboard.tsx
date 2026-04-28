@@ -41,18 +41,23 @@ export function Dashboard() {
   const [error, setError] = useState('')
   const [history, setHistory] = useState<OrderResponse[]>([])
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [historyVersion, setHistoryVersion] = useState(0)
 
-  // Fetch order history on mount and after order changes
+  function refreshHistory() {
+    setHistoryVersion((v) => v + 1)
+  }
+
+  // Fetch order history on mount and whenever historyVersion bumps
   useEffect(() => {
     if (!token) return
     let cancelled = false
     setHistoryLoading(true)
     getJson<OrderResponse[]>(`${baseUrl}/orders`, token)
       .then((orders) => { if (!cancelled) setHistory(orders) })
-      .catch(() => {})
+      .catch((e) => { if (!cancelled) console.warn('Failed to load order history:', e) })
       .finally(() => { if (!cancelled) setHistoryLoading(false) })
     return () => { cancelled = true }
-  }, [token, baseUrl, order?.status])
+  }, [token, baseUrl, historyVersion])
 
   // Poll order status every 5 seconds when an active order exists
   useEffect(() => {
@@ -114,6 +119,7 @@ export function Dashboard() {
       )
       setOrder(created)
       addLog('success', `Order ${created.id.slice(0, 8)}… created · £${created.totalAmount.toFixed(2)} · ${created.status}`)
+      refreshHistory()
     },
     `POST /orders — ${quantity} × ${sku} @ £${unitPrice.toFixed(2)}`,
   )
@@ -125,6 +131,7 @@ export function Dashboard() {
       const confirmed = await postJson<OrderResponse>(`${baseUrl}/orders/${order.id}/confirm`, {}, token)
       setOrder(confirmed)
       addLog('success', `inventory-service reserved stock · payment-service accepted · ${confirmed.status}`)
+      refreshHistory()
     },
     'POST /orders/{id}/confirm — reserving stock + charging',
   )
@@ -136,6 +143,7 @@ export function Dashboard() {
       const cancelled = await postJson<OrderResponse>(`${baseUrl}/orders/${order.id}/cancel`, {}, token)
       setOrder(cancelled)
       addLog('success', `Order ${cancelled.status.toLowerCase()}`)
+      refreshHistory()
     },
     'POST /orders/{id}/cancel — releasing reservation',
   )
