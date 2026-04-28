@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,13 @@ public class OrderController {
 	public ResponseEntity<OrderResponse> cancel(@PathVariable UUID id) {
 		var order = orderService.cancel(id);
 		return ResponseEntity.ok(toResponse(order));
+	}
+
+	@DeleteMapping
+	public ResponseEntity<Void> deleteAll(Authentication auth) {
+		var username = auth.getName();
+		orderService.deleteAllByUser(username);
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{id}")

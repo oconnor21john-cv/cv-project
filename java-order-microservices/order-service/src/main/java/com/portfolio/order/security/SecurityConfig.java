@@ -58,6 +58,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.anyRequest().authenticated()
 		);
 		http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)));

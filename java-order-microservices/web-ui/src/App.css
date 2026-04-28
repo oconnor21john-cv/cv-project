@@ -969,6 +969,12 @@
   color: var(--text-muted);
 }
 
+.history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .history-active-row {
   background: rgba(111, 157, 255, 0.06);
   border-left: 2px solid var(--accent);

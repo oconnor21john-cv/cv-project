@@ -174,6 +174,12 @@ public class OrderService {
 		return orderRepository.findByCreatedByOrderByCreatedAtDesc(username);
 	}
 
+	@Transactional
+	public void deleteAllByUser(String username) {
+		var orders = orderRepository.findByCreatedByOrderByCreatedAtDesc(username);
+		orderRepository.deleteAll(orders);
+	}
+
 	private void publishCancelled(UUID orderId, String reason) {
 		sqsEventPublisher.publish(
 				ordersQueueUrl,

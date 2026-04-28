@@ -24,10 +24,6 @@ const features = [
     body: 'Spring Security 6 resource server with HMAC-signed tokens. Customer and admin roles gate the /orders endpoints.',
   },
   {
-    title: 'Event-driven with SQS',
-    body: 'Domain events flow through AWS SQS so the services stay loosely coupled — no service knows how many listeners it has.',
-  },
-  {
     title: 'Infrastructure as code',
     body: 'The entire stack (VPC, RDS, ECR, ECS, ALB, SQS, IAM) is provisioned by Terraform. One command, reproducible environment.',
   },

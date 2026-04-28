@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { EventLog } from '../components/EventLog'
 import { toast } from '../components/Toast'
-import { getJson, postJson, type OrderResponse } from '../lib/api'
+import { deleteRequest, getJson, postJson, type OrderResponse } from '../lib/api'
 import { useApp, type Stage } from '../store/AppContext'
 
 function StatusPill({ status }: { status: string }) {
@@ -151,6 +151,19 @@ export function Dashboard() {
   function onNewOrder() {
     setOrder(null)
     setError('')
+  }
+
+  async function onClearHistory() {
+    try {
+      await deleteRequest(`${baseUrl}/orders`, token)
+      setOrder(null)
+      setHistory([])
+      addLog('info', 'Order history cleared')
+      toast('success', 'History cleared')
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e)
+      toast('error', msg)
+    }
   }
 
   const isTerminal = order && ['CONFIRMED', 'CANCELLED', 'STOCK_FAILED', 'PAYMENT_FAILED'].includes(order.status)
@@ -364,7 +377,14 @@ export function Dashboard() {
 
           {/* ── Order history ── */}
           <section className="card">
-            <div className="card-label">Order history</div>
+            <div className="history-head">
+              <div className="card-label">Order history</div>
+              {history.length > 0 && (
+                <button className="btn-ghost btn-sm" onClick={onClearHistory}>
+                  Clear history
+                </button>
+              )}
+            </div>
             {historyLoading && <p className="loading-msg">Loading orders…</p>}
             {!historyLoading && history.length === 0 && (
               <p className="empty-msg">No orders yet. Create one above to get started.</p>

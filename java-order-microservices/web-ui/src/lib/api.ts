@@ -65,6 +65,17 @@ export async function getJson<T>(url: string, token?: string): Promise<T> {
   return (await res.json()) as T
 }
 
+export async function deleteRequest(url: string, token?: string): Promise<void> {
+  const res = await fetch(url, {
+    method: 'DELETE',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  })
+  if (!res.ok) {
+    const text = await res.text().catch(() => '')
+    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+  }
+}
+
 export function shortOrigin(url: string) {
   try {
     return new URL(url).host
