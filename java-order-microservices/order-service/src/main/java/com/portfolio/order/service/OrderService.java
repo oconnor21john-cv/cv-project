@@ -176,8 +176,7 @@ public class OrderService {
 
 	@Transactional
 	public void deleteAllByUser(String username) {
-		var orders = orderRepository.findByCreatedByOrderByCreatedAtDesc(username);
-		orderRepository.deleteAll(orders);
+		orderRepository.deleteByCreatedBy(username);
 	}
 
 	private void publishCancelled(UUID orderId, String reason) {
