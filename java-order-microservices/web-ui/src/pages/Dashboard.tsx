@@ -179,10 +179,10 @@ export function Dashboard() {
   return (
     <>
       <section className="page-head">
-        <div className="page-head-eyebrow">Live workflow</div>
+        <div className="page-head-eyebrow">Dashboard</div>
         <h1 className="page-head-h">Place an order</h1>
         <p className="page-head-sub">
-          Each click hits the real Spring Boot service on AWS. Watch the event log on the right — every step narrates itself.
+          Orders are sent to order-service on ECS. Confirm triggers calls to inventory-service and payment-service. Events are logged on the right.
         </p>
       </section>
 

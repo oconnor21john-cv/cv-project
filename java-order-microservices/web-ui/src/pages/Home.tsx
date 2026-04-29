@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useApp } from '../store/AppContext'
 
 const techTags = [
-  'Java 25',
+  'Java 21',
   'Spring Boot 3',
   'PostgreSQL',
   'AWS SQS',
@@ -16,16 +16,16 @@ const techTags = [
 
 const features = [
   {
-    title: 'Three independent services',
-    body: 'order-service, inventory-service and payment-service each own their Postgres schema and communicate through events.',
+    title: 'order-service',
+    body: 'Accepts and persists orders, coordinates inventory reservation and payment processing. Publishes domain events to SQS. Owns the orders schema in PostgreSQL.',
   },
   {
-    title: 'JWT-authenticated API',
-    body: 'Spring Security 6 resource server with HMAC-signed tokens. Customer and admin roles gate the /orders endpoints.',
+    title: 'inventory-service',
+    body: 'Manages stock levels per SKU. Exposes reserve and release endpoints called by order-service during the confirm/cancel flow.',
   },
   {
-    title: 'Infrastructure as code',
-    body: 'The entire stack (VPC, RDS, ECR, ECS, ALB, SQS, IAM) is provisioned by Terraform. One command, reproducible environment.',
+    title: 'payment-service',
+    body: 'Processes payments against order totals. Returns success or failure to order-service, which compensates inventory if payment is declined.',
   },
 ]
 
@@ -36,15 +36,17 @@ export function Home() {
       <section className="hero">
         <div className="hero-eyebrow">
           <span className="eyebrow-dot" />
-          Live portfolio demo
+          Live on AWS
         </div>
         <h1 className="hero-h1">
-          Java microservices, <br />
-          <span className="gradient-text">live on AWS.</span>
+          Order processing <br />
+          <span className="gradient-text">microservices</span>
         </h1>
         <p className="hero-lead">
-          Three Spring Boot services behind an Application Load Balancer, talking over SQS,
-          backed by RDS Postgres. Place a real order end-to-end and watch the flow in real time.
+          Three Spring Boot services running on ECS Fargate behind an ALB.
+          Orders are persisted to RDS PostgreSQL, stock is reserved via REST,
+          and domain events are published to SQS. The infrastructure is defined in Terraform
+          and deployed through GitHub Actions.
         </p>
 
         <div className="hero-cta">
@@ -54,11 +56,11 @@ export function Home() {
             </Link>
           ) : (
             <Link to="/login" className="btn-primary btn-lg">
-              Try the demo →
+              Place an order →
             </Link>
           )}
           <Link to="/architecture" className="btn-ghost btn-lg">
-            See the architecture
+            Architecture
           </Link>
         </div>
 
@@ -72,7 +74,6 @@ export function Home() {
       <section className="feature-grid">
         {features.map((f) => (
           <div key={f.title} className="feature">
-            <div className="feature-dot" />
             <h3>{f.title}</h3>
             <p>{f.body}</p>
           </div>
@@ -81,10 +82,10 @@ export function Home() {
 
       <section className="card home-cta">
         <div>
-          <div className="card-label">Ready to try it?</div>
-          <h2 className="home-cta-h">Log in with demo credentials and place an order.</h2>
+          <div className="card-label">Demo</div>
+          <h2 className="home-cta-h">Place an order against the running services.</h2>
           <p className="home-cta-sub">
-            Use <code>customer / password</code> or <code>admin / password</code>. No signup, no email.
+            Credentials: <code>customer / password</code>
           </p>
         </div>
         <Link to={token ? '/dashboard' : '/login'} className="btn-primary btn-lg">
