@@ -700,6 +700,185 @@
   color: #fff;
 }
 
+/* ── Service flow diagram ── */
+.sflow {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px 12px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.sflow-active {
+  border-color: rgba(111, 157, 255, 0.3);
+  box-shadow: 0 0 32px -8px rgba(111, 157, 255, 0.12);
+}
+
+.sflow-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.sflow-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Nodes */
+.sflow-node-bg {
+  fill: var(--surface-2);
+  stroke: var(--border);
+  stroke-width: 1.5;
+  transition: fill 0.3s, stroke 0.3s;
+}
+
+.sflow-node-badge {
+  fill: var(--surface-3);
+  transition: fill 0.3s;
+}
+
+.sflow-node-icon {
+  fill: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  transition: fill 0.3s;
+}
+
+.sflow-node-label {
+  fill: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  transition: fill 0.3s;
+}
+
+.sflow-node-label-sm {
+  font-size: 10px;
+}
+
+/* Node states */
+.sflow-node-active .sflow-node-bg {
+  stroke: var(--accent);
+  fill: rgba(111, 157, 255, 0.08);
+}
+.sflow-node-active .sflow-node-badge {
+  fill: var(--accent);
+}
+.sflow-node-active .sflow-node-icon {
+  fill: #07090f;
+}
+.sflow-node-active .sflow-node-label {
+  fill: var(--text);
+}
+
+.sflow-node-success .sflow-node-bg {
+  stroke: var(--green);
+  fill: rgba(52, 211, 153, 0.06);
+}
+.sflow-node-success .sflow-node-badge {
+  fill: var(--green);
+}
+.sflow-node-success .sflow-node-icon {
+  fill: #07090f;
+}
+.sflow-node-success .sflow-node-label {
+  fill: var(--green);
+}
+
+.sflow-node-error .sflow-node-bg {
+  stroke: var(--red);
+  fill: rgba(248, 113, 113, 0.06);
+}
+.sflow-node-error .sflow-node-badge {
+  fill: var(--red);
+}
+.sflow-node-error .sflow-node-icon {
+  fill: #fff;
+}
+.sflow-node-error .sflow-node-label {
+  fill: var(--red);
+}
+
+/* Pulse ring on active nodes */
+.sflow-node-pulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  animation: sflow-pulse 1.5s ease-out infinite;
+}
+
+@keyframes sflow-pulse {
+  0%   { opacity: 0.6; stroke-width: 1.5; }
+  100% { opacity: 0; stroke-width: 6; }
+}
+
+/* Edges */
+.sflow-edge {
+  stroke: var(--border-2);
+  fill: none;
+  transition: stroke 0.3s;
+}
+
+.sflow-edge-active {
+  stroke: var(--accent);
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 4px rgba(111, 157, 255, 0.4));
+}
+
+.sflow-edge-done {
+  stroke: var(--green);
+  stroke-dasharray: none;
+  opacity: 0.5;
+}
+
+/* Travelling packet */
+.sflow-packet {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+/* Client box */
+.sflow-client-box {
+  fill: var(--surface-2);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.sflow-client-icon {
+  fill: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sflow-client-label {
+  fill: var(--text-muted);
+  font-size: 9px;
+  font-family: var(--font);
+  font-weight: 500;
+}
+
+/* Status label */
+.sflow-status {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding-top: 10px;
+  min-height: 28px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.sflow-status-visible {
+  opacity: 1;
+  color: var(--accent);
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -1399,6 +1578,8 @@
   .pipeline { grid-template-columns: 1fr 1fr; gap: 8px; }
   .step { padding: 10px 14px; font-size: 12px; }
   .grid { grid-template-columns: 1fr; }
+  .sflow { padding: 12px 10px 8px; }
+  .sflow-svg { overflow: visible; }
   .log { position: static; max-height: 300px; }
   .panel-split { grid-template-columns: 1fr; gap: 20px; }
   .fields-2, .fields-3 { grid-template-columns: 1fr; }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { EventLog } from '../components/EventLog'
+import { ServiceFlow } from '../components/ServiceFlow'
 import { toast } from '../components/Toast'
 import { deleteRequest, getJson, postJson, type OrderResponse } from '../lib/api'
 import { useApp, type Stage } from '../store/AppContext'
@@ -206,6 +207,8 @@ export function Dashboard() {
           )
         })}
       </section>
+
+      <ServiceFlow />
 
       <div className="grid">
         <div className="col">
