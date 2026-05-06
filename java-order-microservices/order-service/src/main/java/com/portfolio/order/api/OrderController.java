@@ -41,7 +41,10 @@ public class OrderController {
 			Principal principal
 	) {
 		var order = orderService.create(request, principal.getName());
-		return ResponseEntity.ok(toResponse(order));
+		// Fetch stock for items in newly created order
+		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
+		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
 	@GetMapping
@@ -71,13 +74,19 @@ public class OrderController {
 	@PostMapping("/{id}/confirm")
 	public ResponseEntity<OrderResponse> confirm(@PathVariable UUID id, Principal principal) {
 		var order = orderService.confirm(id, principal.getName());
-		return ResponseEntity.ok(toResponse(order));
+		// Fetch stock for items in confirmed order
+		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
+		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
 	@PostMapping("/{id}/cancel")
 	public ResponseEntity<OrderResponse> cancel(@PathVariable UUID id, Principal principal) {
 		var order = orderService.cancel(id, principal.getName());
-		return ResponseEntity.ok(toResponse(order));
+		// Fetch stock for items in cancelled order
+		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
+		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
 	@GetMapping("/{id}")
