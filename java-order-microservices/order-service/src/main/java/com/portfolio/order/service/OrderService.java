@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientResponseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.portfolio.order.api.CreateOrderRequest;
+import com.portfolio.order.api.OrderAccessDeniedException;
+import com.portfolio.order.api.OrderNotFoundException;
 import com.portfolio.order.clients.InventoryClient;
 import com.portfolio.order.clients.InventoryReserveRequest;
 import com.portfolio.order.clients.InventoryReserveRequestItem;
@@ -26,6 +31,8 @@ import com.portfolio.order.persistence.OrderRepository;
 
 @Service
 public class OrderService {
+	private static final Logger log = LoggerFactory.getLogger(OrderService.class);
+
 	private final OrderRepository orderRepository;
 	private final InventoryClient inventoryClient;
 	private final PaymentClient paymentClient;
@@ -46,12 +53,22 @@ public class OrderService {
 		this.ordersQueueUrl = ordersQueueUrl;
 	}
 
-	@Transactional
+	/**
+	 * Creates a new order. Price lookup happens before the transaction opens
+	 * so that the HTTP call to inventory-service does not hold a DB connection.
+	 */
 	public OrderEntity create(CreateOrderRequest request, String username) {
-		var orderId = UUID.randomUUID();
-
 		var skus = request.items().stream().map(i -> i.sku()).toList();
 		var prices = inventoryClient.fetchPrices(skus);
+
+		log.info("Creating order for user={} with {} item(s)", username, request.items().size());
+		return createTransactional(request, username, prices);
+	}
+
+	@Transactional
+	protected OrderEntity createTransactional(CreateOrderRequest request, String username,
+			java.util.Map<String, BigDecimal> prices) {
+		var orderId = UUID.randomUUID();
 
 		var total = request.items().stream()
 				.map(i -> prices.get(i.sku()).multiply(BigDecimal.valueOf(i.quantity())))
@@ -72,17 +89,22 @@ public class OrderService {
 		);
 		sqsEventPublisher.publish(ordersQueueUrl, event);
 
+		log.info("Order created: orderId={}, total={}, user={}", orderId, total, username);
 		return order;
 	}
 
 	@Transactional
-	public OrderEntity confirm(UUID orderId) {
+	public OrderEntity confirm(UUID orderId, String username) {
 		var order = orderRepository.findById(orderId)
-				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+				.orElseThrow(() -> new OrderNotFoundException(orderId));
+		verifyOwnership(order, username);
 
 		if (order.getStatus() != OrderStatus.PLACED) {
+			log.debug("Confirm ignored: orderId={} already in status {}", orderId, order.getStatus());
 			return order;
 		}
+
+		log.info("Confirming order: orderId={}, user={}", orderId, username);
 
 		var reserveReq = new InventoryReserveRequest(
 				orderId,
@@ -94,11 +116,15 @@ public class OrderService {
 		try {
 			var reserveResp = inventoryClient.reserve(reserveReq);
 			if (reserveResp == null || !"RESERVED".equalsIgnoreCase(reserveResp.status())) {
+				log.warn("Stock reservation failed: orderId={}, reason={}", orderId,
+						reserveResp == null ? "Inventory error" : reserveResp.message());
 				return failStock(order, reserveResp == null ? "Inventory error" : reserveResp.message());
 			}
 		} catch (RestClientResponseException ex) {
+			log.warn("Inventory call failed: orderId={}, status={}", orderId, ex.getStatusCode());
 			return failStock(order, "Inventory call failed: " + ex.getStatusCode());
 		} catch (Exception ex) {
+			log.warn("Inventory call failed: orderId={}", orderId, ex);
 			return failStock(order, "Inventory call failed");
 		}
 
@@ -106,6 +132,7 @@ public class OrderService {
 			var payResp = paymentClient.createPayment(new PaymentCreateRequest(orderId, order.getTotalAmount()));
 			if (payResp != null && "SUCCEEDED".equalsIgnoreCase(payResp.status())) {
 				order.setStatus(OrderStatus.CONFIRMED);
+				log.info("Order confirmed: orderId={}, total={}", orderId, order.getTotalAmount());
 				sqsEventPublisher.publish(
 						ordersQueueUrl,
 						new OrderConfirmedEvent(UUID.randomUUID(), Instant.now(), orderId, order.getTotalAmount())
@@ -113,6 +140,7 @@ public class OrderService {
 				return order;
 			}
 
+			log.warn("Payment failed: orderId={}, releasing inventory", orderId);
 			inventoryClient.release(orderId);
 			order.setStatus(OrderStatus.PAYMENT_FAILED);
 			sqsEventPublisher.publish(
@@ -121,6 +149,7 @@ public class OrderService {
 			);
 			return order;
 		} catch (RestClientResponseException ex) {
+			log.warn("Payment call failed: orderId={}, status={}, releasing inventory", orderId, ex.getStatusCode());
 			inventoryClient.release(orderId);
 			order.setStatus(OrderStatus.PAYMENT_FAILED);
 			sqsEventPublisher.publish(
@@ -132,21 +161,26 @@ public class OrderService {
 	}
 
 	@Transactional
-	public OrderEntity cancel(UUID orderId) {
+	public OrderEntity cancel(UUID orderId, String username) {
 		var order = orderRepository.findById(orderId)
-				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+				.orElseThrow(() -> new OrderNotFoundException(orderId));
+		verifyOwnership(order, username);
+
+		log.info("Cancelling order: orderId={}, currentStatus={}, user={}", orderId, order.getStatus(), username);
 
 		return switch (order.getStatus()) {
 			case PLACED -> {
 				order.setStatus(OrderStatus.CANCELLED);
 				publishCancelled(orderId, "Cancelled by user");
+				log.info("Order cancelled (was PLACED): orderId={}", orderId);
 				yield order;
 			}
 			case CONFIRMED -> {
 				try {
 					inventoryClient.release(orderId);
-				} catch (Exception ignored) {
-					// best-effort compensation; can be reconciled asynchronously
+					log.info("Inventory released for cancelled order: orderId={}", orderId);
+				} catch (Exception ex) {
+					log.warn("Best-effort inventory release failed for orderId={}: {}", orderId, ex.getMessage());
 				}
 				order.setStatus(OrderStatus.CANCELLED);
 				publishCancelled(orderId, "Cancelled by user (stock released)");
@@ -161,7 +195,7 @@ public class OrderService {
 	@Transactional(readOnly = true)
 	public OrderEntity get(UUID id) {
 		return orderRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Order not found: " + id));
+				.orElseThrow(() -> new OrderNotFoundException(id));
 	}
 
 	@Transactional(readOnly = true)
@@ -193,6 +227,14 @@ public class OrderService {
 				new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), order.getId(), reason)
 		);
 		return order;
+	}
+
+	private void verifyOwnership(OrderEntity order, String username) {
+		if (!order.getCreatedBy().equals(username)) {
+			log.warn("Access denied: user={} attempted to modify orderId={} owned by {}",
+					username, order.getId(), order.getCreatedBy());
+			throw new OrderAccessDeniedException(order.getId());
+		}
 	}
 }
 

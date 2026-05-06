@@ -53,14 +53,14 @@ public class OrderController {
 	}
 
 	@PostMapping("/{id}/confirm")
-	public ResponseEntity<OrderResponse> confirm(@PathVariable UUID id) {
-		var order = orderService.confirm(id);
+	public ResponseEntity<OrderResponse> confirm(@PathVariable UUID id, Principal principal) {
+		var order = orderService.confirm(id, principal.getName());
 		return ResponseEntity.ok(toResponse(order));
 	}
 
 	@PostMapping("/{id}/cancel")
-	public ResponseEntity<OrderResponse> cancel(@PathVariable UUID id) {
-		var order = orderService.cancel(id);
+	public ResponseEntity<OrderResponse> cancel(@PathVariable UUID id, Principal principal) {
+		var order = orderService.cancel(id, principal.getName());
 		return ResponseEntity.ok(toResponse(order));
 	}
 

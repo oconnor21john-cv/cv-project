@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,8 @@ import com.portfolio.events.inventory.StockReservedEvent;
 
 @Service
 public class InventoryReservationService {
+	private static final Logger log = LoggerFactory.getLogger(InventoryReservationService.class);
+
 	private final InventoryRepository inventoryRepository;
 	private final ReservationRepository reservationRepository;
 	private final SqsEventPublisher sqsEventPublisher;
@@ -39,8 +43,11 @@ public class InventoryReservationService {
 
 	@Transactional
 	public Result reserve(ReserveStockRequest request) {
+		log.info("Reserve request: orderId={}, items={}", request.orderId(), request.items().size());
+
 		var existing = reservationRepository.findWithItemsByOrderId(request.orderId());
 		if (existing.isPresent()) {
+			log.debug("Idempotent hit: orderId={} already has status={}", request.orderId(), existing.get().getStatus());
 			return switch (existing.get().getStatus()) {
 				case RESERVED -> Result.reserved("Already reserved");
 				case RELEASED -> Result.failed("Already released");
@@ -52,9 +59,12 @@ public class InventoryReservationService {
 			var inv = inventoryRepository.findBySkuForUpdate(item.sku())
 					.orElse(null);
 			if (inv == null) {
+				log.warn("Unknown SKU in reservation: orderId={}, sku={}", request.orderId(), item.sku());
 				return failAndPublish(request.orderId(), "Unknown SKU: " + item.sku(), request);
 			}
 			if (inv.getAvailable() < item.quantity()) {
+				log.warn("Insufficient stock: orderId={}, sku={}, available={}, requested={}",
+						request.orderId(), item.sku(), inv.getAvailable(), item.quantity());
 				return failAndPublish(request.orderId(), "Insufficient stock for " + item.sku(), request);
 			}
 		}
@@ -80,18 +90,24 @@ public class InventoryReservationService {
 		);
 		sqsEventPublisher.publish(inventoryQueueUrl, event);
 
+		log.info("Stock reserved: orderId={}, skus={}", request.orderId(),
+				request.items().stream().map(i -> i.sku()).toList());
 		return Result.reserved("Reserved");
 	}
 
 	@Transactional
 	public Result release(UUID orderId) {
+		log.info("Release request: orderId={}", orderId);
+
 		var existing = reservationRepository.findWithItemsByOrderId(orderId);
 		if (existing.isEmpty()) {
+			log.debug("No reservation found for release: orderId={}", orderId);
 			return Result.reserved("No reservation found (noop)");
 		}
 
 		var reservation = existing.get();
 		if (reservation.getStatus() != ReservationStatus.RESERVED) {
+			log.debug("Reservation not in RESERVED state: orderId={}, status={}", orderId, reservation.getStatus());
 			return Result.reserved("Reservation not in RESERVED state (noop)");
 		}
 
@@ -103,6 +119,7 @@ public class InventoryReservationService {
 		}
 		reservation.setStatus(ReservationStatus.RELEASED);
 
+		log.info("Stock released: orderId={}", orderId);
 		return Result.reserved("Released");
 	}
 

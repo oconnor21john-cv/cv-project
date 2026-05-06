@@ -1,130 +1,135 @@
-# Java Order Microservices (Spring Boot + AWS SQS)
+# Java Order Microservices
 
-Portfolio-sized microservices demo:
+A distributed order management system built with Spring Boot, demonstrating microservice patterns including saga-based orchestration, idempotent operations, circuit breakers, and event-driven communication via AWS SQS.
 
-- `order-service` (JWT-secured): create/confirm/cancel orders (orchestrates reserve stock + payment)
-- `inventory-service`: reserves/releases stock (idempotent by `orderId`)
-- `payment-service`: mock payment authorize/decline (idempotent by `orderId`)
-- SQS event publishing: one queue per service (`order-service`, `inventory-service`, `payment-service`)
-- Separate Postgres DB per service + Flyway migrations
-- Swagger UI on every service
-- Testcontainers + WireMock integration tests
+## Architecture
 
-## Prereqs
+```mermaid
+graph TB
+    Client([React UI / API Client])
 
-- Docker Desktop
+    subgraph ALB["AWS ALB"]
+        LB[Load Balancer]
+    end
 
-## Run
+    subgraph ECS["ECS Fargate Cluster"]
+        OS[Order Service<br/>:8081]
+        IS[Inventory Service<br/>:8082]
+        PS[Payment Service<br/>:8083]
+    end
 
-From this folder:
+    subgraph Data["Persistence"]
+        DB1[(orders-db<br/>Postgres)]
+        DB2[(inventory-db<br/>Postgres)]
+        DB3[(payments-db<br/>Postgres)]
+    end
 
-```powershell
+    subgraph Messaging["Event Bus"]
+        SQS1[[order-events<br/>SQS]]
+        SQS2[[inventory-events<br/>SQS]]
+        SQS3[[payment-events<br/>SQS]]
+    end
+
+    Client --> LB --> OS
+    OS -- "reserve stock" --> IS
+    OS -- "create payment" --> PS
+    OS -- "release stock<br/>(compensation)" --> IS
+
+    OS --> DB1
+    IS --> DB2
+    PS --> DB3
+
+    OS --> SQS1
+    IS --> SQS2
+    PS --> SQS3
+```
+
+**Order confirmation flow:** Order Service orchestrates a saga — it reserves inventory, then requests payment. If payment fails, it compensates by releasing the reserved stock. Each downstream call is idempotent so retries are safe.
+
+## Services
+
+| Service | Port | Responsibility |
+|---------|------|----------------|
+| **order-service** | 8081 | JWT auth, order lifecycle, saga orchestration |
+| **inventory-service** | 8082 | Stock levels, pessimistic-locked reservations |
+| **payment-service** | 8083 | Mock payment gateway (declines amounts > 1000) |
+| **web-ui** | 5173 | React + TypeScript dashboard with live service flow visualization |
+
+Each service owns its own Postgres database and Flyway migrations — no shared data stores.
+
+## Quick start
+
+```bash
 docker compose up --build
 ```
 
-Services:
+Then open `http://localhost:5173` for the web UI, or use the API directly:
 
-| Service | URL | Swagger UI |
-|---------|-----|------------|
-| Order Service | `http://localhost:8081` | [swagger-ui](http://localhost:8081/swagger-ui.html) |
-| Inventory Service | `http://localhost:8082` | [swagger-ui](http://localhost:8082/swagger-ui.html) |
-| Payment Service | `http://localhost:8083` | [swagger-ui](http://localhost:8083/swagger-ui.html) |
-| Web UI | `http://localhost:5173` | — |
+```bash
+# Get a JWT
+TOKEN=$(curl -s -X POST http://localhost:8081/auth/token \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"customer","password":"password"}' | jq -r '.accessToken')
 
-## Get a JWT
+# Create an order
+curl -s -X POST http://localhost:8081/orders \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"items":[{"sku":"SKU-APPLE","quantity":2}]}'
 
-```powershell
-$token = (Invoke-RestMethod -Method Post -Uri http://localhost:8081/auth/token `
-  -ContentType 'application/json' `
-  -Body (@{ username = 'customer'; password = 'password' } | ConvertTo-Json)).accessToken
+# Confirm (reserves stock → processes payment)
+curl -s -X POST http://localhost:8081/orders/{id}/confirm \
+  -H "Authorization: Bearer $TOKEN"
 
-$token
+# Cancel (compensates by releasing reserved stock)
+curl -s -X POST http://localhost:8081/orders/{id}/cancel \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
-Use it as `Bearer <token>`.
+Swagger UI is available on each service: [order](http://localhost:8081/swagger-ui.html) · [inventory](http://localhost:8082/swagger-ui.html) · [payment](http://localhost:8083/swagger-ui.html)
 
-## Create + confirm an order
+## Design decisions
 
-```powershell
-# Create order
-$order = Invoke-RestMethod -Method Post -Uri http://localhost:8081/orders `
-  -Headers @{ Authorization = "Bearer $token" } `
-  -ContentType 'application/json' `
-  -Body (@{ items = @(@{ sku='SKU-APPLE'; quantity=2; unitPrice=0.50 }) } | ConvertTo-Json)
+**Saga orchestration over choreography.** The order service explicitly calls inventory and payment in sequence, then compensates on failure. This makes the order lifecycle easy to follow and debug, compared to a purely event-driven choreography where flow control is scattered across consumers. Events are still published (to SQS) for observability and downstream consumers, but they don't drive the core flow.
 
-# Confirm (reserve stock -> pay)
-$confirmed = Invoke-RestMethod -Method Post -Uri ("http://localhost:8081/orders/{0}/confirm" -f $order.id) `
-  -Headers @{ Authorization = "Bearer $token" }
+**Idempotent operations.** Both inventory reservations and payments are keyed by `orderId`. Repeating a reserve or payment call returns the existing result rather than creating a duplicate. This makes retries safe and removes the need for exactly-once delivery guarantees from the message broker.
 
-$confirmed
+**Pessimistic locking + optimistic versioning on inventory.** Reservation requests acquire a `SELECT ... FOR UPDATE` lock on inventory rows to prevent overselling under concurrent requests, while a `@Version` column provides an additional safety net against stale writes. This dual approach is deliberate — the pessimistic lock handles the common case efficiently, while optimistic versioning catches edge cases.
+
+**Separate database per service.** Each microservice owns its schema and migrations (via Flyway). There are no cross-service joins or shared tables. This enforces loose coupling and means each service can evolve its schema independently.
+
+**Circuit breakers on inter-service calls.** Resilience4j circuit breakers on the inventory and payment clients prevent cascading failures. If a downstream service is unhealthy, the circuit opens and requests fail fast instead of consuming threads waiting for timeouts.
+
+**HTTP call outside the `@Transactional` boundary.** The price-lookup call to inventory-service happens before the database transaction opens in `OrderService.create()`. This avoids holding a database connection while waiting on a network call — a common anti-pattern in Spring applications.
+
+## Testing
+
+```bash
+cd order-service && ./gradlew test    # Integration tests (requires Docker for Testcontainers)
+cd inventory-service && ./gradlew test  # Unit tests
+cd payment-service && ./gradlew test    # Unit tests
 ```
 
-## Cancel an order (compensation)
+The order-service integration test uses Testcontainers (Postgres) and WireMock (downstream services) to verify the full order lifecycle: creation, confirmation, cancellation, payment failure with stock release, and idempotent conflict handling.
 
-```powershell
-$cancelled = Invoke-RestMethod -Method Post -Uri ("http://localhost:8081/orders/{0}/cancel" -f $order.id) `
-  -Headers @{ Authorization = "Bearer $token" }
+Inventory and payment services have unit tests covering happy paths, edge cases, idempotency, and boundary conditions.
 
-$cancelled
-```
+## Infrastructure
 
-If the order was CONFIRMED, the cancel will release the reserved inventory automatically.
+Terraform configuration in `infra/terraform/` provisions a complete AWS environment: VPC, ECS Fargate cluster with service discovery, ALB, RDS Postgres instances, SQS queues, Secrets Manager, and IAM roles. See `infra/terraform/README.md` for setup instructions.
 
-## Run integration tests
+CI/CD pipelines in `.github/workflows/`:
 
-Requires Docker running (Testcontainers spins up Postgres):
+- **ci.yml** — runs tests on every push and PR
+- **deploy-ecs.yml** — builds Docker images, pushes to ECR, and deploys to ECS on merge to main
 
-```powershell
-cd order-service
-.\gradlew test
-```
+## Tech stack
 
-## Deploying the web UI to Netlify
-
-Netlify hosts the **React frontend only**. The three Spring Boot services (plus Postgres) must be deployed separately on a server platform — [Railway](https://railway.app), [Render](https://render.com), or [Fly.io](https://fly.io) all work well with Docker Compose.
-
-### Steps
-
-1. Push this repository to GitHub / GitLab / Bitbucket.
-2. In the Netlify dashboard click **Add new site → Import an existing project** and connect your repo.
-3. Netlify auto-detects the `netlify.toml` at the root — no manual build settings needed:
-   - **Base directory:** `web-ui`
-   - **Build command:** `npm run build`
-   - **Publish directory:** `dist`
-4. Go to **Site → Environment variables** and add:
-
-   | Key | Value |
-   |-----|-------|
-   | `VITE_API_BASE_URL` | `https://your-deployed-order-service.example.com` |
-
-   This URL is baked into the frontend at build time by Vite.
-5. Click **Deploy site**. Netlify installs dependencies and runs `npm run build` inside `web-ui/`.
-
-### CORS
-
-Once the frontend is live on a `*.netlify.app` domain you must allow that origin in the `order-service`. Add the Netlify URL to the CORS configuration in `order-service` (or set it via the `CORS_ALLOWED_ORIGINS` environment variable if you wire one up).
-
-### Local development still works
-
-```powershell
-docker compose up --build   # starts all backend services
-cd web-ui
-npm install
-npm run dev                 # uses .env (VITE_API_BASE_URL=http://localhost:8081)
-```
+Java 21, Spring Boot 3.5, Spring Security (OAuth2 Resource Server / JWT), Spring Data JPA, Flyway, Resilience4j, AWS SQS, Testcontainers, WireMock, PostgreSQL, React 18, TypeScript, Vite, Docker Compose, Terraform, GitHub Actions.
 
 ## Notes
 
 - The inventory DB is seeded with a few SKUs (see `inventory-service` Flyway migrations).
 - Payment is a mock: amounts > 1000.00 are declined.
-- The build is configured for Java 25 (to match your installed JDK). You can change all `build.gradle` toolchains + Dockerfiles to Java 17 if you want.
-
-## AWS deployment starter
-
-Infrastructure-as-code and CI/CD bootstrap files are included:
-
-- Terraform stack: `infra/terraform`
-- GitHub Actions deploy pipeline: `.github/workflows/deploy-ecs.yml`
-
-See `infra/terraform/README.md` for step-by-step setup and required variables/secrets.
-
+- Authentication uses a hardcoded user store for the demo. In production this would be backed by Spring Security's `UserDetailsService` or an external identity provider.
+- The build is configured for Java 21 (LTS). You can change all `build.gradle` toolchains + Dockerfiles to Java 17 if you prefer.

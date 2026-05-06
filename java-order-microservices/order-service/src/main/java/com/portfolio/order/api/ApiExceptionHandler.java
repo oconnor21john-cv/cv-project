@@ -9,10 +9,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-	@ExceptionHandler(IllegalArgumentException.class)
+	@ExceptionHandler(OrderNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ProblemDetail notFound(IllegalArgumentException ex) {
+	public ProblemDetail notFound(OrderNotFoundException ex) {
 		var pd = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+		pd.setDetail(ex.getMessage());
+		return pd;
+	}
+
+	@ExceptionHandler(OrderAccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ProblemDetail forbidden(OrderAccessDeniedException ex) {
+		var pd = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
 		pd.setDetail(ex.getMessage());
 		return pd;
 	}

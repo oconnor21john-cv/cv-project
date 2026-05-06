@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import com.portfolio.events.payment.PaymentSucceededEvent;
 
 @Service
 public class PaymentService {
+	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
+
 	private final PaymentRepository paymentRepository;
 	private final SqsEventPublisher sqsEventPublisher;
 	private final String paymentsQueueUrl;
@@ -33,9 +37,12 @@ public class PaymentService {
 
 	@Transactional
 	public Result createOrGet(UUID orderId, BigDecimal amount) {
+		log.info("Payment request: orderId={}, amount={}", orderId, amount);
+
 		var existing = paymentRepository.findByOrderId(orderId);
 		if (existing.isPresent()) {
 			var p = existing.get();
+			log.debug("Idempotent hit: orderId={} already has status={}", orderId, p.getStatus());
 			return switch (p.getStatus()) {
 				case SUCCEEDED -> Result.succeeded("Already paid");
 				case FAILED -> Result.failed("Already failed");
@@ -51,6 +58,7 @@ public class PaymentService {
 					paymentsQueueUrl,
 					new PaymentSucceededEvent(UUID.randomUUID(), Instant.now(), orderId, amount)
 			);
+			log.info("Payment succeeded: orderId={}, amount={}", orderId, amount);
 			return Result.succeeded("Payment succeeded");
 		}
 
@@ -59,6 +67,7 @@ public class PaymentService {
 				paymentsQueueUrl,
 				new PaymentFailedEvent(UUID.randomUUID(), Instant.now(), orderId, amount, reason)
 		);
+		log.warn("Payment declined: orderId={}, amount={}, reason={}", orderId, amount, reason);
 		return Result.failed(reason);
 	}
 
