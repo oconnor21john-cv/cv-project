@@ -43,6 +43,7 @@ export function Dashboard() {
   const [history, setHistory] = useState<OrderResponse[]>([])
   const [historyLoading, setHistoryLoading] = useState(false)
   const [historyVersion, setHistoryVersion] = useState(0)
+  const [availableStock, setAvailableStock] = useState<Record<string, number>>({})
 
   function refreshHistory() {
     setHistoryVersion((v) => v + 1)
@@ -59,6 +60,28 @@ export function Dashboard() {
       .finally(() => { if (!cancelled) setHistoryLoading(false) })
     return () => { cancelled = true }
   }, [token, baseUrl, historyVersion])
+
+  // Fetch available stock on mount and every 10 seconds
+  useEffect(() => {
+    if (!token) return
+    const allSkus = Object.keys(CATALOG)
+    const fetchStock = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/catalog/stock?skus=${allSkus.join(',')}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (response.ok) {
+          const stock = await response.json()
+          setAvailableStock(stock)
+        }
+      } catch {
+        // silently ignore stock fetch errors
+      }
+    }
+    fetchStock()
+    const interval = setInterval(fetchStock, 10000)
+    return () => clearInterval(interval)
+  }, [token, baseUrl])
 
   // Poll order status every 5 seconds when an active order exists
   useEffect(() => {
@@ -264,11 +287,15 @@ export function Dashboard() {
                   <label>
                     <span>Product</span>
                     <select value={sku} onChange={(e) => setSku(e.target.value)} disabled={busy !== 'idle'}>
-                      {Object.entries(CATALOG).map(([code, p]) => (
-                        <option key={code} value={code}>
-                          {p.name} — £{p.price.toFixed(2)}
-                        </option>
-                      ))}
+                      {Object.entries(CATALOG).map(([code, p]) => {
+                        const stock = availableStock[code]
+                        const stockLabel = stock === undefined ? '' : stock === 0 ? ' (out of stock)' : ` (${stock} in stock)`
+                        return (
+                          <option key={code} value={code} disabled={stock === 0}>
+                            {p.name} — £{p.price.toFixed(2)}{stockLabel}
+                          </option>
+                        )
+                      })}
                     </select>
                   </label>
                   <label>
@@ -276,9 +303,10 @@ export function Dashboard() {
                     <input
                       type="number"
                       min={1}
+                      max={availableStock[sku] ?? 999}
                       value={quantity}
                       onChange={(e) => setQuantity(Number(e.target.value))}
-                      disabled={busy !== 'idle'}
+                      disabled={busy !== 'idle' || availableStock[sku] === 0}
                     />
                   </label>
                 </div>
@@ -329,7 +357,7 @@ export function Dashboard() {
                                 <td className="mono">£{item.unitPrice.toFixed(2)}</td>
                                 <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
                                 <td className="mono">
-                                  {item.remainingStock === null ? '—' : item.remainingStock === 0 ? '🔴 Out of stock' : `✓ ${item.remainingStock}`}
+                                  {item.remainingStock == null ? '—' : item.remainingStock === 0 ? '🔴 Out of stock' : `✓ ${item.remainingStock}`}
                                 </td>
                               </tr>
                             ))}
@@ -414,7 +442,7 @@ export function Dashboard() {
                         <td className="mono">{o.id.slice(0, 8)}…</td>
                         <td>
                           {o.items.map(i => {
-                            const stockIndicator = i.remainingStock === null ? '' : i.remainingStock === 0 ? ' 🔴' : ` ✓${i.remainingStock}`
+                            const stockIndicator = i.remainingStock == null ? '' : i.remainingStock === 0 ? ' 🔴' : ` ✓${i.remainingStock}`
                             return `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}${stockIndicator}`
                           }).join(', ')}
                         </td>

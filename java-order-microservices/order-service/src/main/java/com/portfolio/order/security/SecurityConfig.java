@@ -58,7 +58,10 @@ public class SecurityConfig {
 	@Bean
 	@Order(2)
 	SecurityFilterChain apiEndpoints(HttpSecurity http, JwtAuthenticationConverter jwtAuthConverter) throws Exception {
-		http.securityMatcher(new AntPathRequestMatcher("/orders/**"));
+		http.securityMatcher(new OrRequestMatcher(
+				new AntPathRequestMatcher("/orders/**"),
+				new AntPathRequestMatcher("/catalog/**")
+		));
 		http.cors(cors -> {});
 		http.csrf(csrf -> csrf.disable());
 		http.authorizeHttpRequests(auth -> auth
@@ -66,6 +69,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/orders/**").hasAnyRole("CUSTOMER", "ADMIN")
+				.requestMatchers(HttpMethod.GET, "/catalog/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.anyRequest().authenticated()
 		);
 		http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)));
