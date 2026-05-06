@@ -28,6 +28,24 @@ public class InventoryClient {
 				.body(new ParameterizedTypeReference<>() {});
 	}
 
+	/**
+	 * Fetch current available stock for given SKUs.
+	 * Fallback returns empty map if inventory-service is down (caller treats as "unknown").
+	 */
+	@CircuitBreaker(name = "inventory", fallbackMethod = "stockFallback")
+	public Map<String, Integer> fetchStock(java.util.List<String> skus) {
+		String skuParam = String.join(",", skus);
+		return inventoryRestClient.get()
+				.uri("/products/stock?skus={skus}", skuParam)
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {});
+	}
+
+	// Fallback for fetchStock: return empty map if inventory-service is unavailable
+	private Map<String, Integer> stockFallback(java.util.List<String> skus, Throwable throwable) {
+		return Map.of();
+	}
+
 	@CircuitBreaker(name = "inventory")
 	public InventoryReserveResponse reserve(InventoryReserveRequest request) {
 		return inventoryRestClient.post()

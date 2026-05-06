@@ -1,8 +1,16 @@
 # Java Order Microservices
 
-A distributed order management system built with Spring Boot, demonstrating microservice patterns including saga-based orchestration, idempotent operations, circuit breakers, and event-driven communication via AWS SQS.
+A distributed order management system built with Spring Boot, demonstrating microservice patterns including:
+- **Saga pattern** for distributed transactions (order confirmation flow)
+- **Idempotent operations** for safe retries
+- **Circuit breakers** for resilience
+- **Outbox pattern** for transactional event publishing
+- **Database-per-service** for data isolation
+- **JWT authentication** with Spring Security
 
-## Architecture
+For detailed architecture and design rationale, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+
+## Quick Start
 
 ```mermaid
 graph TB

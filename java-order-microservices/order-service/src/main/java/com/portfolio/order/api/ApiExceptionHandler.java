@@ -25,6 +25,14 @@ public class ApiExceptionHandler {
 		return pd;
 	}
 
+	@ExceptionHandler(OrderStateConflictException.class)
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public ProblemDetail stateConflict(OrderStateConflictException ex) {
+		var pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		pd.setDetail(ex.getMessage());
+		return pd;
+	}
+
 	@ExceptionHandler(IllegalStateException.class)
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ProblemDetail conflict(IllegalStateException ex) {

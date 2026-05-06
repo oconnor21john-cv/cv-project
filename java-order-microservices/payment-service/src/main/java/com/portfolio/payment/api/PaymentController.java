@@ -27,5 +27,14 @@ public class PaymentController {
 		}
 		return ResponseEntity.badRequest().body(new CreatePaymentResponse("FAILED", result.message()));
 	}
+
+	@PostMapping("/refund")
+	public ResponseEntity<RefundPaymentResponse> refund(@Valid @RequestBody RefundPaymentRequest request) {
+		var result = paymentService.refundOrGet(request.orderId(), request.amount());
+		if (result.refunded()) {
+			return ResponseEntity.ok(new RefundPaymentResponse("REFUNDED", result.message()));
+		}
+		return ResponseEntity.badRequest().body(new RefundPaymentResponse("FAILED", result.message()));
+	}
 }
 

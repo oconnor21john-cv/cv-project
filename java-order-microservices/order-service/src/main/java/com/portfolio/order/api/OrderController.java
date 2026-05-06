@@ -2,7 +2,10 @@ package com.portfolio.order.api;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.portfolio.order.clients.InventoryClient;
 import com.portfolio.order.persistence.OrderEntity;
 import com.portfolio.order.service.OrderService;
 
@@ -24,9 +28,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/orders")
 public class OrderController {
 	private final OrderService orderService;
+	private final InventoryClient inventoryClient;
 
-	public OrderController(OrderService orderService) {
+	public OrderController(OrderService orderService, InventoryClient inventoryClient) {
 		this.orderService = orderService;
+		this.inventoryClient = inventoryClient;
 	}
 
 	@PostMapping
@@ -49,7 +55,17 @@ public class OrderController {
 				? orderService.listAll()
 				: orderService.listByUser(username);
 
-		return ResponseEntity.ok(orders.stream().map(this::toResponse).toList());
+		// Fetch stock for all distinct SKUs in the result set
+		var allSkus = orders.stream()
+				.flatMap(o -> o.getItems().stream())
+				.map(item -> item.getSku())
+				.collect(Collectors.toSet());
+
+		var stockMap = allSkus.isEmpty() ? Map.of() : inventoryClient.fetchStock(allSkus.stream().toList());
+
+		return ResponseEntity.ok(orders.stream()
+				.map(order -> toResponse(order, stockMap))
+				.toList());
 	}
 
 	@PostMapping("/{id}/confirm")
@@ -64,22 +80,34 @@ public class OrderController {
 		return ResponseEntity.ok(toResponse(order));
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Void> deleteAll(Authentication auth) {
-		var username = auth.getName();
-		orderService.deleteAllByUser(username);
-		return ResponseEntity.noContent().build();
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderResponse> get(@PathVariable UUID id) {
 		var order = orderService.get(id);
-		return ResponseEntity.ok(toResponse(order));
+
+		// Fetch stock for all SKUs in this order
+		var skus = order.getItems().stream()
+				.map(item -> item.getSku())
+				.toList();
+
+		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+
+		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
-	private OrderResponse toResponse(OrderEntity order) {
+	/**
+	 * Convert OrderEntity to OrderResponse, merging in current stock levels.
+	 *
+	 * @param order The order entity
+	 * @param stockMap Stock data (SKU → remaining quantity). Items not in map get null remainingStock.
+	 */
+	private OrderResponse toResponse(OrderEntity order, Map<String, Integer> stockMap) {
 		var items = order.getItems().stream()
-				.map(i -> new OrderResponse.Item(i.getSku(), i.getQuantity(), i.getUnitPrice()))
+				.map(i -> new OrderResponse.Item(
+						i.getSku(),
+						i.getQuantity(),
+						i.getUnitPrice(),
+						stockMap.get(i.getSku())  // Nullable: null if unknown, 0 if out of stock, >0 if available
+				))
 				.toList();
 		return new OrderResponse(
 				order.getId(),

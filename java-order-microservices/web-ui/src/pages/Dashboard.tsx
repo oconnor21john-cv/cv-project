@@ -318,6 +318,7 @@ export function Dashboard() {
                               <th>Qty</th>
                               <th>Unit price</th>
                               <th>Subtotal</th>
+                              <th>Stock available</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -327,6 +328,9 @@ export function Dashboard() {
                                 <td className="mono">{item.quantity}</td>
                                 <td className="mono">£{item.unitPrice.toFixed(2)}</td>
                                 <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
+                                <td className="mono">
+                                  {item.remainingStock === null ? '—' : item.remainingStock === 0 ? '🔴 Out of stock' : `✓ ${item.remainingStock}`}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -408,7 +412,12 @@ export function Dashboard() {
                     {history.map((o) => (
                       <tr key={o.id} className={order?.id === o.id ? 'history-active-row' : ''}>
                         <td className="mono">{o.id.slice(0, 8)}…</td>
-                        <td>{o.items.map(i => `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}`).join(', ')}</td>
+                        <td>
+                          {o.items.map(i => {
+                            const stockIndicator = i.remainingStock === null ? '' : i.remainingStock === 0 ? ' 🔴' : ` ✓${i.remainingStock}`
+                            return `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}${stockIndicator}`
+                          }).join(', ')}
+                        </td>
                         <td className="mono">£{o.totalAmount.toFixed(2)}</td>
                         <td><StatusPill status={o.status} /></td>
                         <td className="text-dim">{formatDate(o.createdAt)}</td>

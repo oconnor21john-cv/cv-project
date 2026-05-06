@@ -1,13 +1,9 @@
 package com.portfolio.order.service;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientResponseException;
 
 import org.slf4j.Logger;
@@ -22,10 +18,6 @@ import com.portfolio.order.clients.InventoryReserveRequestItem;
 import com.portfolio.order.clients.PaymentClient;
 import com.portfolio.order.clients.PaymentCreateRequest;
 import com.portfolio.order.domain.OrderStatus;
-import com.portfolio.order.events.OrderCancelledEvent;
-import com.portfolio.order.events.OrderConfirmedEvent;
-import com.portfolio.order.events.OrderPlacedEvent;
-import com.portfolio.order.messaging.SqsEventPublisher;
 import com.portfolio.order.persistence.OrderEntity;
 import com.portfolio.order.persistence.OrderRepository;
 
@@ -36,21 +28,18 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final InventoryClient inventoryClient;
 	private final PaymentClient paymentClient;
-	private final SqsEventPublisher sqsEventPublisher;
-	private final String ordersQueueUrl;
+	private final OrderTransactionalWriter transactionalWriter;
 
 	public OrderService(
 			OrderRepository orderRepository,
 			InventoryClient inventoryClient,
 			PaymentClient paymentClient,
-			SqsEventPublisher sqsEventPublisher,
-			@Value("${app.sqs.queue.orders.url:}") String ordersQueueUrl
+			OrderTransactionalWriter transactionalWriter
 	) {
 		this.orderRepository = orderRepository;
 		this.inventoryClient = inventoryClient;
 		this.paymentClient = paymentClient;
-		this.sqsEventPublisher = sqsEventPublisher;
-		this.ordersQueueUrl = ordersQueueUrl;
+		this.transactionalWriter = transactionalWriter;
 	}
 
 	/**
@@ -62,39 +51,16 @@ public class OrderService {
 		var prices = inventoryClient.fetchPrices(skus);
 
 		log.info("Creating order for user={} with {} item(s)", username, request.items().size());
-		return createTransactional(request, username, prices);
+		return transactionalWriter.createTransactional(request, username, prices);
 	}
 
-	@Transactional
-	protected OrderEntity createTransactional(CreateOrderRequest request, String username,
-			java.util.Map<String, BigDecimal> prices) {
-		var orderId = UUID.randomUUID();
-
-		var total = request.items().stream()
-				.map(i -> prices.get(i.sku()).multiply(BigDecimal.valueOf(i.quantity())))
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-
-		var order = new OrderEntity(orderId, total, username);
-		request.items().forEach(i -> order.addItem(i.sku(), i.quantity(), prices.get(i.sku())));
-		orderRepository.save(order);
-
-		var event = new OrderPlacedEvent(
-				UUID.randomUUID(),
-				Instant.now(),
-				order.getId(),
-				order.getTotalAmount(),
-				order.getItems().stream()
-						.map(i -> new OrderPlacedEvent.Item(i.getSku(), i.getQuantity(), i.getUnitPrice()))
-						.toList()
-		);
-		sqsEventPublisher.publish(ordersQueueUrl, event);
-
-		log.info("Order created: orderId={}, total={}, user={}", orderId, total, username);
-		return order;
-	}
-
-	@Transactional
+	/**
+	 * Confirms an order by reserving stock and processing payment.
+	 * All HTTP calls happen outside the transaction to preserve DB connections.
+	 * Only a short transaction opens to update status after successful calls.
+	 */
 	public OrderEntity confirm(UUID orderId, String username) {
+		// Load order outside transaction
 		var order = orderRepository.findById(orderId)
 				.orElseThrow(() -> new OrderNotFoundException(orderId));
 		verifyOwnership(order, username);
@@ -106,6 +72,7 @@ public class OrderService {
 
 		log.info("Confirming order: orderId={}, user={}", orderId, username);
 
+		// Step 1: Reserve stock (HTTP call, outside transaction)
 		var reserveReq = new InventoryReserveRequest(
 				orderId,
 				order.getItems().stream()
@@ -118,49 +85,45 @@ public class OrderService {
 			if (reserveResp == null || !"RESERVED".equalsIgnoreCase(reserveResp.status())) {
 				log.warn("Stock reservation failed: orderId={}, reason={}", orderId,
 						reserveResp == null ? "Inventory error" : reserveResp.message());
-				return failStock(order, reserveResp == null ? "Inventory error" : reserveResp.message());
+				transactionalWriter.failStock(order, reserveResp == null ? "Inventory error" : reserveResp.message());
+				return order;
 			}
 		} catch (RestClientResponseException ex) {
 			log.warn("Inventory call failed: orderId={}, status={}", orderId, ex.getStatusCode());
-			return failStock(order, "Inventory call failed: " + ex.getStatusCode());
+			transactionalWriter.failStock(order, "Inventory call failed: " + ex.getStatusCode());
+			return order;
 		} catch (Exception ex) {
 			log.warn("Inventory call failed: orderId={}", orderId, ex);
-			return failStock(order, "Inventory call failed");
+			transactionalWriter.failStock(order, "Inventory call failed");
+			return order;
 		}
 
+		// Step 2: Process payment (HTTP call, outside transaction)
 		try {
 			var payResp = paymentClient.createPayment(new PaymentCreateRequest(orderId, order.getTotalAmount()));
 			if (payResp != null && "SUCCEEDED".equalsIgnoreCase(payResp.status())) {
-				order.setStatus(OrderStatus.CONFIRMED);
-				log.info("Order confirmed: orderId={}, total={}", orderId, order.getTotalAmount());
-				sqsEventPublisher.publish(
-						ordersQueueUrl,
-						new OrderConfirmedEvent(UUID.randomUUID(), Instant.now(), orderId, order.getTotalAmount())
-				);
+				// Payment succeeded: update status in short transaction
+				transactionalWriter.confirmOrder(order);
 				return order;
 			}
 
+			// Payment failed: release inventory and mark order as payment failed
 			log.warn("Payment failed: orderId={}, releasing inventory", orderId);
 			inventoryClient.release(orderId);
-			order.setStatus(OrderStatus.PAYMENT_FAILED);
-			sqsEventPublisher.publish(
-					ordersQueueUrl,
-					new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, "Payment failed")
-			);
+			transactionalWriter.failPayment(order, "Payment failed");
 			return order;
 		} catch (RestClientResponseException ex) {
 			log.warn("Payment call failed: orderId={}, status={}, releasing inventory", orderId, ex.getStatusCode());
 			inventoryClient.release(orderId);
-			order.setStatus(OrderStatus.PAYMENT_FAILED);
-			sqsEventPublisher.publish(
-					ordersQueueUrl,
-					new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, "Payment call failed: " + ex.getStatusCode())
-			);
+			transactionalWriter.failPayment(order, "Payment call failed: " + ex.getStatusCode());
 			return order;
 		}
 	}
 
-	@Transactional
+	/**
+	 * Cancels an order. For CONFIRMED orders, releases inventory and refunds payment outside of transaction.
+	 * Status update happens in a short transaction.
+	 */
 	public OrderEntity cancel(UUID orderId, String username) {
 		var order = orderRepository.findById(orderId)
 				.orElseThrow(() -> new OrderNotFoundException(orderId));
@@ -170,25 +133,41 @@ public class OrderService {
 
 		return switch (order.getStatus()) {
 			case PLACED -> {
-				order.setStatus(OrderStatus.CANCELLED);
-				publishCancelled(orderId, "Cancelled by user");
+				transactionalWriter.cancelPlaced(order);
 				log.info("Order cancelled (was PLACED): orderId={}", orderId);
 				yield order;
 			}
 			case CONFIRMED -> {
+				// Release inventory and refund payment outside transaction (best-effort)
 				try {
 					inventoryClient.release(orderId);
 					log.info("Inventory released for cancelled order: orderId={}", orderId);
 				} catch (Exception ex) {
 					log.warn("Best-effort inventory release failed for orderId={}: {}", orderId, ex.getMessage());
 				}
-				order.setStatus(OrderStatus.CANCELLED);
-				publishCancelled(orderId, "Cancelled by user (stock released)");
+
+				try {
+					var refundResp = paymentClient.refundPayment(
+							new com.portfolio.order.clients.PaymentRefundRequest(orderId, order.getTotalAmount())
+					);
+					if (refundResp != null && "REFUNDED".equalsIgnoreCase(refundResp.status())) {
+						log.info("Payment refunded for cancelled order: orderId={}", orderId);
+					} else {
+						log.warn("Payment refund may have failed for orderId={}: {}", orderId,
+								refundResp == null ? "No response" : refundResp.message());
+					}
+				} catch (Exception ex) {
+					log.warn("Best-effort payment refund failed for orderId={}: {}", orderId, ex.getMessage());
+				}
+
+				// Update status in transaction
+				transactionalWriter.cancelConfirmed(order);
 				yield order;
 			}
-			case CANCELLED -> throw new IllegalStateException("Order is already cancelled");
-			default -> throw new IllegalStateException(
-					"Order in status " + order.getStatus() + " cannot be cancelled");
+			case CANCELLED -> throw new com.portfolio.order.api.OrderStateConflictException(
+					orderId, OrderStatus.CANCELLED, "cancel");
+			default -> throw new com.portfolio.order.api.OrderStateConflictException(
+					orderId, order.getStatus(), "cancel");
 		};
 	}
 
@@ -208,25 +187,8 @@ public class OrderService {
 		return orderRepository.findByCreatedByOrderByCreatedAtDesc(username);
 	}
 
-	@Transactional
 	public void deleteAllByUser(String username) {
-		orderRepository.deleteByCreatedBy(username);
-	}
-
-	private void publishCancelled(UUID orderId, String reason) {
-		sqsEventPublisher.publish(
-				ordersQueueUrl,
-				new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), orderId, reason)
-		);
-	}
-
-	private OrderEntity failStock(OrderEntity order, String reason) {
-		order.setStatus(OrderStatus.STOCK_FAILED);
-		sqsEventPublisher.publish(
-				ordersQueueUrl,
-				new OrderCancelledEvent(UUID.randomUUID(), Instant.now(), order.getId(), reason)
-		);
-		return order;
+		transactionalWriter.deleteAllByUser(username);
 	}
 
 	private void verifyOwnership(OrderEntity order, String username) {

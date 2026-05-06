@@ -13,5 +13,11 @@ public record OrderResponse(
 		Instant createdAt,
 		List<Item> items
 ) {
-	public record Item(String sku, int quantity, BigDecimal unitPrice) {}
+	/**
+	 * Item with optional remainingStock.
+	 * If null: stock lookup failed or SKU was deleted.
+	 * If 0: out of stock.
+	 * If > 0: available quantity.
+	 */
+	public record Item(String sku, int quantity, BigDecimal unitPrice, Integer remainingStock) {}
 }

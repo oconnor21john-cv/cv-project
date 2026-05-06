@@ -4,6 +4,7 @@ export type OrderItem = {
   sku: string
   quantity: number
   unitPrice: number
+  remainingStock?: number | null  // null if lookup failed, 0 if out of stock, >0 if available
 }
 
 export type OrderResponse = {

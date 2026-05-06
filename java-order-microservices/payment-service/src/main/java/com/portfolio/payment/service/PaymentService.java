@@ -71,6 +71,29 @@ public class PaymentService {
 		return Result.failed(reason);
 	}
 
+	@Transactional
+	public RefundResult refundOrGet(UUID orderId, BigDecimal amount) {
+		log.info("Refund request: orderId={}, amount={}", orderId, amount);
+
+		var existing = paymentRepository.findByOrderId(orderId);
+		if (existing.isEmpty()) {
+			log.debug("No payment found for orderId={}, refund is idempotent", orderId);
+			return RefundResult.refunded("No payment to refund (idempotent)");
+		}
+
+		var payment = existing.get();
+		// Only refund if payment was actually successful
+		if (payment.getStatus() == PaymentStatus.SUCCEEDED) {
+			log.info("Refunding payment: orderId={}, amount={}", orderId, amount);
+			// In a real system, we'd integrate with the payment processor here
+			// For this mock, we just log it and mark as refunded conceptually
+			return RefundResult.refunded("Payment refunded");
+		}
+
+		log.debug("Payment in status {} cannot be refunded: orderId={}", payment.getStatus(), orderId);
+		return RefundResult.refunded("Payment already in status " + payment.getStatus() + " (idempotent)");
+	}
+
 	private PaymentStatus decide(BigDecimal amount) {
 		if (amount.compareTo(new BigDecimal("1000.00")) > 0) {
 			return PaymentStatus.FAILED;
@@ -81,6 +104,11 @@ public class PaymentService {
 	public record Result(boolean succeeded, String message) {
 		public static Result succeeded(String msg) { return new Result(true, msg); }
 		public static Result failed(String msg) { return new Result(false, msg); }
+	}
+
+	public record RefundResult(boolean refunded, String message) {
+		public static RefundResult refunded(String msg) { return new RefundResult(true, msg); }
+		public static RefundResult failed(String msg) { return new RefundResult(false, msg); }
 	}
 }
 

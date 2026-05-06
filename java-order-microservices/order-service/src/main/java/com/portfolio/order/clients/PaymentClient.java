@@ -23,4 +23,14 @@ public class PaymentClient {
 				.retrieve()
 				.body(PaymentCreateResponse.class);
 	}
+
+	@CircuitBreaker(name = "payment")
+	public PaymentRefundResponse refundPayment(PaymentRefundRequest request) {
+		return paymentRestClient.post()
+				.uri("/payments/refund")
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(request)
+				.retrieve()
+				.body(PaymentRefundResponse.class);
+	}
 }
