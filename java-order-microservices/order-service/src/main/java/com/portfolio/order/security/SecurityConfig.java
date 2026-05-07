@@ -31,8 +31,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.PathPatternRequestMatcher;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
@@ -43,11 +43,11 @@ public class SecurityConfig {
 	@Order(1)
 	SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
 		http.securityMatcher(new OrRequestMatcher(
-				new AntPathRequestMatcher("/auth/**"),
-				new AntPathRequestMatcher("/actuator/**"),
-				new AntPathRequestMatcher("/swagger-ui/**"),
-				new AntPathRequestMatcher("/swagger-ui.html"),
-				new AntPathRequestMatcher("/v3/api-docs/**")
+				PathPatternRequestMatcher.withDefaults().matcher("/auth/**"),
+				PathPatternRequestMatcher.withDefaults().matcher("/actuator/**"),
+				PathPatternRequestMatcher.withDefaults().matcher("/swagger-ui/**"),
+				PathPatternRequestMatcher.withDefaults().matcher("/swagger-ui.html"),
+				PathPatternRequestMatcher.withDefaults().matcher("/v3/api-docs/**")
 		));
 		http.cors(cors -> {});
 		http.csrf(csrf -> csrf.disable());
@@ -59,8 +59,8 @@ public class SecurityConfig {
 	@Order(2)
 	SecurityFilterChain apiEndpoints(HttpSecurity http, JwtAuthenticationConverter jwtAuthConverter) throws Exception {
 		http.securityMatcher(new OrRequestMatcher(
-				new AntPathRequestMatcher("/orders/**"),
-				new AntPathRequestMatcher("/catalog/**")
+				PathPatternRequestMatcher.withDefaults().matcher("/orders/**"),
+				PathPatternRequestMatcher.withDefaults().matcher("/catalog/**")
 		));
 		http.cors(cors -> {});
 		http.csrf(csrf -> csrf.disable());
@@ -105,9 +105,9 @@ public class SecurityConfig {
 		var authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService);
 		authProvider.setPasswordEncoder(passwordEncoder);
-		return new AuthenticationManagerBuilder(http.getSharedObject(AuthenticationManagerBuilder.class))
-				.authenticationProvider(authProvider)
-				.build();
+		var builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+		builder.authenticationProvider(authProvider);
+		return builder.build();
 	}
 
 	@Bean
