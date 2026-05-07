@@ -43,7 +43,7 @@ public class OrderController {
 		var order = orderService.create(request, principal.getName());
 		// Fetch stock for items in newly created order
 		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
-		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		Map<String, Integer> stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
 		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
@@ -64,7 +64,7 @@ public class OrderController {
 				.map(item -> item.getSku())
 				.collect(Collectors.toSet());
 
-		var stockMap = allSkus.isEmpty() ? Map.of() : inventoryClient.fetchStock(allSkus.stream().toList());
+		Map<String, Integer> stockMap = allSkus.isEmpty() ? Map.of() : inventoryClient.fetchStock(allSkus.stream().toList());
 
 		return ResponseEntity.ok(orders.stream()
 				.map(order -> toResponse(order, stockMap))
@@ -76,7 +76,7 @@ public class OrderController {
 		var order = orderService.confirm(id, principal.getName());
 		// Fetch stock for items in confirmed order
 		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
-		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		Map<String, Integer> stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
 		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
@@ -85,7 +85,7 @@ public class OrderController {
 		var order = orderService.cancel(id, principal.getName());
 		// Fetch stock for items in cancelled order
 		var skus = order.getItems().stream().map(item -> item.getSku()).toList();
-		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		Map<String, Integer> stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
 		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
@@ -98,7 +98,7 @@ public class OrderController {
 				.map(item -> item.getSku())
 				.toList();
 
-		var stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
+		Map<String, Integer> stockMap = skus.isEmpty() ? Map.of() : inventoryClient.fetchStock(skus);
 
 		return ResponseEntity.ok(toResponse(order, stockMap));
 	}

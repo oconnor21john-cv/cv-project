@@ -2,6 +2,7 @@ package com.portfolio.order.service;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class OrderOutboxPoller {
 			OrderOutboxRepository outboxRepository,
 			SqsEventPublisher sqsEventPublisher,
 			ObjectMapper objectMapper,
-			org.springframework.beans.factory.annotation.Value("${app.sqs.queue.orders.url:}") String ordersQueueUrl
+			@Value("${app.sqs.queue.orders.url:}") String ordersQueueUrl
 	) {
 		this.outboxRepository = outboxRepository;
 		this.sqsEventPublisher = sqsEventPublisher;

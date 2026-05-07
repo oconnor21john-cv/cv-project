@@ -128,7 +128,12 @@ export function Dashboard() {
         toast('error', msg)
       } finally {
         setBusy('idle')
-        setActiveStage('idle')
+        // Let the ServiceFlow animation finish before clearing activeStage.
+        // Durations match the timeout chain in components/ServiceFlow.tsx.
+        // Without this delay, a fast API response races the animation and the
+        // cleanup in ServiceFlow's useEffect cancels the pending phase changes.
+        const animDuration = name === 'confirm' ? 2800 : 1400
+        setTimeout(() => setActiveStage('idle'), animDuration)
       }
     }
   }
