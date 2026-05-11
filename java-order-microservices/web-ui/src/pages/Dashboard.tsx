@@ -67,15 +67,19 @@ export function Dashboard() {
     const allSkus = Object.keys(CATALOG)
     const fetchStock = async () => {
       try {
-        const response = await fetch(`${baseUrl}/catalog/stock?skus=${allSkus.join(',')}`, {
+        const url = `${baseUrl}/catalog/stock?skus=${allSkus.join(',')}`
+        const response = await fetch(url, {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (response.ok) {
           const stock = await response.json()
           setAvailableStock(stock)
+        } else {
+          // Surface non-2xx so we don't silently mask config / auth bugs
+          console.warn(`[stock-poll] ${response.status} ${response.statusText} from ${url}`)
         }
-      } catch {
-        // silently ignore stock fetch errors
+      } catch (e) {
+        console.warn('[stock-poll] fetch failed:', e)
       }
     }
     fetchStock()
