@@ -31,8 +31,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.PathPatternRequestMatcher;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
@@ -43,11 +43,11 @@ public class SecurityConfig {
 	@Order(1)
 	SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
 		http.securityMatcher(new OrRequestMatcher(
-				PathPatternRequestMatcher.withDefaults().matcher("/auth/**"),
-				PathPatternRequestMatcher.withDefaults().matcher("/actuator/**"),
-				PathPatternRequestMatcher.withDefaults().matcher("/swagger-ui/**"),
-				PathPatternRequestMatcher.withDefaults().matcher("/swagger-ui.html"),
-				PathPatternRequestMatcher.withDefaults().matcher("/v3/api-docs/**")
+				new AntPathRequestMatcher("/auth/**"),
+				new AntPathRequestMatcher("/actuator/**"),
+				new AntPathRequestMatcher("/swagger-ui/**"),
+				new AntPathRequestMatcher("/swagger-ui.html"),
+				new AntPathRequestMatcher("/v3/api-docs/**")
 		));
 		http.cors(cors -> {});
 		http.csrf(csrf -> csrf.disable());
@@ -59,8 +59,8 @@ public class SecurityConfig {
 	@Order(2)
 	SecurityFilterChain apiEndpoints(HttpSecurity http, JwtAuthenticationConverter jwtAuthConverter) throws Exception {
 		http.securityMatcher(new OrRequestMatcher(
-				PathPatternRequestMatcher.withDefaults().matcher("/orders/**"),
-				PathPatternRequestMatcher.withDefaults().matcher("/catalog/**")
+				new AntPathRequestMatcher("/orders/**"),
+				new AntPathRequestMatcher("/catalog/**")
 		));
 		http.cors(cors -> {});
 		http.csrf(csrf -> csrf.disable());
