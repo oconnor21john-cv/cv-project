@@ -89,6 +89,17 @@ public class OrderController {
 		return ResponseEntity.ok(toResponse(order, stockMap));
 	}
 
+	/**
+	 * Delete every order owned by the calling user. Used by the web UI's
+	 * "Clear history" button to reset demo state. Hard-delete with cascade —
+	 * intentionally destructive, scoped to the authenticated user only.
+	 */
+	@DeleteMapping
+	public ResponseEntity<Void> deleteAll(Authentication auth) {
+		orderService.deleteAllByUser(auth.getName());
+		return ResponseEntity.noContent().build();
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderResponse> get(@PathVariable UUID id) {
 		var order = orderService.get(id);
