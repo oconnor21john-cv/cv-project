@@ -13,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -37,7 +38,13 @@ public class OrderEntity {
 	@Column(name = "created_by", nullable = false)
 	private String createdBy;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	// EAGER because every read path (GET /orders, GET /orders/{id}, confirm,
+	// cancel) iterates items immediately after loading the order, and
+	// spring.jpa.open-in-view=false means the session closes when the
+	// @Transactional method returns. Lazy would throw LazyInitializationException
+	// on access in the controller. Items per order are small and bounded, so
+	// the cartesian-product concern doesn't apply at this scale.
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<OrderItemEntity> items = new ArrayList<>();
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
