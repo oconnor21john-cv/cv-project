@@ -37,14 +37,6 @@ public class ApiExceptionHandler {
 		return pd;
 	}
 
-	@ExceptionHandler(IllegalStateException.class)
-	@ResponseStatus(HttpStatus.CONFLICT)
-	public ProblemDetail conflict(IllegalStateException ex) {
-		var pd = ProblemDetail.forStatus(HttpStatus.CONFLICT);
-		pd.setDetail(ex.getMessage());
-		return pd;
-	}
-
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ProblemDetail validation(MethodArgumentNotValidException ex) {

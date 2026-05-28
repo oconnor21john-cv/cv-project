@@ -46,6 +46,23 @@ public class InventoryClient {
 		return Map.of();
 	}
 
+	/**
+	 * Fetch all products (sku, name, unitPrice) from inventory-service.
+	 * Falls back to an empty list if inventory-service is unavailable
+	 * (the UI then displays no products rather than crashing).
+	 */
+	@CircuitBreaker(name = "inventory", fallbackMethod = "productsFallback")
+	public java.util.List<com.portfolio.order.api.CatalogController.Product> fetchProducts() {
+		return inventoryRestClient.get()
+				.uri("/products")
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {});
+	}
+
+	private java.util.List<com.portfolio.order.api.CatalogController.Product> productsFallback(Throwable throwable) {
+		return java.util.List.of();
+	}
+
 	@CircuitBreaker(name = "inventory")
 	public InventoryReserveResponse reserve(InventoryReserveRequest request) {
 		return inventoryRestClient.post()

@@ -56,7 +56,7 @@ export function Home() {
             </Link>
           ) : (
             <Link to="/login" className="btn-primary btn-lg">
-              Place an order →
+              Try the live demo →
             </Link>
           )}
           <Link to="/architecture" className="btn-ghost btn-lg">

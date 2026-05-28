@@ -1,5 +1,6 @@
 package com.portfolio.order.api;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +37,15 @@ public class CatalogController {
 	public Map<String, Integer> stock(@RequestParam List<String> skus) {
 		return inventoryClient.fetchStock(skus);
 	}
+
+	/**
+	 * The product catalog (sku, name, unitPrice) sourced from inventory-service.
+	 * Used by the web UI to render the product picker without hardcoding SKUs.
+	 */
+	@GetMapping("/products")
+	public List<Product> products() {
+		return inventoryClient.fetchProducts();
+	}
+
+	public record Product(String sku, String name, BigDecimal unitPrice) {}
 }

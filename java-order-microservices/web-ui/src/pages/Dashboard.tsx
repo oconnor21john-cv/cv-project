@@ -10,7 +10,10 @@ function StatusPill({ status }: { status: string }) {
   return <span className={`status-pill s-${status}`}>{status}</span>
 }
 
-const CATALOG: Record<string, { name: string; price: number }> = {
+// Default catalog used until /catalog/products responds (or as a fallback
+// if inventory-service is unavailable). Kept in sync with the inventory-service
+// V2 seed migration.
+const CATALOG_DEFAULT: Record<string, { name: string; price: number }> = {
   'SKU-APPLE':  { name: 'Apple',  price: 0.50 },
   'SKU-BANANA': { name: 'Banana', price: 0.30 },
   'SKU-COFFEE': { name: 'Coffee', price: 4.99 },
@@ -44,6 +47,28 @@ export function Dashboard() {
   const [historyLoading, setHistoryLoading] = useState(false)
   const [historyVersion, setHistoryVersion] = useState(0)
   const [availableStock, setAvailableStock] = useState<Record<string, number>>({})
+  const [catalog, setCatalog] = useState<Record<string, { name: string; price: number }>>(CATALOG_DEFAULT)
+
+  // Fetch product catalog from /catalog/products (proxies inventory-service).
+  // Falls back to the hardcoded default if the call fails so the UI never blocks.
+  useEffect(() => {
+    if (!token) return
+    let cancelled = false
+    fetch(`${baseUrl}/catalog/products`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((products: Array<{ sku: string; name: string; unitPrice: number }> | null) => {
+        if (cancelled || !products || products.length === 0) return
+        const map: Record<string, { name: string; price: number }> = {}
+        for (const p of products) {
+          map[p.sku] = { name: p.name, price: Number(p.unitPrice) }
+        }
+        setCatalog(map)
+      })
+      .catch((e) => console.warn('[catalog] fetch failed, using defaults:', e))
+    return () => { cancelled = true }
+  }, [token, baseUrl])
 
   function refreshHistory() {
     setHistoryVersion((v) => v + 1)
@@ -64,7 +89,7 @@ export function Dashboard() {
   // Fetch available stock on mount and every 10 seconds
   useEffect(() => {
     if (!token) return
-    const allSkus = Object.keys(CATALOG)
+    const allSkus = Object.keys(catalog)
     const fetchStock = async () => {
       try {
         const url = `${baseUrl}/catalog/stock?skus=${allSkus.join(',')}`
@@ -109,7 +134,7 @@ export function Dashboard() {
     return () => clearInterval(interval)
   }, [order?.id, order?.status, token, baseUrl, setOrder, addLog])
 
-  const product = CATALOG[sku]
+  const product = catalog[sku]
   const unitPrice = product.price
 
   if (!token) {
@@ -271,7 +296,7 @@ export function Dashboard() {
                 </div>
                 <div className="completion-row">
                   <span className="completion-label">Items</span>
-                  <span>{order.items.map(i => `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}`).join(', ')}</span>
+                  <span>{order.items.map(i => `${catalog[i.sku]?.name ?? i.sku} ×${i.quantity}`).join(', ')}</span>
                 </div>
                 <div className="completion-row">
                   <span className="completion-label">Status</span>
@@ -296,7 +321,7 @@ export function Dashboard() {
                   <label>
                     <span>Product</span>
                     <select value={sku} onChange={(e) => setSku(e.target.value)} disabled={busy !== 'idle'}>
-                      {Object.entries(CATALOG).map(([code, p]) => {
+                      {Object.entries(catalog).map(([code, p]) => {
                         const stock = availableStock[code]
                         const stockLabel = stock === undefined ? '' : stock === 0 ? ' (out of stock)' : ` (${stock} in stock)`
                         return (
@@ -361,7 +386,7 @@ export function Dashboard() {
                           <tbody>
                             {order.items.map((item, idx) => (
                               <tr key={idx}>
-                                <td>{CATALOG[item.sku]?.name ?? item.sku}</td>
+                                <td>{catalog[item.sku]?.name ?? item.sku}</td>
                                 <td className="mono">{item.quantity}</td>
                                 <td className="mono">£{item.unitPrice.toFixed(2)}</td>
                                 <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
@@ -452,7 +477,7 @@ export function Dashboard() {
                         <td>
                           {o.items.map(i => {
                             const stockIndicator = i.remainingStock == null ? '' : i.remainingStock === 0 ? ' 🔴' : ` ✓${i.remainingStock}`
-                            return `${CATALOG[i.sku]?.name ?? i.sku} ×${i.quantity}${stockIndicator}`
+                            return `${catalog[i.sku]?.name ?? i.sku} ×${i.quantity}${stockIndicator}`
                           }).join(', ')}
                         </td>
                         <td className="mono">£{o.totalAmount.toFixed(2)}</td>
