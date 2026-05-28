@@ -47,7 +47,11 @@ public class OrderEntity {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<OrderItemEntity> items = new ArrayList<>();
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	// EAGER for the same reason as `items`: setStatus() calls addHistory()
+	// which mutates this collection, and confirm/cancel/clear paths do this
+	// outside the load transaction. With open-in-view=false the proxy can't
+	// initialize lazily and Hibernate throws LazyInitializationException.
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<OrderStatusHistoryEntity> statusHistory = new ArrayList<>();
 
 	protected OrderEntity() {}
