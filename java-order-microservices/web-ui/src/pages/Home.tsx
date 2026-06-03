@@ -1,18 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useApp } from '../store/AppContext'
 
-const REPO_URL = 'https://github.com/oconnor21john-cv/cv-project'
-
 export function Home() {
   const { token } = useApp()
   return (
     <>
       <section className="hero">
-        <div className="hero-eyebrow">
-          <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className="hero-repo-link">
-            github.com/oconnor21john-cv/cv-project
-          </a>
-        </div>
         <h1 className="hero-h1">
           Order processing <br />microservices
         </h1>
