@@ -1,33 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useApp } from '../store/AppContext'
 
-const techTags = [
-  'Java 21',
-  'Spring Boot 3',
-  'PostgreSQL',
-  'AWS SQS',
-  'ECS Fargate',
-  'Application Load Balancer',
-  'Terraform',
-  'GitHub Actions',
-  'React · Vite',
-  'Vercel',
-]
-
-const features = [
-  {
-    title: 'order-service',
-    body: 'Accepts and persists orders, coordinates inventory reservation and payment processing. Publishes domain events to SQS. Owns the orders schema in PostgreSQL.',
-  },
-  {
-    title: 'inventory-service',
-    body: 'Manages stock levels per SKU. Exposes reserve and release endpoints called by order-service during the confirm/cancel flow.',
-  },
-  {
-    title: 'payment-service',
-    body: 'Processes payments against order totals. Returns success or failure to order-service, which compensates inventory if payment is declined.',
-  },
-]
+const REPO_URL = 'https://github.com/oconnor21john-cv/cv-project'
 
 export function Home() {
   const { token } = useApp()
@@ -35,18 +9,16 @@ export function Home() {
     <>
       <section className="hero">
         <div className="hero-eyebrow">
-          <span className="eyebrow-dot" />
-          Live on AWS
+          <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className="hero-repo-link">
+            github.com/oconnor21john-cv/cv-project
+          </a>
         </div>
         <h1 className="hero-h1">
-          Order processing <br />
-          <span className="gradient-text">microservices</span>
+          Order processing <br />microservices
         </h1>
         <p className="hero-lead">
-          Three Spring Boot services running on ECS Fargate behind an ALB.
-          Orders are persisted to RDS PostgreSQL, stock is reserved via REST,
-          and domain events are published to SQS. The infrastructure is defined in Terraform
-          and deployed through GitHub Actions.
+          Spring Boot 3 on the backend with saga orchestration and a transactional outbox.
+          React + Vite frontend, deployed to ECS Fargate behind an ALB.
         </p>
 
         <div className="hero-cta">
@@ -63,21 +35,19 @@ export function Home() {
             Architecture
           </Link>
         </div>
-
-        <div className="tech-tags">
-          {techTags.map((t) => (
-            <span key={t}>{t}</span>
-          ))}
-        </div>
       </section>
 
-      <section className="feature-grid">
-        {features.map((f) => (
-          <div key={f.title} className="feature">
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-          </div>
-        ))}
+      <section className="card">
+        <p className="services-prose">
+          <code>order-service</code> handles authentication and orchestrates the saga —
+          reserve stock, capture payment, and compensate by releasing the reservation
+          if payment fails. <code>inventory-service</code> owns stock levels,
+          with pessimistic-locked reservations keyed by <code>orderId</code> so retries
+          are safe. <code>payment-service</code> is a deliberately simple mock so the
+          saga has something real to compensate against. Each service owns its own
+          Postgres database and Flyway migrations; nothing is shared except the
+          domain events flowing through SQS.
+        </p>
       </section>
 
       <section className="card home-cta">
@@ -89,7 +59,7 @@ export function Home() {
           </p>
         </div>
         <Link to={token ? '/dashboard' : '/login'} className="btn-primary btn-lg">
-          {token ? 'Dashboard' : 'Log in'} →
+          {token ? 'Dashboard' : 'Log in'}
         </Link>
       </section>
     </>
