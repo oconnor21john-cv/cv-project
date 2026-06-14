@@ -9,7 +9,6 @@ export function Home() {
         <span className="mark">JOC</span>
         <nav className="nav">
           <Link to="/architecture">Projects</Link>
-          <a href="/cv.pdf">CV</a>
         </nav>
       </header>
 
