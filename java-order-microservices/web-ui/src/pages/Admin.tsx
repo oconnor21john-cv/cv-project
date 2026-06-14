@@ -29,7 +29,7 @@ export function Admin() {
     if (!token || !isAdmin) return
     setLoading(true)
     setError('')
-    addLog('info', 'GET /orders — fetching all orders (admin)')
+    addLog('info', 'GET /orders:fetching all orders (admin)')
     getJson<OrderResponse[]>(`${baseUrl}/orders`, token)
       .then((data) => {
         setOrders(data)

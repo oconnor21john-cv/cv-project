@@ -179,7 +179,7 @@ export function Dashboard() {
       addLog('success', `Order ${created.id.slice(0, 8)}… created · £${created.totalAmount.toFixed(2)} · ${created.status}`)
       refreshHistory()
     },
-    `POST /orders — ${quantity} × ${sku} @ £${unitPrice.toFixed(2)}`,
+    `POST /orders,${quantity} × ${sku} @ £${unitPrice.toFixed(2)}`,
   )
 
   const onConfirm = wrap(
@@ -191,7 +191,7 @@ export function Dashboard() {
       addLog('success', `inventory-service reserved stock · payment-service accepted · ${confirmed.status}`)
       refreshHistory()
     },
-    'POST /orders/{id}/confirm — reserving stock + charging',
+    'POST /orders/{id}/confirm,reserving stock + charging',
   )
 
   const onCancel = wrap(
@@ -203,7 +203,7 @@ export function Dashboard() {
       addLog('success', `Order ${cancelled.status.toLowerCase()}`)
       refreshHistory()
     },
-    'POST /orders/{id}/cancel — releasing reservation',
+    'POST /orders/{id}/cancel,releasing reservation',
   )
 
   function onNewOrder() {
@@ -326,7 +326,7 @@ export function Dashboard() {
                         const stockLabel = stock === undefined ? '' : stock === 0 ? ' (out of stock)' : ` (${stock} in stock)`
                         return (
                           <option key={code} value={code} disabled={stock === 0}>
-                            {p.name} — £{p.price.toFixed(2)}{stockLabel}
+                            {p.name},£{p.price.toFixed(2)}{stockLabel}
                           </option>
                         )
                       })}
@@ -391,7 +391,7 @@ export function Dashboard() {
                                 <td className="mono">£{item.unitPrice.toFixed(2)}</td>
                                 <td className="mono">£{(item.quantity * item.unitPrice).toFixed(2)}</td>
                                 <td className="mono">
-                                  {item.remainingStock == null ? '—' : item.remainingStock === 0 ? '🔴 Out of stock' : `✓ ${item.remainingStock}`}
+                                  {item.remainingStock == null ? '-' : item.remainingStock === 0 ? '🔴 Out of stock' : `✓ ${item.remainingStock}`}
                                 </td>
                               </tr>
                             ))}

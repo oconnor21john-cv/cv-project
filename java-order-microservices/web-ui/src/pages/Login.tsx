@@ -20,7 +20,7 @@ export function Login() {
     setError('')
     setBusy('auth')
     setActiveStage('auth')
-    addLog('info', `POST /auth/token — requesting JWT for ${username}`)
+    addLog('info', `POST /auth/token:requesting JWT for ${username}`)
     try {
       const resp = await postJson<TokenResponse>(`${baseUrl}/auth/token`, { username, password })
       setToken(resp.accessToken)

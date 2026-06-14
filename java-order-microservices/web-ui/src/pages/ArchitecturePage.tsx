@@ -28,7 +28,7 @@ const infraPoints = [
   ['VPC + public subnets', 'Two AZs for ALB + Fargate redundancy.'],
   ['Application Load Balancer', 'Routes /auth, /orders and /actuator to order-service.'],
   ['ECS Fargate', 'Three services, each with its own task definition, IAM role and log group.'],
-  ['RDS Postgres', 'One db.t3.micro per service — data boundaries stay strict.'],
+  ['RDS Postgres', 'One db.t3.micro per service,data boundaries stay strict.'],
   ['Secrets Manager', 'DB passwords and JWT secret injected as ECS secrets.'],
   ['SQS', 'One queue per service for asynchronous domain events.'],
   ['X-Ray', 'Distributed tracing across all three services (active in AWS profile).'],

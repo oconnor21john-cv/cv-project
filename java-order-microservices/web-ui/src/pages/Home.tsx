@@ -6,14 +6,13 @@ export function Home() {
       <div className="grain" aria-hidden="true" />
 
       <header className="topbar">
-        <span className="mark">JOC</span>
         <nav className="nav">
-          <Link to="/architecture">Projects</Link>
+          <Link to="/architecture" className="nav-cta">Project</Link>
         </nav>
       </header>
 
       <section className="hero">
-        <p className="eyebrow">— Belfast, Northern Ireland</p>
+        <p className="eyebrow">Belfast, Northern Ireland</p>
         <h1 className="headline">
           <span className="line">John</span>
           <span className="line italic">O&rsquo;Connor</span>
@@ -31,7 +30,7 @@ export function Home() {
         </h2>
         <div className="block-body">
           <p>
-            I came to software the long way round &mdash; through lab science,
+            I came to software the long way round, through lab science,
             where I learned the value of careful documentation, rigorous
             process, and getting the answer right the first time. That mindset
             carried directly into engineering, where the same instincts apply:
@@ -52,8 +51,8 @@ export function Home() {
         </h2>
         <div className="block-body">
           <p>
-            I&rsquo;ve been building this site itself as a working project
-            &mdash; the front-end you&rsquo;re looking at is paired with an
+            I&rsquo;ve been building this site itself as a working project.
+            The front-end you&rsquo;re looking at is paired with an
             order-processing microservices platform running on AWS. Spring
             Boot services on ECS Fargate, PostgreSQL with Flyway migrations,
             SQS for async messaging, Resilience4j circuit breakers, and a
@@ -61,7 +60,7 @@ export function Home() {
             (Testcontainers, WireMock) and out to production.
           </p>
           <p>
-            The point isn&rsquo;t the stack &mdash; it&rsquo;s the end-to-end
+            The point isn&rsquo;t the stack, it&rsquo;s the end-to-end
             lifecycle. Requirements through to a thing running in the cloud
             that someone can actually hit.{' '}
             <Link to="/architecture" className="inline-link">
@@ -80,7 +79,7 @@ export function Home() {
             <h3>Golf</h3>
             <p>
               A long, ongoing argument with my swing. The kind of game where
-              you finally fix one thing and immediately break another &mdash;
+              you finally fix one thing and immediately break another,
               which, on reflection, is also a fair description of
               software.
             </p>
@@ -142,7 +141,7 @@ export function Home() {
 
         .topbar {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-end;
           align-items: center;
           margin-bottom: 6rem;
           font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
@@ -151,20 +150,27 @@ export function Home() {
           text-transform: uppercase;
         }
 
-        .mark {
-          font-weight: 600;
-          color: var(--ink);
-          letter-spacing: 0.1em;
-        }
-
-        .nav { display: flex; gap: 2rem; }
+        .nav { display: flex; gap: 1rem; }
         .nav a {
           color: var(--muted);
           text-decoration: none;
-          transition: color 0.2s;
+          transition: all 0.2s ease;
           position: relative;
         }
-        .nav a:hover { color: var(--accent); }
+
+        .nav-cta {
+          padding: 0.6rem 1.1rem;
+          border: 1px solid var(--rule);
+          border-radius: 999px;
+          color: var(--ink) !important;
+          background: transparent;
+          font-weight: 500;
+        }
+        .nav-cta:hover {
+          color: var(--bg) !important;
+          background: var(--accent);
+          border-color: var(--accent);
+        }
 
         .hero { margin-bottom: 6rem; }
 

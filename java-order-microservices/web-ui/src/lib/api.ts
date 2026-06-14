@@ -49,7 +49,7 @@ export async function postJson<T>(url: string, body: unknown, token?: string): P
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+    throw new Error(`${res.status} ${res.statusText}${text ? `:${text}` : ''}`)
   }
   return (await res.json()) as T
 }
@@ -61,7 +61,7 @@ export async function getJson<T>(url: string, token?: string): Promise<T> {
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+    throw new Error(`${res.status} ${res.statusText}${text ? `:${text}` : ''}`)
   }
   return (await res.json()) as T
 }
@@ -73,7 +73,7 @@ export async function deleteRequest(url: string, token?: string): Promise<void> 
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')
-    throw new Error(`${res.status} ${res.statusText}${text ? ` — ${text}` : ''}`)
+    throw new Error(`${res.status} ${res.statusText}${text ? `:${text}` : ''}`)
   }
 }
 
