@@ -1,60 +1,278 @@
 import { Link } from 'react-router-dom'
-import { useApp } from '../store/AppContext'
 
 export function Home() {
-  const { token } = useApp()
   return (
-    <>
+    <main className="page">
+      <div className="grain" aria-hidden="true" />
+
+      <header className="topbar">
+        <span className="mark">JOC</span>
+        <nav className="nav">
+          <Link to="/architecture">Projects</Link>
+          <a href="/cv.pdf">CV</a>
+          <a href="mailto:joconnor82828@gmail.com">Contact</a>
+        </nav>
+      </header>
+
       <section className="hero">
-        <h1 className="hero-h1">
-          Order processing <br />microservices
+        <p className="eyebrow">— Belfast, Northern Ireland</p>
+        <h1 className="headline">
+          <span className="line">John</span>
+          <span className="line italic">O&rsquo;Connor</span>
         </h1>
-        <p className="hero-lead">
-          Spring Boot 3 on the backend with saga orchestration and a transactional outbox.
-          React + Vite frontend, deployed to ECS Fargate behind an ALB.
-        </p>
-
-        <div className="hero-cta">
-          {token ? (
-            <Link to="/dashboard" className="btn-primary btn-lg">
-              Open dashboard →
-            </Link>
-          ) : (
-            <Link to="/login" className="btn-primary btn-lg">
-              Try the live demo →
-            </Link>
-          )}
-          <Link to="/architecture" className="btn-ghost btn-lg">
-            Architecture
-          </Link>
-        </div>
-      </section>
-
-      <section className="card">
-        <p className="services-prose">
-          <code>order-service</code> handles authentication and orchestrates the saga —
-          reserve stock, capture payment, and compensate by releasing the reservation
-          if payment fails. <code>inventory-service</code> owns stock levels,
-          with pessimistic-locked reservations keyed by <code>orderId</code> so retries
-          are safe. <code>payment-service</code> is a deliberately simple mock so the
-          saga has something real to compensate against. Each service owns its own
-          Postgres database and Flyway migrations; nothing is shared except the
-          domain events flowing through SQS.
+        <p className="lede">
+          Software engineer building Java and Kotlin services. Recently
+          finished an MSc in Computer Science and looking for my first role
+          in software.
         </p>
       </section>
 
-      <section className="card home-cta">
-        <div>
-          <div className="card-label">Demo</div>
-          <h2 className="home-cta-h">Place an order against the running services.</h2>
-          <p className="home-cta-sub">
-            Credentials: <code>customer / password</code>
+      <section className="block" aria-labelledby="about-h">
+        <h2 id="about-h" className="block-title">
+          <span className="num">01</span> About
+        </h2>
+        <div className="block-body">
+          <p>
+            I came to software the long way round &mdash; through lab science,
+            where I learned the value of careful documentation, rigorous
+            process, and getting the answer right the first time. That mindset
+            carried directly into engineering, where the same instincts apply:
+            small details compound, and good systems are built on good habits.
+          </p>
+          <p>
+            These days I work mostly in Java and Kotlin, with a backend lean
+            toward distributed systems, clean APIs, and tests you can actually
+            trust. I&rsquo;m looking for a first engineering role where I can
+            keep learning from people who take the craft seriously.
           </p>
         </div>
-        <Link to={token ? '/dashboard' : '/login'} className="btn-primary btn-lg">
-          {token ? 'Dashboard' : 'Log in'}
-        </Link>
       </section>
-    </>
+
+      <section className="block" aria-labelledby="now-h">
+        <h2 id="now-h" className="block-title">
+          <span className="num">02</span> Now
+        </h2>
+        <div className="block-body">
+          <p>
+            I&rsquo;ve been building this site itself as a working project
+            &mdash; the front-end you&rsquo;re looking at is paired with an
+            order-processing microservices platform running on AWS. Spring
+            Boot services on ECS Fargate, PostgreSQL with Flyway migrations,
+            SQS for async messaging, Resilience4j circuit breakers, and a
+            GitHub Actions pipeline that takes a commit through tests
+            (Testcontainers, WireMock) and out to production.
+          </p>
+          <p>
+            The point isn&rsquo;t the stack &mdash; it&rsquo;s the end-to-end
+            lifecycle. Requirements through to a thing running in the cloud
+            that someone can actually hit.{' '}
+            <Link to="/architecture" className="inline-link">
+              Read more about the architecture &rarr;
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="block" aria-labelledby="interests-h">
+        <h2 id="interests-h" className="block-title">
+          <span className="num">03</span> Off the clock
+        </h2>
+        <div className="block-body interests">
+          <div className="interest">
+            <h3>Golf</h3>
+            <p>
+              A long, ongoing argument with my swing. The kind of game where
+              you finally fix one thing and immediately break another &mdash;
+              which, on reflection, is also a fair description of
+              software.
+            </p>
+          </div>
+          <div className="interest">
+            <h3>Fishing</h3>
+            <p>
+              Quiet mornings, slow water, no notifications. Whatever the
+              opposite of a stand-up meeting is, that&rsquo;s what
+              I&rsquo;m after.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="foot">
+        <p>
+          <a href="mailto:joconnor82828@gmail.com">joconnor82828@gmail.com</a> &middot;{' '}
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            LinkedIn
+          </a>{' '}
+          &middot;{' '}
+          <a
+            href="https://github.com/oconnor21john-cv/cv-project"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            GitHub
+          </a>
+        </p>
+        <p className="copy">&copy; {new Date().getFullYear()} John O&rsquo;Connor</p>
+      </footer>
+
+      <style>{`
+        :root {
+          --bg: #f4efe6;
+          --ink: #1a1a1a;
+          --muted: #6b6357;
+          --rule: #d9d1c2;
+          --accent: #a8431f;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+          margin: 0;
+          padding: 0;
+          background: var(--bg);
+          color: var(--ink);
+          font-family: 'Söhne', 'Inter', -apple-system, sans-serif;
+        }
+
+        .page {
+          max-width: 760px;
+          margin: 0 auto;
+          padding: 3rem 1.75rem 4rem;
+          position: relative;
+          font-family: 'Iowan Old Style', 'Charter', 'Georgia', serif;
+          font-size: 18px;
+          line-height: 1.65;
+          color: var(--ink);
+        }
+
+        /* subtle paper grain */
+        .grain {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.04;
+          z-index: 1;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        }
+
+        .topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5rem;
+          font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+          font-size: 13px;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+
+        .mark {
+          font-weight: 600;
+          color: var(--ink);
+        }
+
+        .nav { display: flex; gap: 1.5rem; }
+        .nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        .nav a:hover { color: var(--accent); }
+
+        .hero { margin-bottom: 5rem; }
+
+        .eyebrow {
+          font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+          font-size: 13px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: var(--muted);
+          margin: 0 0 1.25rem;
+        }
+
+        .headline {
+          font-family: 'Canela', 'Iowan Old Style', 'Charter', 'Georgia', serif;
+          font-size: clamp(3.5rem, 11vw, 6.5rem);
+          line-height: 0.95;
+          font-weight: 400;
+          letter-spacing: -0.02em;
+          margin: 0 0 1.75rem;
+        }
+        .headline .line { display: block; }
+        .headline .italic { font-style: italic; color: var(--accent); }
+
+        .lede {
+          font-size: 1.25rem;
+          line-height: 1.5;
+          color: var(--ink);
+          max-width: 30em;
+          margin: 0;
+        }
+
+        .block {
+          padding: 3rem 0;
+          border-top: 1px solid var(--rule);
+        }
+
+        .block-title {
+          font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+          font-size: 12px;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--muted);
+          margin: 0 0 1.75rem;
+          display: flex;
+          align-items: baseline;
+          gap: 0.75rem;
+        }
+        .num { color: var(--accent); }
+
+        .block-body p {
+          margin: 0 0 1.1rem;
+          max-width: 36em;
+        }
+        .block-body p:last-child { margin-bottom: 0; }
+
+        .inline-link {
+          color: var(--accent);
+          text-decoration: none;
+          border-bottom: 1px solid var(--accent);
+          padding-bottom: 1px;
+        }
+        .inline-link:hover { opacity: 0.7; }
+
+        .interests {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem 2.5rem;
+        }
+        @media (max-width: 560px) {
+          .interests { grid-template-columns: 1fr; }
+        }
+        .interest h3 {
+          font-family: 'Canela', 'Iowan Old Style', 'Charter', 'Georgia', serif;
+          font-style: italic;
+          font-weight: 400;
+          font-size: 1.4rem;
+          margin: 0 0 0.5rem;
+        }
+        .interest p { margin: 0; color: var(--muted); }
+
+        .foot {
+          margin-top: 5rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--rule);
+          font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+          font-size: 12px;
+          letter-spacing: 0.04em;
+          color: var(--muted);
+        }
+        .foot a { color: var(--muted); text-decoration: none; }
+        .foot a:hover { color: var(--accent); }
+        .foot .copy { margin-top: 0.5rem; }
+      `}</style>
+    </main>
   )
 }
