@@ -10,7 +10,6 @@ export function Home() {
         <nav className="nav">
           <Link to="/architecture">Projects</Link>
           <a href="/cv.pdf">CV</a>
-          <a href="mailto:joconnor82828@gmail.com">Contact</a>
         </nav>
       </header>
 
@@ -99,25 +98,7 @@ export function Home() {
       </section>
 
       <footer className="foot">
-        <p>
-          <a href="mailto:joconnor82828@gmail.com">joconnor82828@gmail.com</a> &middot;{' '}
-          <a
-            href="https://www.linkedin.com/"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            LinkedIn
-          </a>{' '}
-          &middot;{' '}
-          <a
-            href="https://github.com/oconnor21john-cv/cv-project"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            GitHub
-          </a>
-        </p>
-        <p className="copy">&copy; {new Date().getFullYear()} John O&rsquo;Connor</p>
+        <p className="copy">&copy; {new Date().getFullYear()} John O&rsquo;Connor &middot; Belfast</p>
       </footer>
 
       <style>{`
@@ -140,13 +121,13 @@ export function Home() {
         }
 
         .page {
-          max-width: 760px;
+          max-width: 720px;
           margin: 0 auto;
-          padding: 3rem 1.75rem 4rem;
+          padding: 4rem 2rem 5rem;
           position: relative;
           font-family: 'Iowan Old Style', 'Charter', 'Georgia', serif;
           font-size: 18px;
-          line-height: 1.65;
+          line-height: 1.7;
           color: var(--ink);
         }
 
@@ -164,73 +145,83 @@ export function Home() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 5rem;
+          margin-bottom: 6rem;
           font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-          font-size: 13px;
-          letter-spacing: 0.04em;
+          font-size: 12px;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
 
         .mark {
           font-weight: 600;
           color: var(--ink);
+          letter-spacing: 0.1em;
         }
 
-        .nav { display: flex; gap: 1.5rem; }
-        .nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        .nav { display: flex; gap: 2rem; }
+        .nav a {
+          color: var(--muted);
+          text-decoration: none;
+          transition: color 0.2s;
+          position: relative;
+        }
         .nav a:hover { color: var(--accent); }
 
-        .hero { margin-bottom: 5rem; }
+        .hero { margin-bottom: 6rem; }
 
         .eyebrow {
           font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-          font-size: 13px;
-          letter-spacing: 0.06em;
+          font-size: 12px;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           color: var(--muted);
-          margin: 0 0 1.25rem;
+          margin: 0 0 1.5rem;
         }
 
         .headline {
           font-family: 'Canela', 'Iowan Old Style', 'Charter', 'Georgia', serif;
-          font-size: clamp(3.5rem, 11vw, 6.5rem);
-          line-height: 0.95;
+          font-size: clamp(3.25rem, 10vw, 5.75rem);
+          line-height: 0.98;
           font-weight: 400;
-          letter-spacing: -0.02em;
-          margin: 0 0 1.75rem;
+          letter-spacing: -0.025em;
+          margin: 0 0 2rem;
         }
         .headline .line { display: block; }
         .headline .italic { font-style: italic; color: var(--accent); }
 
         .lede {
-          font-size: 1.25rem;
-          line-height: 1.5;
+          font-size: 1.2rem;
+          line-height: 1.55;
           color: var(--ink);
           max-width: 30em;
           margin: 0;
         }
 
         .block {
-          padding: 3rem 0;
+          padding: 3.5rem 0;
           border-top: 1px solid var(--rule);
         }
+        .block:last-of-type { padding-bottom: 4rem; }
 
         .block-title {
           font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 500;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           color: var(--muted);
-          margin: 0 0 1.75rem;
+          margin: 0 0 2rem;
           display: flex;
           align-items: baseline;
-          gap: 0.75rem;
+          gap: 1rem;
         }
-        .num { color: var(--accent); }
+        .num {
+          color: var(--accent);
+          font-weight: 600;
+        }
 
         .block-body p {
-          margin: 0 0 1.1rem;
+          margin: 0 0 1.2rem;
           max-width: 36em;
         }
         .block-body p:last-child { margin-bottom: 0; }
@@ -240,38 +231,47 @@ export function Home() {
           text-decoration: none;
           border-bottom: 1px solid var(--accent);
           padding-bottom: 1px;
+          transition: opacity 0.2s;
         }
-        .inline-link:hover { opacity: 0.7; }
+        .inline-link:hover { opacity: 0.65; }
 
         .interests {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 2rem 2.5rem;
+          gap: 2.5rem 3rem;
         }
         @media (max-width: 560px) {
-          .interests { grid-template-columns: 1fr; }
+          .interests { grid-template-columns: 1fr; gap: 2rem; }
+        }
+        .interest {
+          padding-left: 1rem;
+          border-left: 2px solid var(--rule);
         }
         .interest h3 {
           font-family: 'Canela', 'Iowan Old Style', 'Charter', 'Georgia', serif;
           font-style: italic;
           font-weight: 400;
-          font-size: 1.4rem;
-          margin: 0 0 0.5rem;
+          font-size: 1.35rem;
+          margin: 0 0 0.6rem;
+          color: var(--accent);
         }
-        .interest p { margin: 0; color: var(--muted); }
+        .interest p {
+          margin: 0;
+          color: var(--muted);
+          font-size: 0.98rem;
+        }
 
         .foot {
-          margin-top: 5rem;
+          margin-top: 4rem;
           padding-top: 2rem;
           border-top: 1px solid var(--rule);
           font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
-          font-size: 12px;
-          letter-spacing: 0.04em;
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
           color: var(--muted);
         }
-        .foot a { color: var(--muted); text-decoration: none; }
-        .foot a:hover { color: var(--accent); }
-        .foot .copy { margin-top: 0.5rem; }
+        .foot .copy { margin: 0; }
       `}</style>
     </main>
   )
