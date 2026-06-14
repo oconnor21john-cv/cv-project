@@ -1,53 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Warm cream + rust palette — matches the personal Home page. */
 :root {
-  --bg:          #07090f;
-  --bg-2:        #0a0d15;
-  --surface:     #10131c;
-  --surface-2:   #161a26;
-  --surface-3:   #1d2232;
-  --border:      #222838;
-  --border-2:    #2d3348;
-  --text:        #e6e9f2;
-  --text-dim:    #9aa1b8;
-  --text-muted:  #5b6178;
-  --accent:      #6f9dff;
-  --accent-2:    #4a80f0;
-  --accent-glow: rgba(111, 157, 255, 0.35);
-  --green:       #34d399;
-  --green-bg:    rgba(52, 211, 153, 0.12);
-  --green-border:rgba(52, 211, 153, 0.3);
-  --red:         #f87171;
-  --red-bg:      rgba(248, 113, 113, 0.1);
-  --amber:       #fbbf24;
-  --amber-bg:    rgba(251, 191, 36, 0.12);
+  --bg:          #f4efe6;
+  --bg-2:        #ede6d7;
+  --surface:     #ffffff;
+  --surface-2:   #ede6d7;
+  --surface-3:   #e3dcc8;
+  --border:      #d9d1c2;
+  --border-2:    #c4baa6;
+  --text:        #1a1a1a;
+  --text-dim:    #6b6357;
+  --text-muted:  #8a8175;
+  --accent:      #a8431f;
+  --accent-2:    #8a3617;
+  --accent-glow: rgba(168, 67, 31, 0.25);
+  --green:       #4f7d2e;
+  --green-bg:    rgba(79, 125, 46, 0.12);
+  --green-border:rgba(79, 125, 46, 0.3);
+  --red:         #9a2e1f;
+  --red-bg:      rgba(154, 46, 31, 0.08);
+  --amber:       #c08a1a;
+  --amber-bg:    rgba(192, 138, 26, 0.12);
   --font:        'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif:  'Iowan Old Style', 'Charter', 'Georgia', serif;
   --mono:        'JetBrains Mono', monospace;
   --radius:      10px;
   --radius-lg:   14px;
 }
 
+/* Explicit light keeps parity with :root for the ThemeToggle. */
 [data-theme="light"] {
-  --bg:          #f5f7fa;
-  --bg-2:        #ffffff;
+  --bg:          #f4efe6;
+  --bg-2:        #ede6d7;
   --surface:     #ffffff;
-  --surface-2:   #f0f2f5;
-  --surface-3:   #e4e7ec;
-  --border:      #d1d5db;
-  --border-2:    #b8bdc7;
-  --text:        #1a1d26;
-  --text-dim:    #4b5563;
-  --text-muted:  #9ca3af;
-  --accent:      #4a80f0;
-  --accent-2:    #3b6de0;
-  --accent-glow: rgba(74, 128, 240, 0.25);
-  --green:       #16a34a;
-  --green-bg:    rgba(22, 163, 74, 0.1);
-  --green-border:rgba(22, 163, 74, 0.3);
-  --red:         #dc2626;
-  --red-bg:      rgba(220, 38, 38, 0.08);
-  --amber:       #d97706;
-  --amber-bg:    rgba(217, 119, 6, 0.1);
+  --surface-2:   #ede6d7;
+  --surface-3:   #e3dcc8;
+  --border:      #d9d1c2;
+  --border-2:    #c4baa6;
+  --text:        #1a1a1a;
+  --text-dim:    #6b6357;
+  --text-muted:  #8a8175;
+  --accent:      #a8431f;
+  --accent-2:    #8a3617;
+  --accent-glow: rgba(168, 67, 31, 0.25);
+}
+
+/* Opt-in warm-dark theme (rust accent on near-black). */
+[data-theme="dark"] {
+  --bg:          #1a1714;
+  --bg-2:        #221d18;
+  --surface:     #2a241e;
+  --surface-2:   #322b23;
+  --surface-3:   #3d342a;
+  --border:      #3d342a;
+  --border-2:    #4d4233;
+  --text:        #f4efe6;
+  --text-dim:    #c4baa6;
+  --text-muted:  #8a8175;
+  --accent:      #d96838;
+  --accent-2:    #a8431f;
+  --accent-glow: rgba(217, 104, 56, 0.35);
+  --green:       #6fa847;
+  --red:         #d96d5a;
+  --amber:       #e0a830;
 }
 
 *, *::before, *::after {
@@ -106,7 +122,7 @@ input:hover:not(:disabled), select:hover:not(:disabled) {
 
 input:focus, select:focus {
   border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px rgba(74, 128, 240, 0.15);
+  box-shadow: 0 0 0 3px var(--accent-glow);
   background: var(--surface);
 }
 
@@ -192,13 +208,13 @@ button:disabled {
 }
 
 .btn-danger {
-  background: rgba(248, 113, 113, 0.08);
-  border-color: rgba(248, 113, 113, 0.3);
+  background: var(--red-bg);
+  border-color: rgba(154, 46, 31, 0.3);
   color: var(--red);
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: rgba(248, 113, 113, 0.16);
+  background: rgba(154, 46, 31, 0.16);
   border-color: var(--red);
 }
 

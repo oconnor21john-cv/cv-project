@@ -14,8 +14,8 @@ function App() {
     <AppProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
             <Route path="/architecture" element={<ArchitecturePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />

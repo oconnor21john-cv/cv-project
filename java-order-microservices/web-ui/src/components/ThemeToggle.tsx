@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
 function getInitialTheme(): 'dark' | 'light' {
-  if (typeof window === 'undefined') return 'dark'
+  if (typeof window === 'undefined') return 'light'
   const stored = window.__themePreference
   if (stored === 'light' || stored === 'dark') return stored
-  return 'dark'
+  return 'light'
 }
 
 declare global {
