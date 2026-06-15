@@ -32,15 +32,7 @@ export function Home() {
           <p>
             I came to software the long way round, through lab science,
             where I learned the value of careful documentation, rigorous
-            process, and getting the answer right the first time. That mindset
-            carried directly into engineering, where the same instincts apply:
-            small details compound, and good systems are built on good habits.
-          </p>
-          <p>
-            These days I work mostly in Java and Kotlin, with a backend lean
-            toward distributed systems, clean APIs, and tests you can actually
-            trust. I&rsquo;m looking for a first engineering role where I can
-            keep learning from people who take the craft seriously.
+            process, and getting the answer right the first time.
           </p>
         </div>
       </section>
