@@ -1,13 +1,36 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export function Home() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window === 'undefined') return 'light'
+    const stored = window.__themePreference
+    return stored === 'dark' || stored === 'light' ? stored : 'light'
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    window.__themePreference = theme
+  }, [theme])
+
+  const nextTheme = theme === 'dark' ? 'light' : 'dark'
+
   return (
     <main className="page">
       <div className="grain" aria-hidden="true" />
 
       <header className="topbar">
         <nav className="nav">
-          <Link to="/architecture" className="nav-cta">Project</Link>
+          <button
+            type="button"
+            className="theme-btn"
+            onClick={() => setTheme(nextTheme)}
+            aria-label={`Switch to ${nextTheme} mode`}
+            title={`Switch to ${nextTheme} mode`}
+          >
+            {theme === 'dark' ? '☀' : '☾'}
+          </button>
+          <Link to="/architecture" className="nav-cta">Click here for demo</Link>
         </nav>
       </header>
 
@@ -100,6 +123,14 @@ export function Home() {
           --accent: #a8431f;
         }
 
+        [data-theme="dark"] {
+          --bg: #1a1714;
+          --ink: #f4efe6;
+          --muted: #c4baa6;
+          --rule: #3d342a;
+          --accent: #d96838;
+        }
+
         * { box-sizing: border-box; }
 
         html, body {
@@ -108,6 +139,7 @@ export function Home() {
           background: var(--bg);
           color: var(--ink);
           font-family: 'Söhne', 'Inter', -apple-system, sans-serif;
+          transition: background 0.25s ease, color 0.25s ease;
         }
 
         .page {
@@ -142,12 +174,34 @@ export function Home() {
           text-transform: uppercase;
         }
 
-        .nav { display: flex; gap: 1rem; }
+        .nav { display: flex; gap: 0.75rem; align-items: center; }
         .nav a {
           color: var(--muted);
           text-decoration: none;
           transition: all 0.2s ease;
           position: relative;
+        }
+
+        .theme-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 999px;
+          border: 1px solid var(--rule);
+          background: transparent;
+          color: var(--ink);
+          font-family: inherit;
+          font-size: 14px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .theme-btn:hover {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: var(--bg);
         }
 
         .nav-cta {

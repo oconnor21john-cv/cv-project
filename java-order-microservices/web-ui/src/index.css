@@ -15,6 +15,7 @@
   --accent:      #a8431f;
   --accent-2:    #8a3617;
   --accent-glow: rgba(168, 67, 31, 0.25);
+  --surface-grad-end: rgba(237, 230, 215, 0.6);
   --green:       #4f7d2e;
   --green-bg:    rgba(79, 125, 46, 0.12);
   --green-border:rgba(79, 125, 46, 0.3);
@@ -44,6 +45,7 @@
   --accent:      #a8431f;
   --accent-2:    #8a3617;
   --accent-glow: rgba(168, 67, 31, 0.25);
+  --surface-grad-end: rgba(237, 230, 215, 0.6);
 }
 
 /* Opt-in warm-dark theme (rust accent on near-black). */
@@ -61,6 +63,7 @@
   --accent:      #d96838;
   --accent-2:    #a8431f;
   --accent-glow: rgba(217, 104, 56, 0.35);
+  --surface-grad-end: rgba(255, 255, 255, 0.025);
   --green:       #6fa847;
   --red:         #d96d5a;
   --amber:       #e0a830;

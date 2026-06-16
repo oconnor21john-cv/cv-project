@@ -188,7 +188,7 @@
    ─────────────────────────────────────────────────────────────────── */
 
 .card {
-  background: linear-gradient(180deg, var(--surface) 0%, rgba(237, 230, 215, 0.6) 100%);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-grad-end) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 26px;
@@ -537,7 +537,7 @@
    ─────────────────────────────────────────────────────────────────── */
 
 .login-card {
-  background: linear-gradient(180deg, var(--surface) 0%, rgba(237, 230, 215, 0.6) 100%);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-grad-end) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 36px;
