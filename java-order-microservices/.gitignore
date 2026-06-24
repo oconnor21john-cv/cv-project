@@ -46,3 +46,8 @@ cookies.txt
 *.headers.txt
 spring-home.txt
 order-service-error.txt
+
+# Terraform Lambda build artefacts
+infra/terraform/lambda/lambda.zip
+infra/terraform/lambda/build/
+infra/terraform/out.json
