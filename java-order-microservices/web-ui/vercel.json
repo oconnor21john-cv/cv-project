@@ -2,19 +2,19 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://java-order-ms-alb-1996279960.eu-west-2.elb.amazonaws.com/:path*"
+      "destination": "https://gw5y761k5f.execute-api.eu-west-2.amazonaws.com/:path*"
     },
     {
       "source": "/swagger-ui/:path*",
-      "destination": "http://java-order-ms-alb-1996279960.eu-west-2.elb.amazonaws.com/swagger-ui/:path*"
+      "destination": "https://gw5y761k5f.execute-api.eu-west-2.amazonaws.com/swagger-ui/:path*"
     },
     {
       "source": "/swagger-ui.html",
-      "destination": "http://java-order-ms-alb-1996279960.eu-west-2.elb.amazonaws.com/swagger-ui.html"
+      "destination": "https://gw5y761k5f.execute-api.eu-west-2.amazonaws.com/swagger-ui.html"
     },
     {
       "source": "/v3/api-docs/:path*",
-      "destination": "http://java-order-ms-alb-1996279960.eu-west-2.elb.amazonaws.com/v3/api-docs/:path*"
+      "destination": "https://gw5y761k5f.execute-api.eu-west-2.amazonaws.com/v3/api-docs/:path*"
     },
     {
       "source": "/((?!.*\\.).*)",
