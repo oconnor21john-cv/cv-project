@@ -130,7 +130,9 @@ resource "aws_ecs_service" "services" {
   }
 
   service_registries {
-    registry_arn = aws_service_discovery_service.services[each.key].arn
+    registry_arn   = aws_service_discovery_service.services[each.key].arn
+    container_name = each.key
+    container_port = each.value.port
   }
 
   health_check_grace_period_seconds = each.key == "order-service" ? 180 : null

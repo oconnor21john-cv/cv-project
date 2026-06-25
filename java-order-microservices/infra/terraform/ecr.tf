@@ -43,19 +43,27 @@ resource "aws_service_discovery_service" "services" {
   name     = each.key
 
   dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.main.id
+    namespace_id   = aws_service_discovery_private_dns_namespace.main.id
+    routing_policy = "MULTIVALUE"
 
+    # A records for inter-service HTTP calls within the VPC.
     dns_records {
       type = "A"
       ttl  = 10
     }
 
-    routing_policy = "MULTIVALUE"
+    # SRV records carry the port - required by API Gateway HTTP API VPC Link
+    # integrations targeting Cloud Map. Without them the integration defaults
+    # to port 80 and the upstream connect fails with a 500.
+    dns_records {
+      type = "SRV"
+      ttl  = 10
+    }
   }
 
-  health_check_custom_config {
-    failure_threshold = 1
-  }
+  # No health_check_custom_config: that requires ECS to actively report
+  # health, which it only does with a task healthCheck block. Without one,
+  # instances would stay UNHEALTHY forever.
 }
 
 resource "aws_cloudwatch_log_group" "services" {
