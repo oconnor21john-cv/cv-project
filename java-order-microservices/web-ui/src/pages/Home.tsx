@@ -30,7 +30,7 @@ export function Home() {
           >
             {theme === 'dark' ? '☀' : '☾'}
           </button>
-          <Link to="/architecture" className="nav-cta">Click here for demo</Link>
+          <Link to="/login" className="nav-cta">Click here for demo</Link>
         </nav>
       </header>
 
