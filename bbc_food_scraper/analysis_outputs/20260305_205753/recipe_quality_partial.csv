@@ -1,2 +1,0 @@
-run_idx,repeat,query,query_category,source,source_name,recipe_title,recipe_url,extraction_method,has_title,has_ingredients,has_instructions,has_image,ingredient_count,instruction_count,completeness_score,formatting_artifact
-1,1,chicken curry,main,bbc,BBC Food,"Black chicken curry, fried leeks and yellow rice",https://www.bbc.co.uk/food/recipes/black_chicken_curry_00331,Schema.org JSON-LD,1,1,1,0,46,19,1.0,0

@@ -1,9 +1,0 @@
-stage,aspect,optimizer,lr,weight_decay,label_smoothing,val_acc,test_acc,arch
-C,multi_aspect (opt+arch+advanced),adamw,0.001,0.0001,0.0,87.5,86.47,WiderCNN+SE
-C,multi_aspect (opt+arch+advanced),adamw,0.001,0.0001,0.1,86.92,85.41,WiderCNN+SE
-C,multi_aspect (opt+arch+advanced),adamw,0.001,0.0001,0.0,87.2,87.03,WiderCNN
-C,multi_aspect (opt+arch+advanced),adamw,0.001,0.0001,0.1,87.62,87.51,WiderCNN
-C,multi_aspect (opt+arch+advanced),rmsprop,0.001,0.0001,0.0,76.06,75.16,WiderCNN+SE
-C,multi_aspect (opt+arch+advanced),rmsprop,0.001,0.0001,0.1,75.66,75.68,WiderCNN+SE
-C,multi_aspect (opt+arch+advanced),rmsprop,0.001,0.0001,0.0,76.42,76.61,WiderCNN
-C,multi_aspect (opt+arch+advanced),rmsprop,0.001,0.0001,0.1,75.6,74.61,WiderCNN

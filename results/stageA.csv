@@ -1,4 +1,0 @@
-stage,aspect,optimizer,lr,weight_decay,val_acc,test_acc,arch
-A,optimizer_only,sgd,0.001,0.0001,54.52,55.1,TinyCNN
-A,optimizer_only,adamw,0.001,0.0001,83.06,81.9,TinyCNN
-A,optimizer_only,rmsprop,0.001,0.0001,75.6,75.19,TinyCNN

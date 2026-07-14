@@ -1,7 +1,0 @@
-run_idx,repeat,query,query_category,source,source_name,recipe_title,recipe_url,extraction_method,has_title,has_ingredients,has_instructions,has_image,ingredient_count,instruction_count,completeness_score,formatting_artifact
-1,1,chicken curry,main,bbc,BBC Food,"Black chicken curry, fried leeks and yellow rice",https://www.bbc.co.uk/food/recipes/black_chicken_curry_00331,Schema.org JSON-LD,1,1,1,0,46,19,1.0,0
-2,1,chicken curry,main,simply,Simply Recipes,My Mom’s Korean Curry Rice Is My Favorite Comfort Food,https://www.simplyrecipes.com/korean-curry-rice-recipe-11727095,Mirror markdown parsing,1,1,1,1,9,5,1.0,0
-4,1,vegetarian pasta,main,bbc,BBC Food,Vegetarian bolognese,https://www.bbc.co.uk/food/recipes/puy_lentil_bolognaise_40407,Schema.org JSON-LD,1,1,1,1,15,6,1.0,0
-5,1,vegetarian pasta,main,simply,Simply Recipes,This Greek Pasta Salad Is Anything But Boring,https://www.simplyrecipes.com/recipes/greek_pasta_salad/,Mirror markdown parsing,1,1,1,1,17,4,1.0,0
-7,1,chocolate cake,dessert,bbc,BBC Food,Chocolate drip cake,https://www.bbc.co.uk/food/recipes/chocolate_drip_cake_48926,Schema.org JSON-LD,1,1,1,1,21,14,1.0,0
-8,1,chocolate cake,dessert,simply,Simply Recipes,The Most Decadent Gluten-Free Chocolate Cake Recipe,https://www.simplyrecipes.com/flourless-chocolate-cake-recipe-6504181,Mirror markdown parsing,1,1,1,0,15,10,1.0,0

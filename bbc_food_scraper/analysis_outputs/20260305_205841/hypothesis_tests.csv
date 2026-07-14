@@ -1,5 +1,0 @@
-test,metric,statistic,p_value,dof,note
-kruskal_wallis,recipes_found,299.0000000000002,1.1829733350269617e-65,,
-kruskal_wallis,latency_ms,175.1688265780731,9.17429303651702e-39,,
-chi_square_success_by_source,success,299.99999999999994,7.175095973164651e-66,2.0,
-logistic_regression,success,,,,Model failed: math range error
