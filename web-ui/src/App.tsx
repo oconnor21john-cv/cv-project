@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import './App.css'
 
 type TokenResponse = { accessToken: string; tokenType: string }
@@ -244,6 +245,7 @@ function App() {
       {!!error && (
         <div className="error-box">{error}</div>
       )}
+      <Analytics />
     </>
   )
 }
