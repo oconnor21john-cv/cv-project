@@ -1,6 +1,4 @@
-/* ───────────────────────────────────────────────────────────────────
-   Layout shell
-   ─────────────────────────────────────────────────────────────────── */
+/* Layout shell */
 
 .page {
   position: relative;
@@ -15,9 +13,9 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(1100px 600px at 15% -10%, rgba(168, 67, 31, 0.07), transparent 60%),
-    radial-gradient(900px 500px at 95% 10%, rgba(192, 138, 26, 0.06), transparent 60%),
-    radial-gradient(700px 400px at 50% 110%, rgba(79, 125, 46, 0.04), transparent 60%),
+    radial-gradient(1100px 600px at 15% -10%, rgba(10, 10, 10, 0.07), transparent 60%),
+    radial-gradient(900px 500px at 95% 10%, rgba(10, 10, 10, 0.06), transparent 60%),
+    radial-gradient(700px 400px at 50% 110%, rgba(47, 107, 61, 0.04), transparent 60%),
     var(--bg);
 }
 
@@ -27,7 +25,7 @@
   gap: 24px;
   padding: 18px 36px;
   border-bottom: 1px solid var(--border);
-  background: rgba(244, 239, 230, 0.88);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -48,17 +46,17 @@
 .brand-mark {
   width: 36px;
   height: 36px;
-  border-radius: 9px;
+  border-radius: 0;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(168, 67, 31, 0.18), rgba(192, 138, 26, 0.14));
-  border: 1px solid rgba(168, 67, 31, 0.35);
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.18), rgba(10, 10, 10, 0.14));
+  border: 1px solid rgba(10, 10, 10, 0.35);
   position: relative;
 }
 
 .brand-mark span {
   position: absolute;
-  border-radius: 2px;
+  border-radius: 0;
   background: var(--accent);
 }
 .brand-mark span:nth-child(1) { width: 12px; height: 3px; top: 10px; left: 7px; }
@@ -85,7 +83,7 @@
 
 .topnav a {
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 13px;
   font-weight: 500;
   color: var(--text-dim);
@@ -116,7 +114,7 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--surface-2);
   border: 1px solid var(--border);
   font-size: 12px;
@@ -128,18 +126,18 @@
   height: 8px;
   border-radius: 50%;
   background: var(--amber);
-  box-shadow: 0 0 0 4px rgba(192, 138, 26, 0.15);
+  box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.15);
 }
 
 .live-tag.ok .ring {
   background: var(--green);
-  box-shadow: 0 0 0 4px rgba(79, 125, 46, 0.15);
+  box-shadow: 0 0 0 4px rgba(47, 107, 61, 0.15);
   animation: pulse 2s ease-in-out infinite;
 }
 
 .live-tag.down .ring {
   background: var(--red);
-  box-shadow: 0 0 0 4px rgba(154, 46, 31, 0.15);
+  box-shadow: 0 0 0 4px rgba(163, 49, 39, 0.15);
 }
 
 .btn-sm {
@@ -183,14 +181,12 @@
 
 .footer-links a:hover { color: var(--text-dim); }
 
-/* ───────────────────────────────────────────────────────────────────
-   Shared
-   ─────────────────────────────────────────────────────────────────── */
+/* Shared */
 
 .card {
   background: linear-gradient(180deg, var(--surface) 0%, var(--surface-grad-end) 100%);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 26px;
   position: relative;
 }
@@ -218,9 +214,9 @@
 
 .error-box {
   padding: 12px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--red-bg);
-  border: 1px solid rgba(154, 46, 31, 0.25);
+  border: 1px solid rgba(163, 49, 39, 0.25);
   color: var(--red);
   font-family: var(--mono);
   font-size: 12px;
@@ -236,9 +232,7 @@
   font-size: 14px;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Home page
-   ─────────────────────────────────────────────────────────────────── */
+/* Home page */
 
 .hero {
   text-align: center;
@@ -251,9 +245,9 @@
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(168, 67, 31, 0.08);
-  border: 1px solid rgba(168, 67, 31, 0.2);
+  border-radius: 0;
+  background: rgba(10, 10, 10, 0.08);
+  border: 1px solid rgba(10, 10, 10, 0.2);
   font-size: 12px;
   color: var(--accent);
   margin-bottom: 24px;
@@ -277,7 +271,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #a8431f 0%, #c08a1a 60%, #4f7d2e 100%);
+  background: linear-gradient(135deg, #0a0a0a 0%, #0a0a0a 60%, #0a0a0a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -314,7 +308,7 @@
 
 .tech-tags span {
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--surface-2);
   border: 1px solid var(--border);
   font-size: 12px;
@@ -330,7 +324,7 @@
 
 .feature {
   padding: 24px;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   transition: border-color 0.2s;
@@ -376,9 +370,7 @@
   text-decoration: none;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Page heading shared
-   ─────────────────────────────────────────────────────────────────── */
+/* Page heading shared */
 
 .page-head {
   animation: fadeUp 0.5s ease-out;
@@ -407,9 +399,7 @@
   line-height: 1.6;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Architecture page
-   ─────────────────────────────────────────────────────────────────── */
+/* Architecture page */
 
 .arch-card {
   padding: 28px;
@@ -455,8 +445,8 @@
   stroke-width: 1;
 }
 
-.node-primary { fill: var(--surface);   stroke: rgba(168, 67, 31, 0.45); }
-.node-sqs     { fill: var(--surface-2); stroke: rgba(192, 138, 26, 0.45); }
+.node-primary { fill: var(--surface);   stroke: rgba(10, 10, 10, 0.45); }
+.node-sqs     { fill: var(--surface-2); stroke: rgba(10, 10, 10, 0.45); }
 
 .node-panel { fill: var(--bg-2); }
 .node-dot   { fill: var(--text-muted); }
@@ -481,7 +471,7 @@
 
 .flow-step {
   padding: 22px;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   background: var(--surface);
   border: 1px solid var(--border);
 }
@@ -532,14 +522,12 @@
   font-size: 13px;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Login page
-   ─────────────────────────────────────────────────────────────────── */
+/* Login page */
 
 .login-card {
   background: linear-gradient(180deg, var(--surface) 0%, var(--surface-grad-end) 100%);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 36px;
   animation: fadeUp 0.5s ease-out;
   position: relative;
@@ -552,7 +540,7 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(168, 67, 31, 0.35), transparent 50%);
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.35), transparent 50%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -570,16 +558,16 @@
   position: relative;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 0;
   margin-bottom: 14px;
-  background: linear-gradient(135deg, rgba(111,157,255,0.22), rgba(139,92,246,0.18));
-  border: 1px solid rgba(168, 67, 31, 0.35);
+  background: linear-gradient(135deg, rgba(10, 10, 10,0.22), rgba(139,92,246,0.18));
+  border: 1px solid rgba(10, 10, 10, 0.35);
 }
 
 .login-mark span {
   position: absolute;
   height: 3px;
-  border-radius: 2px;
+  border-radius: 0;
   background: var(--accent);
   left: 12px;
 }
@@ -617,9 +605,7 @@
   text-align: center;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Dashboard
-   ─────────────────────────────────────────────────────────────────── */
+/* Dashboard */
 
 .pipeline {
   display: grid;
@@ -632,7 +618,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   font-size: 13px;
@@ -660,8 +646,8 @@
 }
 
 .step-done {
-  border-color: rgba(79, 125, 46, 0.3);
-  background: rgba(79, 125, 46, 0.06);
+  border-color: rgba(47, 107, 61, 0.3);
+  background: rgba(47, 107, 61, 0.06);
   color: var(--text);
 }
 
@@ -672,20 +658,20 @@
 
 .step-active {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(168, 67, 31, 0.1);
-  background: rgba(168, 67, 31, 0.05);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.1);
+  background: rgba(10, 10, 10, 0.05);
   color: var(--text);
 }
 
 .step-active .step-num {
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
   animation: pulse 1.5s infinite;
 }
 
 .step-cancelled {
-  border-color: rgba(154, 46, 31, 0.3);
-  background: rgba(154, 46, 31, 0.06);
+  border-color: rgba(163, 49, 39, 0.3);
+  background: rgba(163, 49, 39, 0.06);
   color: var(--red);
 }
 
@@ -694,18 +680,18 @@
   color: #fff;
 }
 
-/* ── Service flow diagram ── */
+/* Service flow diagram */
 .sflow {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: 16px 20px 12px;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .sflow-active {
-  border-color: rgba(168, 67, 31, 0.3);
-  box-shadow: 0 0 32px -8px rgba(168, 67, 31, 0.12);
+  border-color: rgba(10, 10, 10, 0.3);
+  box-shadow: 0 0 32px -8px rgba(10, 10, 10, 0.12);
 }
 
 .sflow-label {
@@ -757,13 +743,13 @@
 /* Node states */
 .sflow-node-active .sflow-node-bg {
   stroke: var(--accent);
-  fill: rgba(168, 67, 31, 0.08);
+  fill: rgba(10, 10, 10, 0.08);
 }
 .sflow-node-active .sflow-node-badge {
   fill: var(--accent);
 }
 .sflow-node-active .sflow-node-icon {
-  fill: #fff;
+  fill: var(--bg);
 }
 .sflow-node-active .sflow-node-label {
   fill: var(--text);
@@ -771,7 +757,7 @@
 
 .sflow-node-success .sflow-node-bg {
   stroke: var(--green);
-  fill: rgba(79, 125, 46, 0.06);
+  fill: rgba(47, 107, 61, 0.06);
 }
 .sflow-node-success .sflow-node-badge {
   fill: var(--green);
@@ -785,7 +771,7 @@
 
 .sflow-node-error .sflow-node-bg {
   stroke: var(--red);
-  fill: rgba(154, 46, 31, 0.06);
+  fill: rgba(163, 49, 39, 0.06);
 }
 .sflow-node-error .sflow-node-badge {
   fill: var(--red);
@@ -820,7 +806,7 @@
 .sflow-edge-active {
   stroke: var(--accent);
   stroke-dasharray: none;
-  filter: drop-shadow(0 0 4px rgba(168, 67, 31, 0.4));
+  filter: drop-shadow(0 0 4px rgba(10, 10, 10, 0.4));
 }
 
 .sflow-edge-done {
@@ -896,7 +882,7 @@
 .panel-num {
   width: 26px;
   height: 26px;
-  border-radius: 7px;
+  border-radius: 0;
   display: grid;
   place-items: center;
   font-family: var(--mono);
@@ -982,7 +968,7 @@
 .order-card {
   margin-top: 20px;
   padding: 18px;
-  border-radius: var(--radius);
+  border-radius: 0;
   background: var(--bg-2);
   border: 1px solid var(--border);
 }
@@ -1039,7 +1025,7 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -1053,9 +1039,7 @@
 .s-STOCK_FAILED   { background: var(--red-bg);   color: var(--red);   border: 1px solid rgba(248,113,113,0.25); }
 .s-PAYMENT_FAILED { background: var(--red-bg);   color: var(--red);   border: 1px solid rgba(248,113,113,0.25); }
 
-/* ───────────────────────────────────────────────────────────────────
-   Completion card
-   ─────────────────────────────────────────────────────────────────── */
+/* Completion card */
 
 .completion-card {
   text-align: center;
@@ -1064,13 +1048,13 @@
 }
 
 .completion-success {
-  border-color: rgba(79, 125, 46, 0.3);
-  background: linear-gradient(180deg, rgba(79, 125, 46, 0.08) 0%, var(--surface) 100%);
+  border-color: rgba(47, 107, 61, 0.3);
+  background: linear-gradient(180deg, rgba(47, 107, 61, 0.08) 0%, var(--surface) 100%);
 }
 
 .completion-failed {
-  border-color: rgba(154, 46, 31, 0.25);
-  background: linear-gradient(180deg, rgba(154, 46, 31, 0.06) 0%, var(--surface) 100%);
+  border-color: rgba(163, 49, 39, 0.25);
+  background: linear-gradient(180deg, rgba(163, 49, 39, 0.06) 0%, var(--surface) 100%);
 }
 
 .completion-icon {
@@ -1088,14 +1072,14 @@
   background: var(--green-bg);
   border: 2px solid var(--green-border);
   color: var(--green);
-  box-shadow: 0 0 24px rgba(79, 125, 46, 0.15);
+  box-shadow: 0 0 24px rgba(47, 107, 61, 0.15);
 }
 
 .completion-failed .completion-icon {
   background: var(--red-bg);
-  border: 2px solid rgba(154, 46, 31, 0.3);
+  border: 2px solid rgba(163, 49, 39, 0.3);
   color: var(--red);
-  box-shadow: 0 0 24px rgba(154, 46, 31, 0.12);
+  box-shadow: 0 0 24px rgba(163, 49, 39, 0.12);
 }
 
 .completion-title {
@@ -1117,7 +1101,7 @@
   max-width: 400px;
   margin: 0 auto 24px;
   padding: 16px;
-  border-radius: var(--radius);
+  border-radius: 0;
   background: var(--bg-2);
   border: 1px solid var(--border);
 }
@@ -1149,13 +1133,11 @@
 }
 
 .history-active-row {
-  background: rgba(168, 67, 31, 0.06);
+  background: rgba(10, 10, 10, 0.06);
   border-left: 2px solid var(--accent);
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Event log
-   ─────────────────────────────────────────────────────────────────── */
+/* Event log */
 
 .log {
   padding: 0;
@@ -1243,9 +1225,7 @@
   }
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Keyframes
-   ─────────────────────────────────────────────────────────────────── */
+/* Keyframes */
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -1262,9 +1242,7 @@
   to   { opacity: 1; }
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   User label & admin
-   ─────────────────────────────────────────────────────────────────── */
+/* User label & admin */
 
 .user-label {
   display: inline-flex;
@@ -1274,7 +1252,7 @@
   color: var(--text-dim);
   padding: 6px 12px;
   background: var(--surface-2);
-  border-radius: 999px;
+  border-radius: 0;
   border: 1px solid var(--border);
 }
 
@@ -1284,9 +1262,9 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 3px 7px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(192, 138, 26, 0.25), rgba(168, 67, 31, 0.2));
-  border: 1px solid rgba(192, 138, 26, 0.4);
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.25), rgba(10, 10, 10, 0.2));
+  border: 1px solid rgba(10, 10, 10, 0.4);
   color: var(--accent);
 }
 
@@ -1295,13 +1273,11 @@
 }
 
 .admin-link.active {
-  background: rgba(192, 138, 26, 0.15) !important;
-  border: 1px solid rgba(192, 138, 26, 0.35) !important;
+  background: rgba(10, 10, 10, 0.15) !important;
+  border: 1px solid rgba(10, 10, 10, 0.35) !important;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Admin page
-   ─────────────────────────────────────────────────────────────────── */
+/* Admin page */
 
 .loading-msg,
 .empty-msg {
@@ -1342,7 +1318,7 @@
 }
 
 .orders-table tbody tr:hover {
-  background: rgba(168, 67, 31, 0.04);
+  background: rgba(10, 10, 10, 0.04);
 }
 
 .orders-table tbody tr:last-child td {
@@ -1352,7 +1328,7 @@
 .user-badge {
   display: inline-flex;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 0;
   background: var(--surface-3);
   font-size: 12px;
   font-weight: 500;
@@ -1390,9 +1366,7 @@
   color: var(--text-muted);
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Toast notifications
-   ─────────────────────────────────────────────────────────────────── */
+/* Toast notifications */
 
 .toast-container {
   position: fixed;
@@ -1410,7 +1384,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 18px;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--surface-2);
   border: 1px solid var(--border-2);
   font-size: 13px;
@@ -1447,9 +1421,7 @@
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Order detail items table
-   ─────────────────────────────────────────────────────────────────── */
+/* Order detail items table */
 
 .order-items {
   margin-top: 16px;
@@ -1494,7 +1466,7 @@
 }
 
 .order-row-clickable:hover {
-  background: rgba(168, 67, 31, 0.06);
+  background: rgba(10, 10, 10, 0.06);
 }
 
 .order-detail-row td {
@@ -1504,15 +1476,13 @@
 
 .order-detail-inner {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--bg-2);
   border: 1px solid var(--border);
   margin-top: 4px;
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Theme toggle
-   ─────────────────────────────────────────────────────────────────── */
+/* Theme toggle */
 
 .theme-toggle {
   font-size: 16px;
@@ -1523,25 +1493,25 @@
 /* Light theme overrides for backgrounds that use rgba */
 [data-theme="light"] .page-bg {
   background:
-    radial-gradient(1100px 600px at 15% -10%, rgba(168, 67, 31, 0.08), transparent 60%),
-    radial-gradient(900px 500px at 95% 10%, rgba(192, 138, 26, 0.06), transparent 60%),
-    radial-gradient(700px 400px at 50% 110%, rgba(22, 163, 74, 0.04), transparent 60%),
+    radial-gradient(1100px 600px at 15% -10%, rgba(10, 10, 10, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 95% 10%, rgba(10, 10, 10, 0.06), transparent 60%),
+    radial-gradient(700px 400px at 50% 110%, rgba(10, 10, 10, 0.04), transparent 60%),
     var(--bg);
 }
 
 [data-theme="light"] .topbar {
-  background: rgba(244, 239, 230, 0.88);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 /* Dark-theme topbar: slightly opaque warm-dark surface */
 [data-theme="dark"] .topbar {
-  background: rgba(26, 23, 20, 0.78);
+  background: rgba(11, 11, 12, 0.78);
 }
 [data-theme="dark"] .page-bg {
   background:
-    radial-gradient(1100px 600px at 15% -10%, rgba(217, 104, 56, 0.10), transparent 60%),
-    radial-gradient(900px 500px at 95% 10%, rgba(192, 138, 26, 0.07), transparent 60%),
-    radial-gradient(700px 400px at 50% 110%, rgba(79, 125, 46, 0.05), transparent 60%),
+    radial-gradient(1100px 600px at 15% -10%, rgba(255, 255, 255, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 95% 10%, rgba(10, 10, 10, 0.07), transparent 60%),
+    radial-gradient(700px 400px at 50% 110%, rgba(47, 107, 61, 0.05), transparent 60%),
     var(--bg);
 }
 
@@ -1550,16 +1520,14 @@
 }
 
 [data-theme="light"] .btn-primary {
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 4px 12px -4px rgba(168, 67, 31, 0.3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 4px 12px -4px rgba(10, 10, 10, 0.3);
 }
 
 [data-theme="light"] .login-card::before {
-  background: linear-gradient(135deg, rgba(168, 67, 31, 0.25), transparent 50%);
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.25), transparent 50%);
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   Mobile responsive
-   ─────────────────────────────────────────────────────────────────── */
+/* Mobile responsive */
 
 /* Tighten the topbar between full and small layouts so the right-side
    items (theme toggle / API tag / user pill / Log out) don't collide. */

@@ -1,72 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-/* Warm cream + rust palette, matches the personal Home page. */
+/* Monochrome ink-on-paper. Sharp corners, no gradients, no glows.
+   The only hues anywhere are muted green/red/amber, kept purely to
+   signal real order state in the demo dashboard. */
 :root {
-  --bg:          #f4efe6;
-  --bg-2:        #ede6d7;
+  --bg:          #ffffff;
+  --bg-2:        #f6f6f5;
   --surface:     #ffffff;
-  --surface-2:   #ede6d7;
-  --surface-3:   #e3dcc8;
-  --border:      #d9d1c2;
-  --border-2:    #c4baa6;
-  --text:        #1a1a1a;
-  --text-dim:    #6b6357;
-  --text-muted:  #8a8175;
-  --accent:      #a8431f;
-  --accent-2:    #8a3617;
-  --accent-glow: rgba(168, 67, 31, 0.25);
-  --surface-grad-end: rgba(237, 230, 215, 0.6);
-  --green:       #4f7d2e;
-  --green-bg:    rgba(79, 125, 46, 0.12);
-  --green-border:rgba(79, 125, 46, 0.3);
-  --red:         #9a2e1f;
-  --red-bg:      rgba(154, 46, 31, 0.08);
-  --amber:       #c08a1a;
-  --amber-bg:    rgba(192, 138, 26, 0.12);
-  --font:        'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif:  'Iowan Old Style', 'Charter', 'Georgia', serif;
-  --mono:        'JetBrains Mono', monospace;
-  --radius:      10px;
-  --radius-lg:   14px;
+  --surface-2:   #f2f2f1;
+  --surface-3:   #e9e9e7;
+  --border:      #e4e4e2;
+  --border-2:    #cfcfcc;
+  --text:        #0a0a0a;
+  --text-dim:    #4a4a48;
+  --text-muted:  #8a8a86;
+  --accent:      #0a0a0a;
+  --accent-2:    #000000;
+  --accent-glow: rgba(0, 0, 0, 0);
+  --surface-grad-end: #ffffff;
+  --green:       #2f6b3d;
+  --green-bg:    rgba(47, 107, 61, 0.10);
+  --green-border:rgba(47, 107, 61, 0.30);
+  --red:         #a33127;
+  --red-bg:      rgba(163, 49, 39, 0.08);
+  --amber:       #8a6d16;
+  --amber-bg:    rgba(138, 109, 22, 0.12);
+  --font:        'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-serif:  'Space Grotesk', system-ui, sans-serif;
+  --mono:        'IBM Plex Mono', ui-monospace, monospace;
+  --radius:      0px;
+  --radius-lg:   0px;
 }
 
-/* Explicit light keeps parity with :root for the ThemeToggle. */
 [data-theme="light"] {
-  --bg:          #f4efe6;
-  --bg-2:        #ede6d7;
+  --bg:          #ffffff;
+  --bg-2:        #f6f6f5;
   --surface:     #ffffff;
-  --surface-2:   #ede6d7;
-  --surface-3:   #e3dcc8;
-  --border:      #d9d1c2;
-  --border-2:    #c4baa6;
-  --text:        #1a1a1a;
-  --text-dim:    #6b6357;
-  --text-muted:  #8a8175;
-  --accent:      #a8431f;
-  --accent-2:    #8a3617;
-  --accent-glow: rgba(168, 67, 31, 0.25);
-  --surface-grad-end: rgba(237, 230, 215, 0.6);
+  --surface-2:   #f2f2f1;
+  --surface-3:   #e9e9e7;
+  --border:      #e4e4e2;
+  --border-2:    #cfcfcc;
+  --text:        #0a0a0a;
+  --text-dim:    #4a4a48;
+  --text-muted:  #8a8a86;
+  --accent:      #0a0a0a;
+  --accent-2:    #000000;
+  --accent-glow: rgba(0, 0, 0, 0);
+  --surface-grad-end: #ffffff;
 }
 
-/* Opt-in warm-dark theme (rust accent on near-black). */
 [data-theme="dark"] {
-  --bg:          #1a1714;
-  --bg-2:        #221d18;
-  --surface:     #2a241e;
-  --surface-2:   #322b23;
-  --surface-3:   #3d342a;
-  --border:      #3d342a;
-  --border-2:    #4d4233;
-  --text:        #f4efe6;
-  --text-dim:    #c4baa6;
-  --text-muted:  #8a8175;
-  --accent:      #d96838;
-  --accent-2:    #a8431f;
-  --accent-glow: rgba(217, 104, 56, 0.35);
-  --surface-grad-end: rgba(255, 255, 255, 0.025);
-  --green:       #6fa847;
-  --red:         #d96d5a;
-  --amber:       #e0a830;
+  --bg:          #0b0b0c;
+  --bg-2:        #141416;
+  --surface:     #141416;
+  --surface-2:   #1b1b1e;
+  --surface-3:   #232327;
+  --border:      #212124;
+  --border-2:    #34343a;
+  --text:        #f3f2ef;
+  --text-dim:    #b6b5b0;
+  --text-muted:  #8d8d89;
+  --accent:      #f3f2ef;
+  --accent-2:    #ffffff;
+  --accent-glow: rgba(255, 255, 255, 0);
+  --surface-grad-end: #141416;
+  --green:       #6fa85a;
+  --green-bg:    rgba(111, 168, 90, 0.14);
+  --green-border:rgba(111, 168, 90, 0.32);
+  --red:         #d97a6a;
+  --red-bg:      rgba(217, 122, 106, 0.12);
+  --amber:       #d9b24a;
+  --amber-bg:    rgba(217, 178, 74, 0.14);
 }
 
 *, *::before, *::after {
@@ -99,19 +103,19 @@ code {
   font-size: 0.86em;
   background: var(--surface-2);
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: 0;
   color: var(--text-dim);
   border: 1px solid var(--border);
 }
 
-/* ── Inputs ── */
+/* Inputs */
 input, select {
   display: block;
   width: 100%;
   padding: 9px 12px;
   background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  border-radius: 0;
   color: var(--text);
   font-family: var(--font);
   font-size: 14px;
@@ -120,12 +124,12 @@ input, select {
 }
 
 input:hover:not(:disabled), select:hover:not(:disabled) {
-  border-color: var(--border-2);
+  border-color: var(--text-muted);
 }
 
 input:focus, select:focus {
-  border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--border-2);
   background: var(--surface);
 }
 
@@ -153,7 +157,7 @@ label > span {
   margin-bottom: 6px;
 }
 
-/* ── Buttons ── */
+/* Buttons */
 button {
   display: inline-flex;
   align-items: center;
@@ -163,19 +167,19 @@ button {
   font-family: var(--font);
   font-size: 13px;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 0;
   border: 1px solid var(--border-2);
   background: var(--surface-2);
   color: var(--text);
   cursor: pointer;
-  transition: transform 0.12s, background 0.15s, border-color 0.15s, box-shadow 0.15s, opacity 0.15s;
+  transition: transform 0.12s, background 0.15s, border-color 0.15s, box-shadow 0.15s, opacity 0.15s, color 0.15s;
   white-space: nowrap;
   position: relative;
 }
 
 button:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--text-muted);
+  border-color: var(--text);
 }
 
 button:active:not(:disabled) {
@@ -188,20 +192,21 @@ button:disabled {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
-  border-color: var(--accent-2);
-  color: #fff;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 8px 24px -12px var(--accent-glow);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  box-shadow: none;
 }
 
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.16) inset, 0 12px 32px -10px var(--accent-glow);
-  border-color: var(--accent);
+  background: var(--text-dim);
+  border-color: var(--text-dim);
+  box-shadow: none;
 }
 
 .btn-ghost {
   background: transparent;
-  border-color: var(--border);
+  border-color: var(--border-2);
   color: var(--text-dim);
 }
 
@@ -212,13 +217,14 @@ button:disabled {
 
 .btn-danger {
   background: var(--red-bg);
-  border-color: rgba(154, 46, 31, 0.3);
+  border-color: var(--red);
   color: var(--red);
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: rgba(154, 46, 31, 0.16);
+  background: var(--red-bg);
   border-color: var(--red);
+  color: var(--red);
 }
 
 /* Loading spinner */
@@ -226,16 +232,15 @@ button:disabled {
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  border-top-color: #fff;
+  border: 2px solid var(--border-2);
+  border-top-color: currentColor;
   animation: spin 0.7s linear infinite;
   flex-shrink: 0;
 }
 
-.btn-ghost .spin,
-.btn-danger .spin {
-  border-color: rgba(255, 255, 255, 0.15);
-  border-top-color: currentColor;
+.btn-primary .spin {
+  border-color: rgba(255, 255, 255, 0.25);
+  border-top-color: var(--bg);
 }
 
 @keyframes spin {
