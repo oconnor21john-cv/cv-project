@@ -37,7 +37,8 @@ export function Home() {
         <section className="lp-hero">
           <h1>John<br />O&rsquo;Connor</h1>
           <p className="lp-role">
-            Software engineer building Java and Kotlin services. Recently
+            Software engineer building Java services, with a TypeScript
+            front-end and Python tooling around them. Recently
             finished an MSc in Computer Science and looking for my first role
             in software.
           </p>
@@ -46,7 +47,7 @@ export function Home() {
         <section className="lp-spec">
           <div className="lp-row"><div className="lp-k">Location</div><div className="lp-v">Belfast, Northern Ireland</div></div>
           <div className="lp-row"><div className="lp-k">Discipline</div><div className="lp-v">Backend services, distributed systems</div></div>
-          <div className="lp-row"><div className="lp-k">Languages</div><div className="lp-v">Java, Kotlin</div></div>
+          <div className="lp-row"><div className="lp-k">Languages</div><div className="lp-v">Java, JavaScript, TypeScript, Python, SQL</div></div>
           <div className="lp-row"><div className="lp-k">Status</div><div className="lp-v"><span className="lp-dot" />Available for work</div></div>
         </section>
 
